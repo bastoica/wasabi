@@ -243,6 +243,7 @@ public class WebAppUtils {
   
   public static String getResolvedRemoteRMWebAppURLWithoutScheme(
       Configuration conf) {
+    LOG.info("[wasabi] JUST TESTING");
     return getResolvedRemoteRMWebAppURLWithoutScheme(conf,
         YarnConfiguration.useHttps(conf) ? Policy.HTTPS_ONLY : Policy.HTTP_ONLY);
   }
