@@ -1,0 +1,1817 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] Some problems were encountered while building the effective model for org.apache.hadoop:hadoop-yarn-server-resourcemanager:jar:3.4.0-SNAPSHOT
+[[1;33mWARNING[m] 'build.plugins.plugin.version' for org.jsonschema2pojo:jsonschema2pojo-maven-plugin is missing. @ line 448, column 15
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] It is highly recommended to fix these problems because they threaten the stability of your build.
+[[1;33mWARNING[m] 
+[[1;33mWARNING[m] For this reason, future Maven versions might no longer support building such malformed projects.
+[[1;33mWARNING[m] 
+[[1;34mINFO[m] ------------------------------------------------------------------------
+[[1;34mINFO[m] Detecting the operating system and CPU architecture
+[[1;34mINFO[m] ------------------------------------------------------------------------
+[[1;34mINFO[m] os.detected.name: linux
+[[1;34mINFO[m] os.detected.arch: x86_64
+[[1;34mINFO[m] os.detected.version: 5.15
+[[1;34mINFO[m] os.detected.version.major: 5
+[[1;34mINFO[m] os.detected.version.minor: 15
+[[1;34mINFO[m] os.detected.release: ubuntu
+[[1;34mINFO[m] os.detected.release.version: 22.04
+[[1;34mINFO[m] os.detected.release.like.ubuntu: true
+[[1;34mINFO[m] os.detected.release.like.debian: true
+[[1;34mINFO[m] os.detected.classifier: linux-x86_64
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Build Order:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Apache Hadoop Main                                                 [pom]
+[[1;34mINFO[m] Apache Hadoop Build Tools                                          [jar]
+[[1;34mINFO[m] Apache Hadoop Project POM                                          [pom]
+[[1;34mINFO[m] Apache Hadoop Annotations                                          [jar]
+[[1;34mINFO[m] Apache Hadoop Project Dist POM                                     [pom]
+[[1;34mINFO[m] Apache Hadoop Maven Plugins                               [maven-plugin]
+[[1;34mINFO[m] Apache Hadoop MiniKDC                                              [jar]
+[[1;34mINFO[m] Apache Hadoop Auth                                                 [jar]
+[[1;34mINFO[m] Apache Hadoop Common                                               [jar]
+[[1;34mINFO[m] Apache Hadoop KMS                                                  [jar]
+[[1;34mINFO[m] Apache Hadoop Registry                                             [jar]
+[[1;34mINFO[m] Apache Hadoop HDFS Client                                          [jar]
+[[1;34mINFO[m] Apache Hadoop HDFS                                                 [jar]
+[[1;34mINFO[m] Apache Hadoop YARN                                                 [pom]
+[[1;34mINFO[m] Apache Hadoop YARN API                                             [jar]
+[[1;34mINFO[m] Apache Hadoop YARN Common                                          [jar]
+[[1;34mINFO[m] Apache Hadoop YARN Server                                          [pom]
+[[1;34mINFO[m] Apache Hadoop YARN Server Common                                   [jar]
+[[1;34mINFO[m] Apache Hadoop YARN ApplicationHistoryService                       [jar]
+[[1;34mINFO[m] Apache Hadoop YARN Timeline Service                                [jar]
+[[1;34mINFO[m] Apache Hadoop YARN Web Proxy                                       [jar]
+[[1;34mINFO[m] Apache Hadoop YARN ResourceManager                                 [jar]
+[[1;34mINFO[m] Apache Hadoop YARN NodeManager                                     [jar]
+[[1;34mINFO[m] Apache Hadoop YARN Server Tests                                    [jar]
+[[1;34mINFO[m] Apache Hadoop YARN Client                                          [jar]
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-------------------< [0;36morg.apache.hadoop:hadoop-main[0;1m >--------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop Main 3.4.0-SNAPSHOT                        [1/25][m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(default)[m @ [36mhadoop-main[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(enforce-property)[m @ [36mhadoop-main[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-main[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36morg.apache.hadoop:hadoop-build-tools[0;1m >----------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop Build Tools 3.4.0-SNAPSHOT                 [2/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.0.1:copy-resources[m [1m(copy-resources)[m @ [36mhadoop-build-tools[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(dummy)[m @ [36mhadoop-build-tools[0;1m ---[m
+[[1;34mINFO[m] No ant target defined - SKIPPED
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-build-tools[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.0.1:resources[m [1m(default-resources)[m @ [36mhadoop-build-tools[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 2 resources to META-INF
+[[1;34mINFO[m] Copying 3 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:bundle[m [1m(default)[m @ [36mhadoop-build-tools[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-build-tools[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.0.1:testResources[m [1m(default-testResources)[m @ [36mhadoop-build-tools[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-build-tools/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-build-tools[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:2.12.4:test[m [1m(default-test)[m @ [36mhadoop-build-tools[0;1m ---[m
+[[1;34mINFO[m] No tests to run.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------< [0;36morg.apache.hadoop:hadoop-project[0;1m >------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop Project POM 3.4.0-SNAPSHOT                 [3/25][m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-project[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-project[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-project[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-project[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-project[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 0 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-project[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-project[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-project[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36morg.apache.hadoop:hadoop-annotations[0;1m >----------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop Annotations 3.4.0-SNAPSHOT                 [4/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 9 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-common-project/hadoop-annotations/src/main/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] Compiling 2 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-annotations/target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-common-project/hadoop-annotations/src/test/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-annotations[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m---------------< [0;36morg.apache.hadoop:hadoop-project-dist[0;1m >----------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop Project Dist POM 3.4.0-SNAPSHOT            [5/25][m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-project-dist[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-project-dist[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-project-dist[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-project-dist[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-project-dist[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 0 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-project-dist[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-project-dist[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-project-dist[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m---------------< [0;36morg.apache.hadoop:hadoop-maven-plugins[0;1m >---------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop Maven Plugins 3.4.0-SNAPSHOT               [6/25][m
+[[1;34mINFO[m] [1m----------------------------[ maven-plugin ]----------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 13 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-maven-plugins/src/main/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Compiling 13 source files to /home/rizky/hadoop/hadoop-maven-plugins/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-maven-plugins/src/main/java/org/apache/hadoop/maven/plugin/resourcegz/ResourceGzMojo.java: /home/rizky/hadoop/hadoop-maven-plugins/src/main/java/org/apache/hadoop/maven/plugin/resourcegz/ResourceGzMojo.java uses or overrides a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-maven-plugins/src/main/java/org/apache/hadoop/maven/plugin/resourcegz/ResourceGzMojo.java: Recompile with -Xlint:deprecation for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-plugin-plugin:3.6.0:descriptor[m [1m(default-descriptor)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to read mojo source files.
+[[1;34mINFO[m] java-javadoc mojo extractor found 0 mojo descriptor.
+[[1;34mINFO[m] java-annotations mojo extractor found 7 mojo descriptors.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-maven-plugins/src/test/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-maven-plugins[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------< [0;36morg.apache.hadoop:hadoop-minikdc[0;1m >------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop MiniKDC 3.4.0-SNAPSHOT                     [7/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 4 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Compiling 2 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-minikdc/target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-common-project/hadoop-minikdc/src/test/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] Compiling 2 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-minikdc/target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-minikdc[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-------------------< [0;36morg.apache.hadoop:hadoop-auth[0;1m >--------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop Auth 3.4.0-SNAPSHOT                        [8/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 58 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/main/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Compiling 31 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-auth/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/main/java/org/apache/hadoop/security/authentication/client/AuthenticatedURL.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/main/java/org/apache/hadoop/security/authentication/client/AuthenticatedURL.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/main/java/org/apache/hadoop/security/authentication/client/KerberosAuthenticator.java: /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/main/java/org/apache/hadoop/security/authentication/client/KerberosAuthenticator.java uses unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/main/java/org/apache/hadoop/security/authentication/client/KerberosAuthenticator.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/test/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] Compiling 27 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-auth/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/test/java/org/apache/hadoop/security/authentication/server/TestAuthenticationFilter.java: /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/test/java/org/apache/hadoop/security/authentication/server/TestAuthenticationFilter.java uses or overrides a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-auth/src/test/java/org/apache/hadoop/security/authentication/server/TestAuthenticationFilter.java: Recompile with -Xlint:deprecation for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-auth[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------------< [0;36morg.apache.hadoop:hadoop-common[0;1m >-------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop Common 3.4.0-SNAPSHOT                      [9/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 14 proto file(s) to /home/rizky/hadoop/hadoop-common-project/hadoop-common/target/generated-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc-legacy)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 1 proto file(s) to /home/rizky/hadoop/hadoop-common-project/hadoop-common/target/generated-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 14 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1096 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1775 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mhadoop-maven-plugins:3.4.0-SNAPSHOT:version-info[m [1m(version-info)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] SCM: GIT
+[[1;34mINFO[m] Computed MD5: 58d022d44df3d63e4ee155b7993a1f8b
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mhadoop-maven-plugins:3.4.0-SNAPSHOT:resource-gz[m [1m(resource-gz)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/webapps/static/hadoop.css to /home/rizky/hadoop/hadoop-common-project/hadoop-common/target/webapps/static/hadoop.css.gz
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 10 resources
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 1116 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-common/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/service/launcher/IrqHandler.java:[26,16] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/service/launcher/IrqHandler.java:[27,16] sun.misc.SignalHandler is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/io/nativeio/NativeIO.java:[48,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/SignalLogger.java:[21,16] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/SignalLogger.java:[22,16] sun.misc.SignalHandler is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/io/FastByteComparisons.java:[27,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/service/launcher/IrqHandler.java:[42,42] sun.misc.SignalHandler is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/service/launcher/IrqHandler.java:[71,11] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/service/launcher/IrqHandler.java:[92,20] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/service/launcher/IrqHandler.java:[93,7] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/service/launcher/IrqHandler.java:[113,5] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/service/launcher/IrqHandler.java:[126,22] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/io/nativeio/NativeIO.java:[871,17] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/io/nativeio/NativeIO.java:[873,7] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/io/nativeio/NativeIO.java:[873,24] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/SignalLogger.java:[44,43] sun.misc.SignalHandler is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/SignalLogger.java:[46,19] sun.misc.SignalHandler is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/SignalLogger.java:[50,39] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/SignalLogger.java:[50,21] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/SignalLogger.java:[59,24] sun.misc.Signal is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/io/FastByteComparisons.java:[134,20] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/io/FastByteComparisons.java:[140,22] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/io/FastByteComparisons.java:[145,29] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/security/token/delegation/ZKDelegationTokenSecretManager.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/FileSystem.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/FileSystem.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mavro-maven-plugin:1.7.7:schema[m [1m(generate-avro-test-sources)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 2 proto file(s) to /home/rizky/hadoop/hadoop-common-project/hadoop-common/target/generated-test-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-test-compile-protoc-legacy)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 2 proto file(s) to /home/rizky/hadoop/hadoop-common-project/hadoop-common/target/generated-test-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 673 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 33 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-log-dir)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+   [delete] Deleting directory /home/rizky/hadoop/hadoop-common-project/hadoop-common/target/test/data
+    [mkdir] Created dir: /home/rizky/hadoop/hadoop-common-project/hadoop-common/target/test/data
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 3 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 679 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-common/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/test/java/org/apache/hadoop/security/ssl/KeyStoreTestUtil.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/test/java/org/apache/hadoop/security/ssl/KeyStoreTestUtil.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/test/java/org/apache/hadoop/test/LambdaTestUtils.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-common/src/test/java/org/apache/hadoop/test/LambdaTestUtils.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(common-test-bats-driver)[m @ [36mhadoop-common[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+     [exec] 
+     [exec] 
+     [exec] ERROR: bats not installed. Skipping bash tests.
+     [exec] ERROR: Please install bats as soon as possible.
+     [exec] 
+     [exec] 
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------------< [0;36morg.apache.hadoop:hadoop-kms[0;1m >--------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop KMS 3.4.0-SNAPSHOT                        [10/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 25 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 3 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Compiling 16 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-kms/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-kms/src/main/java/org/apache/hadoop/crypto/key/kms/server/KMS.java: /home/rizky/hadoop/hadoop-common-project/hadoop-kms/src/main/java/org/apache/hadoop/crypto/key/kms/server/KMS.java uses unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-kms/src/main/java/org/apache/hadoop/crypto/key/kms/server/KMS.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 3 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] Compiling 9 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-kms/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-kms/src/test/java/org/apache/hadoop/crypto/key/kms/server/TestKMSAudit.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-kms/src/test/java/org/apache/hadoop/crypto/key/kms/server/TestKMSAudit.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-kms/src/test/java/org/apache/hadoop/crypto/key/kms/server/TestKMS.java: /home/rizky/hadoop/hadoop-common-project/hadoop-kms/src/test/java/org/apache/hadoop/crypto/key/kms/server/TestKMS.java uses unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-kms/src/test/java/org/apache/hadoop/crypto/key/kms/server/TestKMS.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-kms[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------------< [0;36morg.apache.hadoop:hadoop-registry[0;1m >------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop Registry 3.4.0-SNAPSHOT                   [11/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 88 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mhadoop-maven-plugins:3.4.0-SNAPSHOT:version-info[m [1m(version-info)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] SCM: GIT
+[[1;34mINFO[m] Computed MD5: 13996c9b421576454133c361e5367cd7
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-common-project/hadoop-registry/src/main/resources
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-common-project/hadoop-registry/src/main/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Compiling 67 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-registry/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-registry/src/main/java/org/apache/hadoop/registry/client/types/Endpoint.java: /home/rizky/hadoop/hadoop-common-project/hadoop-registry/src/main/java/org/apache/hadoop/registry/client/types/Endpoint.java uses unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-registry/src/main/java/org/apache/hadoop/registry/client/types/Endpoint.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 3 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Compiling 21 source files to /home/rizky/hadoop/hadoop-common-project/hadoop-registry/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-registry/src/test/java/org/apache/hadoop/registry/secure/AbstractSecureRegistryTest.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-common-project/hadoop-registry/src/test/java/org/apache/hadoop/registry/secure/AbstractSecureRegistryTest.java: Recompile with -Xlint:deprecation for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.5:test-jar[m [1m(default)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/rizky/hadoop/hadoop-common-project/hadoop-registry/target/hadoop-registry-3.4.0-SNAPSHOT-tests.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-registry[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36morg.apache.hadoop:hadoop-hdfs-client[0;1m >----------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop HDFS Client 3.4.0-SNAPSHOT                [12/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Compiling 10 proto file(s) to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/target/generated-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 10 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 300 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 327 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 3 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Compiling 310 source files to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/shortcircuit/ShortCircuitShm.java:[40,16] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/shortcircuit/ShortCircuitShm.java:[57,24] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/shortcircuit/ShortCircuitShm.java:[59,18] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/shortcircuit/ShortCircuitShm.java:[61,17] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/shortcircuit/ShortCircuitShm.java:[63,15] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/protocolPB/PBHelperClient.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/protocolPB/PBHelperClient.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/protocolPB/PBHelperClient.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/protocolPB/PBHelperClient.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Skipping mojo execution
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 27 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] Compiling 27 source files to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/test/java/org/apache/hadoop/hdfs/web/TestByteRangeInputStream.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs-client/src/test/java/org/apache/hadoop/hdfs/web/TestByteRangeInputStream.java: Recompile with -Xlint:deprecation for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-hdfs-client[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-------------------< [0;36morg.apache.hadoop:hadoop-hdfs[0;1m >--------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop HDFS 3.4.0-SNAPSHOT                       [13/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Compiling 12 proto file(s) to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/generated-sources/java
+[[1;33mWARNING[m] PROTOC: InterQJournalProtocol.proto: warning: Import HdfsServer.proto but not used.
+JournalProtocol.proto: warning: Import HdfsServer.proto but not used.
+JournalProtocol.proto: warning: Import hdfs.proto but not used.
+fsimage.proto: warning: Import acl.proto but not used.
+fsimage.proto: warning: Import xattr.proto but not used.
+
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 12 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 690 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1526 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mhadoop-maven-plugins:3.4.0-SNAPSHOT:resource-gz[m [1m(resource-gz)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/hadoop.css to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/hadoop.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/dataTables.bootstrap.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/dataTables.bootstrap.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/moment.min.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/moment.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/jquery.dataTables.min.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/jquery.dataTables.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/bootstrap-3.4.1/js/bootstrap-editable.min.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/bootstrap-3.4.1/js/bootstrap-editable.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/bootstrap-3.4.1/js/bootstrap.min.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/bootstrap-3.4.1/js/bootstrap.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/bootstrap-3.4.1/js/bootstrap.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/bootstrap-3.4.1/js/bootstrap.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/bootstrap-3.4.1/js/npm.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/bootstrap-3.4.1/js/npm.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/bootstrap-3.4.1/css/bootstrap.min.css to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/bootstrap-3.4.1/css/bootstrap.min.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/bootstrap-3.4.1/css/bootstrap-theme.min.css to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/bootstrap-3.4.1/css/bootstrap-theme.min.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/bootstrap-3.4.1/css/bootstrap-editable.css to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/bootstrap-3.4.1/css/bootstrap-editable.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/bootstrap-3.4.1/css/bootstrap-theme.css to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/bootstrap-3.4.1/css/bootstrap-theme.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/bootstrap-3.4.1/css/bootstrap.css to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/bootstrap-3.4.1/css/bootstrap.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/json-bignum.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/json-bignum.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/jquery-3.5.1.min.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/jquery-3.5.1.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/d3-v4.1.1.min.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/d3-v4.1.1.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/rest-csrf.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/rest-csrf.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/dust-helpers-1.1.1.min.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/dust-helpers-1.1.1.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/dfs-dust.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/dfs-dust.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/dust-full-2.0.0.min.js to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/dust-full-2.0.0.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/webapps/static/dataTables.bootstrap.css to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/webapps/static/dataTables.bootstrap.css.gz
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Compiling 703 source files to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/checker/AbstractFuture.java:[1046,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/checker/AbstractFuture.java:[1054,15] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/checker/AbstractFuture.java:[1056,26] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/checker/AbstractFuture.java:[1061,57] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/checker/AbstractFuture.java:[1063,36] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/checker/AbstractFuture.java:[1064,37] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/checker/AbstractFuture.java:[1064,58] sun.misc.Unsafe is internal proprietary API and may be removed in a future release
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/web/DatanodeHttpServer.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/datanode/fsdataset/impl/FsDatasetImpl.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-web-xmls)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Skipping mojo execution
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 835 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 62 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-log-dir)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+   [delete] Deleting directory /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data
+    [mkdir] Created dir: /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test/data
+     [copy] Copying 21 files to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test-classes/webapps
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Compiling 834 source files to /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/TestEncryptionZonesWithKMS.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/TestEncryptionZonesWithKMS.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/TestGetBlocks.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-hdfs-project/hadoop-hdfs/src/test/java/org/apache/hadoop/hdfs/TestGetBlocks.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(hdfs-test-bats-driver)[m @ [36mhadoop-hdfs[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+     [exec] 
+     [exec] 
+     [exec] ERROR: bats not installed. Skipping bash tests.
+     [exec] ERROR: Please install bats as soon as possible.
+     [exec] 
+     [exec] 
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-------------------< [0;36morg.apache.hadoop:hadoop-yarn[0;1m >--------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN 3.4.0-SNAPSHOT                       [14/25][m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 0 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------------< [0;36morg.apache.hadoop:hadoop-yarn-api[0;1m >------------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN API 3.4.0-SNAPSHOT                   [15/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Compiling 13 proto file(s) to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-api/target/generated-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 13 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 340 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 349 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Compiling 353 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-api/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-api/target/generated-sources/java/org/apache/hadoop/yarn/proto/YarnServiceProtos.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-api/target/generated-sources/java/org/apache/hadoop/yarn/proto/YarnServiceProtos.java: Recompile with -Xlint:deprecation for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Skipping mojo execution
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 9 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-api/src/test/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Compiling 9 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-api/target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.5:test-jar[m [1m(default)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-api/target/hadoop-yarn-api-3.4.0-SNAPSHOT-tests.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-api[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36morg.apache.hadoop:hadoop-yarn-common[0;1m >----------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN Common 3.4.0-SNAPSHOT                [16/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 1 proto file(s) to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/generated-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 491 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 596 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mhadoop-maven-plugins:3.4.0-SNAPSHOT:version-info[m [1m(version-info)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] SCM: GIT
+[[1;34mINFO[m] Computed MD5: fb85160821c31e1d8e63a5a44ad1671
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mhadoop-maven-plugins:3.4.0-SNAPSHOT:resource-gz[m [1m(resource-gz)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/yarn.css to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/yarn.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/dt-1.10.18/js/jquery.dataTables.min.js to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/dt-1.10.18/js/jquery.dataTables.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/dt-1.10.18/css/custom_datatable.css to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/dt-1.10.18/css/custom_datatable.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/dt-1.10.18/css/demo_page.css to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/dt-1.10.18/css/demo_page.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/dt-1.10.18/css/jquery.dataTables.css to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/dt-1.10.18/css/jquery.dataTables.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/dt-1.10.18/css/jui-dt.css to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/dt-1.10.18/css/jui-dt.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/dt-1.10.18/css/demo_table.css to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/dt-1.10.18/css/demo_table.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/yarn.dt.plugins.js to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/yarn.dt.plugins.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/jt/jquery.jstree.js to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/jt/jquery.jstree.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/jquery/jquery-ui-1.12.1.custom.min.js to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/jquery/jquery-ui-1.12.1.custom.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/jquery/themes-1.9.1/base/jquery-ui.css to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/jquery/themes-1.9.1/base/jquery-ui.css.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/jquery/jquery-3.5.1.min.js to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/jquery/jquery-3.5.1.min.js.gz
+[[1;34mINFO[m] Compressing /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/resources/webapps/static/dt-sorting/natural.js to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes/webapps/static/dt-sorting/natural.js.gz
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 54 resources
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 492 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/generated-sources/java/org/apache/hadoop/yarn/proto/YarnSecurityTokenProtos.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/generated-sources/java/org/apache/hadoop/yarn/proto/YarnSecurityTokenProtos.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/java/org/apache/hadoop/yarn/client/api/AppAdminClient.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/java/org/apache/hadoop/yarn/client/api/AppAdminClient.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Skipping mojo execution
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 105 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 26 resources
+[[1;34mINFO[m] Copying 16 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 105 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/test/java/org/apache/hadoop/yarn/api/records/timelineservice/TestTimelineServiceRecords.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/test/java/org/apache/hadoop/yarn/api/records/timelineservice/TestTimelineServiceRecords.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/test/java/org/apache/hadoop/yarn/event/TestAsyncDispatcher.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/test/java/org/apache/hadoop/yarn/event/TestAsyncDispatcher.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.5:test-jar[m [1m(default)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/target/hadoop-yarn-common-3.4.0-SNAPSHOT-tests.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36morg.apache.hadoop:hadoop-yarn-server[0;1m >----------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN Server 3.4.0-SNAPSHOT                [17/25][m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-server[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-server[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-server[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-server[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-server[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 0 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-server[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-server[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-server[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m------------< [0;36morg.apache.hadoop:hadoop-yarn-server-common[0;1m >-------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN Server Common 3.4.0-SNAPSHOT         [18/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 7 proto file(s) to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/target/generated-sources/java
+[[1;33mWARNING[m] PROTOC: yarn_server_federation_protos.proto: warning: Import yarn_server_common_protos.proto but not used.
+
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 7 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 281 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 339 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 288 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/target/generated-sources/java/org/apache/hadoop/yarn/federation/proto/YarnServerFederationProtos.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/target/generated-sources/java/org/apache/hadoop/yarn/federation/proto/YarnServerFederationProtos.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/src/main/java/org/apache/hadoop/yarn/server/webapp/LogServlet.java: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/src/main/java/org/apache/hadoop/yarn/server/webapp/LogServlet.java uses unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/src/main/java/org/apache/hadoop/yarn/server/webapp/LogServlet.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Skipping mojo execution
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 58 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 3 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Compiling 58 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/src/test/java/org/apache/hadoop/yarn/server/federation/policies/manager/BasePolicyManagerTest.java: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/src/test/java/org/apache/hadoop/yarn/server/federation/policies/manager/BasePolicyManagerTest.java uses or overrides a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/src/test/java/org/apache/hadoop/yarn/server/federation/policies/manager/BasePolicyManagerTest.java: Recompile with -Xlint:deprecation for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.5:test-jar[m [1m(default)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-common/target/hadoop-yarn-server-common-3.4.0-SNAPSHOT-tests.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-server-common[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m---< [0;36morg.apache.hadoop:hadoop-yarn-server-applicationhistoryservice[0;1m >---[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN ApplicationHistoryService 3.4.0-SNAPSHOT [19/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Compiling 1 proto file(s) to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/target/generated-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 65 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 86 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/src/main/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Compiling 66 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/src/main/java/org/apache/hadoop/yarn/server/timeline/GenericObjectMapper.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/src/main/java/org/apache/hadoop/yarn/server/timeline/GenericObjectMapper.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/src/main/java/org/apache/hadoop/yarn/server/applicationhistoryservice/ApplicationHistoryManagerOnTimelineStore.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/src/main/java/org/apache/hadoop/yarn/server/applicationhistoryservice/ApplicationHistoryManagerOnTimelineStore.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Skipping mojo execution
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 21 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/src/test/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Compiling 21 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/src/test/java/org/apache/hadoop/yarn/server/timeline/webapp/TestTimelineWebServices.java: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/src/test/java/org/apache/hadoop/yarn/server/timeline/webapp/TestTimelineWebServices.java uses unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/src/test/java/org/apache/hadoop/yarn/server/timeline/webapp/TestTimelineWebServices.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.5:test-jar[m [1m(default)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-applicationhistoryservice/target/hadoop-yarn-server-applicationhistoryservice-3.4.0-SNAPSHOT-tests.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-server-applicationhistoryservice[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------< [0;36morg.apache.hadoop:hadoop-yarn-server-timelineservice[0;1m >--------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN Timeline Service 3.4.0-SNAPSHOT      [20/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 85 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Compiling 66 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-timelineservice/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-timelineservice/src/main/java/org/apache/hadoop/yarn/server/timelineservice/reader/TimelineReaderWebServicesUtils.java: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-timelineservice/src/main/java/org/apache/hadoop/yarn/server/timelineservice/reader/TimelineReaderWebServicesUtils.java uses or overrides a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-timelineservice/src/main/java/org/apache/hadoop/yarn/server/timelineservice/reader/TimelineReaderWebServicesUtils.java: Recompile with -Xlint:deprecation for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Compiling 19 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-timelineservice/target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.5:test-jar[m [1m(default)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-timelineservice/target/hadoop-yarn-server-timelineservice-3.4.0-SNAPSHOT-tests.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-server-timelineservice[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36morg.apache.hadoop:hadoop-yarn-server-web-proxy[0;1m >-----------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN Web Proxy 3.4.0-SNAPSHOT             [21/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 19 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-web-proxy/src/main/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Compiling 11 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-web-proxy/target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Compiling 8 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-web-proxy/target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.5:test-jar[m [1m(default)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-web-proxy/target/hadoop-yarn-server-web-proxy-3.4.0-SNAPSHOT-tests.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-server-web-proxy[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------< [0;36morg.apache.hadoop:hadoop-yarn-server-resourcemanager[0;1m >--------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN ResourceManager 3.4.0-SNAPSHOT       [22/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Compiling 1 proto file(s) to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/target/generated-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mjsonschema2pojo-maven-plugin:1.1.2:generate[m [1m(default)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 708 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1086 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/src/main/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Compiling 709 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/src/main/java/org/apache/hadoop/yarn/server/resourcemanager/scheduler/fair/FairScheduler.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/src/main/java/org/apache/hadoop/yarn/server/resourcemanager/scheduler/fair/FairScheduler.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/src/main/java/org/apache/hadoop/yarn/server/resourcemanager/scheduler/AppSchedulingInfo.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/src/main/java/org/apache/hadoop/yarn/server/resourcemanager/scheduler/AppSchedulingInfo.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Compiling 1 proto file(s) to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/target/generated-test-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 378 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 37 resources
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Compiling 379 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/src/test/java/org/apache/hadoop/yarn/server/resourcemanager/recovery/RMStateStoreTestBase.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/src/test/java/org/apache/hadoop/yarn/server/resourcemanager/recovery/RMStateStoreTestBase.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/src/test/java/org/apache/hadoop/yarn/server/resourcemanager/scheduler/capacity/TestCapacityScheduler.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/src/test/java/org/apache/hadoop/yarn/server/resourcemanager/scheduler/capacity/TestCapacityScheduler.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.5:test-jar[m [1m(default)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-resourcemanager/target/hadoop-yarn-server-resourcemanager-3.4.0-SNAPSHOT-tests.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-server-resourcemanager[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------< [0;36morg.apache.hadoop:hadoop-yarn-server-nodemanager[0;1m >----------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN NodeManager 3.4.0-SNAPSHOT           [23/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Compiling 3 proto file(s) to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/target/generated-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 3 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 387 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 559 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 26 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Compiling 390 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/main/java/org/apache/hadoop/yarn/server/nodemanager/LinuxContainerExecutor.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/main/java/org/apache/hadoop/yarn/server/nodemanager/LinuxContainerExecutor.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/main/java/org/apache/hadoop/yarn/server/nodemanager/containermanager/linux/resources/CGroupElasticMemoryController.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/main/java/org/apache/hadoop/yarn/server/nodemanager/containermanager/linux/resources/CGroupElasticMemoryController.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Skipping mojo execution
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 172 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 12 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] Compiling 172 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/test/java/org/apache/hadoop/yarn/server/nodemanager/TestLinuxContainerExecutor.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/test/java/org/apache/hadoop/yarn/server/nodemanager/TestLinuxContainerExecutor.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/test/java/org/apache/hadoop/yarn/server/nodemanager/containermanager/resourceplugin/deviceframework/TestDeviceMappingManager.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-nodemanager/src/test/java/org/apache/hadoop/yarn/server/nodemanager/containermanager/resourceplugin/deviceframework/TestDeviceMappingManager.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-server-nodemanager[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-------------< [0;36morg.apache.hadoop:hadoop-yarn-server-tests[0;1m >-------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN Server Tests 3.4.0-SNAPSHOT          [24/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Skipping mojo execution
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 13 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-tests/src/main/resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Compiling 1 proto file(s) to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-tests/target/generated-test-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 13 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 3 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Compiling 14 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-tests/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-tests/target/generated-test-sources/java/org/apache/hadoop/yarn/proto/YarnSecurityTestTokenProtos.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-tests/target/generated-test-sources/java/org/apache/hadoop/yarn/proto/YarnSecurityTestTokenProtos.java: Recompile with -Xlint:deprecation for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.5:test-jar[m [1m(default)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-server/hadoop-yarn-server-tests/target/hadoop-yarn-server-tests-3.4.0-SNAPSHOT-tests.jar
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-server-tests[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36morg.apache.hadoop:hadoop-yarn-client[0;1m >----------------[m
+[[1;34mINFO[m] [1mBuilding Apache Hadoop YARN Client 3.4.0-SNAPSHOT                [25/25][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-antrun-plugin:1.7:run[m [1m(create-testdirs)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Executing tasks
+
+main:
+[[1;34mINFO[m] Executed tasks
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:compile[m [1m(src-compile-protoc)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Skipping mojo execution
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.0.0-M1:enforce[m [1m(banned-illegal-imports)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-sources)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-sources)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Skipping
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-guava)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 80 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-remote-resources-plugin:1.5:process[m [1m(default)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 1 resource
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:compile[m [1m(default-compile)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Compiling 39 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/target/classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/main/java/org/apache/hadoop/yarn/client/cli/LogsCLI.java: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/main/java/org/apache/hadoop/yarn/client/cli/LogsCLI.java uses or overrides a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/main/java/org/apache/hadoop/yarn/client/cli/LogsCLI.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/main/java/org/apache/hadoop/yarn/client/cli/NodeAttributesCLI.java: /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/main/java/org/apache/hadoop/yarn/client/cli/NodeAttributesCLI.java uses unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/main/java/org/apache/hadoop/yarn/client/cli/NodeAttributesCLI.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mprotobuf-maven-plugin:0.5.1:test-compile[m [1m(src-test-compile-protoc)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Compiling 1 proto file(s) to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/target/generated-test-sources/java
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-test-sources)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 41 files.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] Copying 6 resources
+[[1;34mINFO[m] Copying 2 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mreplacer:1.5.3:replace[m [1m(replace-generated-test-sources)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Replacement run on 1 file.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.1:testCompile[m [1m(default-testCompile)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] Compiling 42 source files to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/target/test-classes
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/test/java/org/apache/hadoop/yarn/client/api/impl/TestYarnClientImpl.java: Some input files use or override a deprecated API.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/test/java/org/apache/hadoop/yarn/client/api/impl/TestYarnClientImpl.java: Recompile with -Xlint:deprecation for details.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/test/java/org/apache/hadoop/yarn/client/TestNoHaRMFailoverProxyProvider.java: Some input files use unchecked or unsafe operations.
+[[1;33mWARNING[m] /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/src/test/java/org/apache/hadoop/yarn/client/TestNoHaRMFailoverProxyProvider.java: Recompile with -Xlint:unchecked for details.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:3.0.0-M1:test[m [1m(default-test)[m @ [36mhadoop-yarn-client[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m]  T E S T S
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m] Running org.apache.hadoop.yarn.client.cli.[1mTestLogsCLI[m
+[[1;31mERROR[m] [1;31mTests [0;1mrun: [0;1m24[m, [1;31mFailures: [0;1;31m1[m, [1;31mErrors: [0;1;31m7[m, Skipped: 0, Time elapsed: 82.013 s[1;31m <<< FAILURE![m - in org.apache.hadoop.yarn.client.cli.[1mTestLogsCLI[m
+[[1;31mERROR[m] testFetchApplictionLogsHar(org.apache.hadoop.yarn.client.cli.TestLogsCLI)  Time elapsed: 15.015 s  <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 15000 milliseconds
+	at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+	at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+	at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+	at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+	at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+	at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchApplictionLogsHar(TestLogsCLI.java:1679)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+	at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+[[1;31mERROR[m] testFetchRunningApplicationLogs(org.apache.hadoop.yarn.client.cli.TestLogsCLI)  Time elapsed: 5.011 s  <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 5000 milliseconds
+	at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+	at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+	at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+	at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+	at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+	at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService$accessor$B4gByOKI(Unknown Source)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$N0LtEa7o.call(Unknown Source)
+	at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+	at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+	at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+	at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+	at app//org.mockito.Answers.answer(Answers.java:100)
+	at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+	at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+	at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService(Unknown Source)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run$accessor$B4gByOKI(Unknown Source)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$zCAGwSCY.call(Unknown Source)
+	at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+	at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+	at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+	at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+	at app//org.mockito.Answers.answer(Answers.java:100)
+	at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+	at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+	at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run(Unknown Source)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchRunningApplicationLogs(TestLogsCLI.java:1004)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+	at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+[[1;31mERROR[m] testGetRunningContainerLogs(org.apache.hadoop.yarn.client.cli.TestLogsCLI)  Time elapsed: 5.009 s  <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 5000 milliseconds
+	at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+	at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+	at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+	at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+	at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+	at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService$accessor$B4gByOKI(Unknown Source)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$N0LtEa7o.call(Unknown Source)
+	at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+	at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+	at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+	at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+	at app//org.mockito.Answers.answer(Answers.java:100)
+	at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+	at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+	at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService(Unknown Source)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run$accessor$B4gByOKI(Unknown Source)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$zCAGwSCY.call(Unknown Source)
+	at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+	at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+	at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+	at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+	at app//org.mockito.Answers.answer(Answers.java:100)
+	at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+	at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+	at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+	at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run(Unknown Source)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testGetRunningContainerLogs(TestLogsCLI.java:935)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+	at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+[[1;31mERROR[m] testFailResultCodes(org.apache.hadoop.yarn.client.cli.TestLogsCLI)  Time elapsed: 5.011 s  <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 5000 milliseconds
+	at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+	at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+	at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+	at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+	at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+	at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFailResultCodes(TestLogsCLI.java:146)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+	at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+[[1;31mERROR[m] testSaveContainerLogsLocally(org.apache.hadoop.yarn.client.cli.TestLogsCLI)  Time elapsed: 15.01 s  <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 15000 milliseconds
+	at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+	at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+	at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+	at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+	at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+	at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testSaveContainerLogsLocally(TestLogsCLI.java:1442)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+	at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+[[1;31mERROR[m] testCheckRetryCount(org.apache.hadoop.yarn.client.cli.TestLogsCLI)  Time elapsed: 5.049 s  <<< FAILURE!
+java.lang.AssertionError: Exception expected! NodeManager should be off to run this test. 
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.apache.hadoop.yarn.client.cli.TestLogsCLI.testCheckRetryCount(TestLogsCLI.java:847)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:273)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:238)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+
+[[1;31mERROR[m] testFetchFinishedApplictionLogs(org.apache.hadoop.yarn.client.cli.TestLogsCLI)  Time elapsed: 15.008 s  <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 15000 milliseconds
+	at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+	at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+	at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+	at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+	at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+	at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchFinishedApplictionLogs(TestLogsCLI.java:468)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+	at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+[[1;31mERROR[m] testFetchApplictionLogsAsAnotherUser(org.apache.hadoop.yarn.client.cli.TestLogsCLI)  Time elapsed: 15.007 s  <<< ERROR!
+org.junit.runners.model.TestTimedOutException: test timed out after 15000 milliseconds
+	at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+	at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+	at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+	at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+	at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+	at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+	at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+	at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchApplictionLogsAsAnotherUser(TestLogsCLI.java:1111)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+	at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+	at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+	at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Results:
+[[1;34mINFO[m] 
+[[1;31mERROR[m] [1;31mFailures: [m
+[[1;31mERROR[m] [1;31m  TestLogsCLI.testCheckRetryCount:847 Exception expected! NodeManager should be off to run this test. [m
+[[1;31mERROR[m] [1;31mErrors: [m
+[[1;31mERROR[m] [1;31m  TestLogsCLI.testFailResultCodes:146 » TestTimedOut test timed out after 5000 m...[m
+[[1;31mERROR[m] [1;31m  TestLogsCLI.testFetchApplictionLogsAsAnotherUser:1111 » TestTimedOut test time...[m
+[[1;31mERROR[m] [1;31m  TestLogsCLI.testFetchApplictionLogsHar:1679 » TestTimedOut test timed out afte...[m
+[[1;31mERROR[m] [1;31m  TestLogsCLI.testFetchFinishedApplictionLogs:468 » TestTimedOut test timed out ...[m
+[[1;31mERROR[m] [1;31m  TestLogsCLI.testFetchRunningApplicationLogs:1004 » TestTimedOut test timed out...[m
+[[1;31mERROR[m] [1;31m  TestLogsCLI.testGetRunningContainerLogs:935 » TestTimedOut test timed out afte...[m
+[[1;31mERROR[m] [1;31m  TestLogsCLI.testSaveContainerLogsLocally:1442 » TestTimedOut test timed out af...[m
+[[1;34mINFO[m] 
+[[1;31mERROR[m] [1;31mTests run: 24, Failures: 1, Errors: 7, Skipped: 0[m
+[[1;34mINFO[m] 
+[[1;31mERROR[m] There are test failures.
+
+Please refer to /home/rizky/hadoop/hadoop-yarn-project/hadoop-yarn/hadoop-yarn-client/target/surefire-reports for the individual test results.
+Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Summary for Apache Hadoop Main 3.4.0-SNAPSHOT:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Apache Hadoop Main ................................. [1;32mSUCCESS[m [  0.173 s]
+[[1;34mINFO[m] Apache Hadoop Build Tools .......................... [1;32mSUCCESS[m [  0.987 s]
+[[1;34mINFO[m] Apache Hadoop Project POM .......................... [1;32mSUCCESS[m [  0.472 s]
+[[1;34mINFO[m] Apache Hadoop Annotations .......................... [1;32mSUCCESS[m [  0.750 s]
+[[1;34mINFO[m] Apache Hadoop Project Dist POM ..................... [1;32mSUCCESS[m [  0.054 s]
+[[1;34mINFO[m] Apache Hadoop Maven Plugins ........................ [1;32mSUCCESS[m [  1.656 s]
+[[1;34mINFO[m] Apache Hadoop MiniKDC .............................. [1;32mSUCCESS[m [  0.287 s]
+[[1;34mINFO[m] Apache Hadoop Auth ................................. [1;32mSUCCESS[m [  1.639 s]
+[[1;34mINFO[m] Apache Hadoop Common ............................... [1;32mSUCCESS[m [ 16.101 s]
+[[1;34mINFO[m] Apache Hadoop KMS .................................. [1;32mSUCCESS[m [  1.000 s]
+[[1;34mINFO[m] Apache Hadoop Registry ............................. [1;32mSUCCESS[m [  1.120 s]
+[[1;34mINFO[m] Apache Hadoop HDFS Client .......................... [1;32mSUCCESS[m [ 10.983 s]
+[[1;34mINFO[m] Apache Hadoop HDFS ................................. [1;32mSUCCESS[m [ 16.538 s]
+[[1;34mINFO[m] Apache Hadoop YARN ................................. [1;32mSUCCESS[m [  0.020 s]
+[[1;34mINFO[m] Apache Hadoop YARN API ............................. [1;32mSUCCESS[m [  6.251 s]
+[[1;34mINFO[m] Apache Hadoop YARN Common .......................... [1;32mSUCCESS[m [  4.953 s]
+[[1;34mINFO[m] Apache Hadoop YARN Server .......................... [1;32mSUCCESS[m [  0.033 s]
+[[1;34mINFO[m] Apache Hadoop YARN Server Common ................... [1;32mSUCCESS[m [  3.699 s]
+[[1;34mINFO[m] Apache Hadoop YARN ApplicationHistoryService ....... [1;32mSUCCESS[m [  1.668 s]
+[[1;34mINFO[m] Apache Hadoop YARN Timeline Service ................ [1;32mSUCCESS[m [  1.059 s]
+[[1;34mINFO[m] Apache Hadoop YARN Web Proxy ....................... [1;32mSUCCESS[m [  0.681 s]
+[[1;34mINFO[m] Apache Hadoop YARN ResourceManager ................. [1;32mSUCCESS[m [  8.396 s]
+[[1;34mINFO[m] Apache Hadoop YARN NodeManager ..................... [1;32mSUCCESS[m [  4.271 s]
+[[1;34mINFO[m] Apache Hadoop YARN Server Tests .................... [1;32mSUCCESS[m [  0.975 s]
+[[1;34mINFO[m] Apache Hadoop YARN Client .......................... [1;32mSUCCESS[m [01:24 min]
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  02:49 min
+[[1;34mINFO[m] Finished at: 2022-11-18T08:52:58+07:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m

@@ -1,0 +1,1670 @@
+2022-11-18 08:51:36,039 WARN  NativeCodeLoader - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2022-11-18 08:51:36,607 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:51:36,753 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:51:36,754 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:51:36,756 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:51:36,756 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:51:36,756 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:51:36,756 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:51:36,756 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:51:36,756 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:51:36,756 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:51:36,757 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:51:36,812 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:51:36,862 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:51:36,866 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:51:36,866 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:51:36,867 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:51:36,867 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:51:36,867 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:51:36,867 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:51:36,867 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:51:36,867 INFO  LogsCLI - [wasabi] LogsCLI 487
+2022-11-18 08:51:36,870 INFO  WebAppUtils - [wasabi] WebAppUtils 105
+2022-11-18 08:51:36,870 INFO  WebAppUtils - [wasabi] WebAppUtils 107
+2022-11-18 08:51:51,860 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:51:51,903 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:51:51,904 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:51:51,904 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:51:51,904 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:51:51,904 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:51:51,904 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:51:51,904 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:51:51,904 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:51:51,904 INFO  LogsCLI - [wasabi] LogsCLI 487
+2022-11-18 08:51:51,915 INFO  WebAppUtils - [wasabi] WebAppUtils 105
+2022-11-18 08:51:51,915 INFO  WebAppUtils - [wasabi] WebAppUtils 107
+====> TEST TIMED OUT. PRINTING THREAD DUMP. <====
+
+Timestamp: 2022-11-18 08:51:51,777
+
+"process reaper" daemon prio=10 tid=20 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Signal Dispatcher" daemon prio=9 tid=4 runnable
+java.lang.Thread.State: RUNNABLE
+"process reaper" daemon prio=10 tid=14 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Reference Handler" daemon prio=10 tid=2 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+        at java.base@11.0.17/java.lang.ref.Reference.processPendingReferences(Reference.java:241)
+        at java.base@11.0.17/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:213)
+"surefire-forkedjvm-ping-30s" daemon prio=5 tid=13 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2123)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner" daemon prio=5 tid=18 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at app//org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner.run(FileSystem.java:4012)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Finalizer" daemon prio=8 tid=3 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at java.base@11.0.17/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:170)
+"Time-limited test" daemon prio=5 tid=24 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchApplictionLogsHar(TestLogsCLI.java:1679)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"main"  prio=5 tid=1 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.Thread.dumpThreads(Native Method)
+        at java.base@11.0.17/java.lang.Thread.getAllStackTraces(Thread.java:1653)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDump(TimedOutTestsListener.java:87)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDiagnosticString(TimedOutTestsListener.java:73)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.testFailure(TimedOutTestsListener.java:62)
+        at app//org.junit.runner.notification.SynchronizedRunListener.testFailure(SynchronizedRunListener.java:94)
+        at app//org.junit.runner.notification.RunNotifier$6.notifyListener(RunNotifier.java:177)
+        at app//org.junit.runner.notification.RunNotifier$SafeNotifier.run(RunNotifier.java:72)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailures(RunNotifier.java:173)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailure(RunNotifier.java:167)
+        at app//org.apache.maven.surefire.common.junit4.Notifier.fireTestFailure(Notifier.java:114)
+        at app//org.junit.internal.runners.model.EachTestNotifier.addFailure(EachTestNotifier.java:23)
+        at app//org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:370)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+        at app//org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+        at app//org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+        at app//org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+        at app//org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+        at app//org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+        at app//org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+        at app//org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:273)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:238)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+"Common-Cleaner" daemon prio=8 tid=11 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/jdk.internal.ref.CleanerImpl.run(CleanerImpl.java:148)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+        at java.base@11.0.17/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:161)
+"surefire-forkedjvm-command-thread" daemon prio=5 tid=12 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.io.FileInputStream.readBytes(Native Method)
+        at java.base@11.0.17/java.io.FileInputStream.read(FileInputStream.java:279)
+        at java.base@11.0.17/java.io.BufferedInputStream.fill(BufferedInputStream.java:252)
+        at java.base@11.0.17/java.io.BufferedInputStream.read(BufferedInputStream.java:271)
+        at java.base@11.0.17/java.io.DataInputStream.readInt(DataInputStream.java:392)
+        at app//org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+        at app//org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:390)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+====> TEST TIMED OUT. PRINTING THREAD DUMP. <====
+
+Timestamp: 2022-11-18 08:51:56,790
+
+"process reaper" daemon prio=10 tid=20 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Signal Dispatcher" daemon prio=9 tid=4 runnable
+java.lang.Thread.State: RUNNABLE
+"process reaper" daemon prio=10 tid=14 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Reference Handler" daemon prio=10 tid=2 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+        at java.base@11.0.17/java.lang.ref.Reference.processPendingReferences(Reference.java:241)
+        at java.base@11.0.17/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:213)
+"Time-limited test" daemon prio=5 tid=39 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$N0LtEa7o.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHand2022-11-18 08:51:56,844 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:51:56,889 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:51:56,889 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:51:56,889 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:51:56,889 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:51:56,889 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:51:56,889 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:51:56,889 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:51:56,889 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:51:56,890 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:51:56,890 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:51:56,890 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:51:56,890 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:51:56,890 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:51:56,890 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:51:56,890 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:51:56,890 INFO  LogsCLI - [wasabi] LogsCLI 487
+2022-11-18 08:51:56,905 INFO  WebAppUtils - [wasabi] WebAppUtils 105
+2022-11-18 08:51:56,905 INFO  WebAppUtils - [wasabi] WebAppUtils 107
+ler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$zCAGwSCY.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchRunningApplicationLogs(TestLogsCLI.java:1004)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"surefire-forkedjvm-ping-30s" daemon prio=5 tid=13 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2123)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner" daemon prio=5 tid=18 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at app//org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner.run(FileSystem.java:4012)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Finalizer" daemon prio=8 tid=3 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at java.base@11.0.17/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:170)
+"Time-limited test" daemon prio=5 tid=24 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchApplictionLogsHar(TestLogsCLI.java:1679)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"main"  prio=5 tid=1 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.Thread.dumpThreads(Native Method)
+        at java.base@11.0.17/java.lang.Thread.getAllStackTraces(Thread.java:1653)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDump(TimedOutTestsListener.java:87)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDiagnosticString(TimedOutTestsListener.java:73)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.testFailure(TimedOutTestsListener.java:62)
+        at app//org.junit.runner.notification.SynchronizedRunListener.testFailure(SynchronizedRunListener.java:94)
+        at app//org.junit.runner.notification.RunNotifier$6.notifyListener(RunNotifier.java:177)
+        at app//org.junit.runner.notification.RunNotifier$SafeNotifier.run(RunNotifier.java:72)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailures(RunNotifier.java:173)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailure(RunNotifier.java:167)
+        at app//org.apache.maven.surefire.common.junit4.Notifier.fireTestFailure(Notifier.java:114)
+        at app//org.junit.internal.runners.model.EachTestNotifier.addFailure(EachTestNotifier.java:23)
+        at app//org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:370)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+        at app//org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+        at app//org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+        at app//org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+        at app//org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+        at app//org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+        at app//org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+        at app//org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:273)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:238)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+"Common-Cleaner" daemon prio=8 tid=11 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/jdk.internal.ref.CleanerImpl.run(CleanerImpl.java:148)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+        at java.base@11.0.17/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:161)
+"surefire-forkedjvm-command-thread" daemon prio=5 tid=12 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.io.FileInputStream.readBytes(Native Method)
+        at java.base@11.0.17/java.io.FileInputStream.read(FileInputStream.java:279)
+        at java.base@11.0.17/java.io.BufferedInputStream.fill(BufferedInputStream.java:252)
+        at java.base@11.0.17/java.io.BufferedInputStream.read(BufferedInputStream.java:271)
+        at java.base@11.0.17/java.io.DataInputStream.readInt(DataInputStream.java:392)
+        at app//org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+        at app//org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:390)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+====> TEST TIMED OUT. PRINTING THREAD DUMP. <====
+
+Timestamp: 2022-11-18 08:52:01,802
+
+"Signal Dispatcher" daemon prio=9 tid=4 runnable
+java.lang.Thread.State: RUNNABLE
+"surefire-forkedjvm-ping-30s" daemon prio=5 tid=13 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2123)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Finalizer" daemon prio=8 tid=3 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at java.base@11.0.17/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:170)
+"main"  prio=5 tid=1 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.Thread.dumpThreads(Native Method)
+        at java.base@11.0.17/java.lang.Thread.getAllStackTraces(Thread.java:1653)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDump(TimedOutTestsListener.java:87)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDiagnosticString(TimedOutTestsListener.java:73)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.testFailure(TimedOutTestsListener.java:62)
+        at app//org.junit.runner.notification.SynchronizedRunListener.testFailure(SynchronizedRunListener.java:94)
+        at app//org.junit.runner.notification.RunNotifier$6.notifyListener(RunNotifier.java:177)
+        at app//org.junit.runner.notification.RunNotifier$SafeNotifier.run(RunNotifier.java:72)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailures(RunNotifier.java:173)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailure(RunNotifier.java:167)
+        at app//org.apache.maven.surefire.common.junit4.Notifier.fireTestFailure(Notifier.java:114)
+        at app//org.junit.internal.runners.model.EachTestNotifier.addFailure(EachTestNotifier.java:23)
+        at app//org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:370)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+        at app//org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+        at app//org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+        at app//org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+        at app//org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+        at app//org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+        at app//org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+        at app//org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:273)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:238)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+"Common-Cleaner" daemon prio=8 tid=11 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/jdk.internal.ref.CleanerImpl.run(CleanerImpl.java:148)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+        at java.base@11.0.17/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:161)
+"process reaper" daemon prio=10 tid=20 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"process reaper" daemon prio=10 tid=14 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Reference Handler" daemon prio=10 tid=2 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+        at java.base@11.0.17/java.lang.ref.Reference.processPendingReferences(Reference.java:241)
+        at java.base@11.0.17/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:213)
+"Time-limited test" daemon prio=5 tid=39 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$N0LtEa7o.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$zCAGwSCY.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(Invoc2022-11-18 08:52:01,811 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:01,836 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:01,836 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:01,836 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:01,836 INFO  LogsCLI - [wasabi] LogsCLI 268
+2022-11-18 08:52:01,838 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:01,844 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:01,872 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:01,872 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:01,872 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:01,872 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:01,872 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:01,872 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:01,873 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:01,873 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:01,873 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:01,873 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:01,897 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 226
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 238
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:01,898 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:01,908 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:52:01,936 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:52:01,937 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:52:01,937 INFO  LogsCLI - [wasabi] LogsCLI 487
+2022-11-18 08:52:01,937 INFO  WebAppUtils - [wasabi] WebAppUtils 105
+2022-11-18 08:52:01,937 INFO  WebAppUtils - [wasabi] WebAppUtils 107
+2022-11-18 08:52:06,780 INFO  WebAppUtils - [wasabi] WebAppUtils 110
+2022-11-18 08:52:06,780 INFO  LogsCLI - [wasabi] LogsCLI 737
+2022-11-18 08:52:06,780 INFO  LogsCLI - [wasabi] LogsCLI 151
+ationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchRunningApplicationLogs(TestLogsCLI.java:1004)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner" daemon prio=5 tid=18 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at app//org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner.run(FileSystem.java:4012)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Time-limited test" daemon prio=5 tid=40 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$N0LtEa7o.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$zCAGwSCY.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testGetRunningContainerLogs(TestLogsCLI.java:935)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Time-limited test" daemon prio=5 tid=24 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchApplictionLogsHar(TestLogsCLI.java:1679)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"surefire-forkedjvm-command-thread" daemon prio=5 tid=12 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.io.FileInputStream.readBytes(Native Method)
+        at java.base@11.0.17/java.io.FileInputStream.read(FileInputStream.java:279)
+        at java.base@11.0.17/java.io.BufferedInputStream.fill(BufferedInputStream.java:252)
+        at java.base@11.0.17/java.io.BufferedInputStream.read(BufferedInputStream.java:271)
+        at java.base@11.0.17/java.io.DataInputStream.readInt(DataInputStream.java:392)
+        at app//org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+        at app//org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:390)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+====> TEST TIMED OUT. PRINTING THREAD DUMP. <====
+
+Timestamp: 2022-11-18 08:52:06,909
+
+"Signal Dispatcher" daemon prio=9 tid=4 runnable
+java.lang.Thread.State: RUNNABLE
+"surefire-forkedjvm-ping-30s" daemon prio=5 tid=13 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2123)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Finalizer" daemon prio=8 tid=3 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at java.base@11.0.17/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:170)
+"main"  prio=5 tid=1 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.Thread.dumpThreads(Native Method)
+        at java.base@11.0.17/java.lang.Thread.getAllStackTraces(Thread.java:1653)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDump(TimedOutTestsListener.java:87)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDiagnosticString(TimedOutTestsListener.java:73)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.testFailure(TimedOutTestsListener.java:62)
+        at app//org.junit.runner.notification.SynchronizedRunListener.testFailure(SynchronizedRunListener.java:94)
+        at app//org.junit.runner.notification.RunNotifier$6.notifyListener(RunNotifier.java:177)
+        at app//org.junit.runner.notification.RunNotifier$SafeNotifier.run(RunNotifier.java:72)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailures(RunNotifier.java:173)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailure(RunNotifier.java:167)
+        at app//org.apache.maven.surefire.common.junit4.Notifier.fireTestFailure(Notifier.java:114)
+        at app//org.junit.internal.runners.model.EachTestNotifier.addFailure(EachTestNotifier.java:23)
+        at app//org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:370)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+        at app//org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+        at app//org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+        at app//org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+        at app//org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+        at app//org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+        at app//org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+        at app//org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:273)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:238)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+"Common-Cleaner" daemon prio=8 tid=11 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/jdk.internal.ref.CleanerImpl.run(CleanerImpl.java:148)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+        at java.base@11.0.17/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:161)
+"Time-limited test" daemon prio=5 tid=46 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFailResultCodes(TestLogsCLI.java:146)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"process reaper" daemon prio=10 tid=20 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"process reaper" daemon prio=10 tid=14 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Reference Handler" daemon prio=10 tid=2 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+        at java.base@11.0.17/java.lang.ref.Reference.processPendingReferences(Reference.java:241)
+        at java.base@11.0.17/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:213)
+"Time-limited test" daemon prio=5 tid=39 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$N0LtEa7o.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+     2022-11-18 08:52:06,918 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:06,948 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:06,948 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:06,948 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:06,948 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:06,948 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:06,948 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:06,948 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:06,948 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:06,948 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:06,980 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:06,991 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:07,018 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 212
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:52:07,019 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:52:07,020 INFO  LogsCLI - [wasabi] LogsCLI 737
+2022-11-18 08:52:07,020 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:07,063 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:07,091 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:07,091 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:07,091 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:07,091 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:07,091 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:07,091 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:07,092 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:07,092 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:07,092 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:07,092 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:07,092 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:07,092 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:07,092 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:07,095 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:07,193 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:52:07,214 INFO  LogsCLI - [wasabi] LogsCLI 487
+2022-11-18 08:52:07,215 INFO  WebAppUtils - [wasabi] WebAppUtils 105
+2022-11-18 08:52:07,215 INFO  WebAppUtils - [wasabi] WebAppUtils 107
+2022-11-18 08:52:21,799 INFO  WebAppUtils - [wasabi] WebAppUtils 110
+2022-11-18 08:52:21,799 INFO  LogsCLI - [wasabi] LogsCLI 737
+2022-11-18 08:52:21,799 INFO  LogsCLI - [wasabi] LogsCLI 151
+   at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$zCAGwSCY.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchRunningApplicationLogs(TestLogsCLI.java:1004)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner" daemon prio=5 tid=18 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at app//org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner.run(FileSystem.java:4012)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Time-limited test" daemon prio=5 tid=40 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$N0LtEa7o.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$zCAGwSCY.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testGetRunningContainerLogs(TestLogsCLI.java:935)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"surefire-forkedjvm-command-thread" daemon prio=5 tid=12 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.io.FileInputStream.readBytes(Native Method)
+        at java.base@11.0.17/java.io.FileInputStream.read(FileInputStream.java:279)
+        at java.base@11.0.17/java.io.BufferedInputStream.fill(BufferedInputStream.java:252)
+        at java.base@11.0.17/java.io.BufferedInputStream.read(BufferedInputStream.java:271)
+        at java.base@11.0.17/java.io.DataInputStream.readInt(DataInputStream.java:392)
+        at app//org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+        at app//org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:390)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+====> TEST TIMED OUT. PRINTING THREAD DUMP. <====
+
+Timestamp: 2022-11-18 08:52:22,174
+
+"Signal Dispatcher" daemon prio=9 tid=4 runnable
+java.lang.Thread.State: RUNNABLE
+"surefire-forkedjvm-ping-30s" daemon prio=5 tid=13 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2123)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Finalizer" daemon prio=8 tid=3 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at java.base@11.0.17/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:170)
+"main"  prio=5 tid=1 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.Thread.dumpThreads(Native Method)
+        at java.base@11.0.17/java.lang.Thread.getAllStackTraces(Thread.java:1653)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDump(TimedOutTestsListener.java:87)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDiagnosticString(TimedOutTestsListener.java:73)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.testFailure(TimedOutTestsListener.java:62)
+        at app//org.junit.runner.notification.SynchronizedRunListener.testFailure(SynchronizedRunListener.java:94)
+        at app//org.junit.runner.notification.RunNotifier$6.notifyListener(RunNotifier.java:177)
+        at app//org.junit.runner.notification.RunNotifier$SafeNotifier.run(RunNotifier.java:72)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailures(RunNotifier.java:173)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailure(RunNotifier.java:167)
+        at app//org.apache.maven.surefire.common.junit4.Notifier.fireTestFailure(Notifier.java:114)
+        at app//org.junit.internal.runners.model.EachTestNotifier.addFailure(EachTestNotifier.java:23)
+        at app//org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:370)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+        at app//org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+        at app//org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+        at app//org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+        at app//org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+        at app//org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+        at app//org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+        at app//org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:273)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:238)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+"Common-Cleaner" daemon prio=8 tid=11 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/jdk.internal.ref.CleanerImpl.run(CleanerImpl.java:148)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+        at java.base@11.0.17/jdk.internal.misc.InnocuousThread.run(InnocuousThread.java:161)
+"Time-limited test" daemon pr2022-11-18 08:52:22,184 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 212
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:22,217 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:22,218 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:22,218 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:22,218 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:52:22,218 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:52:22,218 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:52:22,218 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:52:22,218 INFO  LogsCLI - [wasabi] LogsCLI 737
+2022-11-18 08:52:22,219 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:22,227 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 248
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:52:22,255 INFO  LogsCLI - [wasabi] LogsCLI 487
+2022-11-18 08:52:22,264 INFO  WebAppUtils - [wasabi] WebAppUtils 105
+2022-11-18 08:52:22,264 INFO  WebAppUtils - [wasabi] WebAppUtils 107
+2022-11-18 08:52:26,809 INFO  WebAppUtils - [wasabi] WebAppUtils 110
+2022-11-18 08:52:26,809 INFO  LogsCLI - [wasabi] LogsCLI 737
+2022-11-18 08:52:26,809 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,267 INFO  WebAppUtils - [wasabi] WebAppUtils 110
+2022-11-18 08:52:27,267 INFO  LogsCLI - [wasabi] LogsCLI 737
+2022-11-18 08:52:27,267 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,297 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:27,323 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:27,324 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:27,324 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:27,334 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,334 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,362 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,362 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,362 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,362 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,362 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:27,362 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:27,362 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:27,363 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:27,363 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:27,363 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:27,363 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:27,363 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:27,365 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,365 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,386 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,386 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,386 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,387 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,387 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:27,387 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:27,387 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:27,387 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:27,387 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:27,387 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:27,387 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:27,387 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:27,390 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,390 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,422 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,422 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,422 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,422 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,422 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:27,422 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:27,422 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:27,422 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,423 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:27,446 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:52:27,449 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,449 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:27,471 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:27,472 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:27,472 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:27,472 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:27,472 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:52:27,474 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,482 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,503 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,503 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,503 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,503 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,503 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:27,503 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:27,503 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,503 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,528 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,528 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,528 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,528 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,528 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:27,528 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:27,528 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:27,529 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,529 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,552 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,552 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,552 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,552 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,552 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:27,552 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:27,601 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:27,619 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:27,620 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:27,620 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:27,620 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:27,620 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:52:27,620 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:52:27,620 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:52:27,620 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:52:27,620 INFO  LogsCLI - [wasabi] LogsCLI 487
+2022-11-18 08:52:27,620 INFO  WebAppUtils - [wasabi] WebAppUtils 105
+2022-11-18 08:52:27,620 INFO  WebAppUtils - [wasabi] WebAppUtils 107
+2022-11-18 08:52:31,919 INFO  WebAppUtils - [wasabi] WebAppUtils 110
+2022-11-18 08:52:31,919 INFO  LogsCLI - [wasabi] LogsCLI 737
+2022-11-18 08:52:31,919 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:37,180 INFO  WebAppUtils - [wasabi] WebAppUtils 110
+2022-11-18 08:52:37,180 INFO  LogsCLI - [wasabi] LogsCLI 737
+2022-11-18 08:52:37,180 INFO  LogsCLI - [wasabi] LogsCLI 151
+io=5 tid=46 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFailResultCodes(TestLogsCLI.java:146)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"process reaper" daemon prio=10 tid=20 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"process reaper" daemon prio=10 tid=14 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Reference Handler" daemon prio=10 tid=2 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+        at java.base@11.0.17/java.lang.ref.Reference.processPendingReferences(Reference.java:241)
+        at java.base@11.0.17/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:213)
+"Time-limited test" daemon prio=5 tid=65 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testSaveContainerLogsLocally(TestLogsCLI.java:1442)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner" daemon prio=5 tid=18 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at app//org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner.run(FileSystem.java:4012)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Time-limited test" daemon prio=5 tid=40 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$N0LtEa7o.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.getAMContainerInfoForRMWebService(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run$accessor$B4gByOKI(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623$auxiliary$zCAGwSCY.call(Unknown Source)
+        at app//org.mockito.internal.invocation.RealMethod$FromCallable$1.call(RealMethod.java:40)
+        at app//org.mockito.internal.invocation.RealMethod$FromBehavior.invoke(RealMethod.java:62)
+        at app//org.mockito.internal.invocation.InterceptedInvocation.callRealMethod(InterceptedInvocation.java:152)
+        at app//org.mockito.internal.stubbing.answers.CallsRealMethods.answer(CallsRealMethods.java:43)
+        at app//org.mockito.Answers.answer(Answers.java:100)
+        at app//org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+        at app//org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+        at app//org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:35)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:61)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:49)
+        at app//org.mockito.internal.creation.bytebuddy.MockMethodInterceptor$DispatcherDefaultingToRealMethod.interceptSuperCallable(MockMethodInterceptor.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI$LogsCLIForTest$MockitoMock$1673503623.run(Unknown Source)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testGetRunningContainerLogs(TestLogsCLI.java:935)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"surefire-forkedjvm-command-thread" daemon prio=5 tid=12 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.io.FileInputStream.readBytes(Native Method)
+        at java.base@11.0.17/java.io.FileInputStream.read(FileInputStream.java:279)
+        at java.base@11.0.17/java.io.BufferedInputStream.fill(BufferedInputStream.java:252)
+        at java.base@11.0.17/java.io.BufferedInputStream.read(BufferedInputStream.java:271)
+        at java.base@11.0.17/java.io.DataInputStream.readInt(DataInputStream.java:392)
+        at app//org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+        at app//org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:390)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+
+====> TEST TIMED OUT. PRINTING THREAD DUMP. <====
+
+Timestamp: 2022-11-18 08:52:42,561
+
+"Signal Dispatcher" daemon prio=9 tid=4 runnable
+java.lang.Thread.State: RUNNABLE
+"process reaper" daemon prio=10 tid=14 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.awaitFulfill(SynchronousQueue.java:462)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue$TransferStack.transfer(SynchronousQueue.java:361)
+        at java.base@11.0.17/java.util.concurrent.SynchronousQueue.poll(SynchronousQueue.java:937)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1053)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.172022-11-18 08:52:42,568 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:42,586 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:42,587 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:42,598 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:42,624 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:42,624 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:42,624 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:42,624 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:42,624 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:42,631 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:42,653 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:42,653 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:42,653 INFO  LogsCLI - [wasabi] LogsCLI 166
+2022-11-18 08:52:42,653 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:42,670 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 335
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 342
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 358
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 388
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 399
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 418
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 423
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 428
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 1141
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 721
+2022-11-18 08:52:42,690 INFO  LogsCLI - [wasabi] LogsCLI 487
+2022-11-18 08:52:42,690 INFO  WebAppUtils - [wasabi] WebAppUtils 105
+2022-11-18 08:52:42,690 INFO  WebAppUtils - [wasabi] WebAppUtils 107
+2022-11-18 08:52:57,567 INFO  WebAppUtils - [wasabi] WebAppUtils 110
+2022-11-18 08:52:57,567 INFO  LogsCLI - [wasabi] LogsCLI 737
+2022-11-18 08:52:57,567 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:57,567 INFO  TestLogsCLI - Exception caught by ClientConnectionRetry, will try 30 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 4 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0000/appattempts
+Exception caught by ClientConnectionRetry, will try 9 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 29 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 3 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0000/appattempts
+Exception caught by ClientConnectionRetry, will try 8 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 28 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 2 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0000/appattempts
+Exception caught by ClientConnectionRetry, will try 7 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 27 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 1 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0000/appattempts
+Exception caught by ClientConnectionRetry, will try 6 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 26 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 5 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 25 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 4 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 24 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 3 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 23 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 2 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 22 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 1 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 21 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 20 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 19 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 18 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 17 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Exception caught by ClientConnectionRetry, will try 16 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+Client retry sleep interrupted! 
+Exception caught by ClientConnectionRetry, will try 15 more time(s).
+Message: java.net.ConnectException: Error while authenticating with endpoint: http://0.0.0.0:8088/ws/v1/cluster/apps/application_0_0001/appattempts
+
+/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Time-limited test" daemon prio=5 tid=90 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/java.lang.Thread.sleep(Native Method)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientConnectionRetry.retryOn(LogsCLI.java:1607)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$ClientJerseyRetryFilter.handle(LogsCLI.java:1651)
+        at app//com.sun.jersey.api.client.Client.handle(Client.java:652)
+        at app//com.sun.jersey.api.client.WebResource.handle(WebResource.java:682)
+        at app//com.sun.jersey.api.client.WebResource.access$200(WebResource.java:74)
+        at app//com.sun.jersey.api.client.WebResource$Builder.get(WebResource.java:509)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoFromRM(LogsCLI.java:503)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI$$Lambda$81/0x000000084023f040.apply(Unknown Source)
+        at app//org.apache.hadoop.yarn.webapp.util.WebAppUtils.execOnActiveRM(WebAppUtils.java:108)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.getAMContainerInfoForRMWebService(LogsCLI.java:489)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.printAMContainerLogs(LogsCLI.java:724)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.fetchAMContainerLogs(LogsCLI.java:1146)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.runCommand(LogsCLI.java:432)
+        at app//org.apache.hadoop.yarn.client.cli.LogsCLI.run(LogsCLI.java:149)
+        at app//org.apache.hadoop.yarn.client.cli.TestLogsCLI.testFetchFinishedApplictionLogs(TestLogsCLI.java:468)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at java.base@11.0.17/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at java.base@11.0.17/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.base@11.0.17/java.lang.reflect.Method.invoke(Method.java:566)
+        at app//org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+        at app//org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+        at app//org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+        at app//org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:288)
+        at app//org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:282)
+        at java.base@11.0.17/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Reference Handler" daemon prio=10 tid=2 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+        at java.base@11.0.17/java.lang.ref.Reference.processPendingReferences(Reference.java:241)
+        at java.base@11.0.17/java.lang.ref.Reference$ReferenceHandler.run(Reference.java:213)
+"surefire-forkedjvm-ping-30s" daemon prio=5 tid=13 timed_waiting
+java.lang.Thread.State: TIMED_WAITING
+        at java.base@11.0.17/jdk.internal.misc.Unsafe.park(Native Method)
+        at java.base@11.0.17/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:234)
+        at java.base@11.0.17/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2123)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+        at java.base@11.0.17/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1054)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1114)
+        at java.base@11.0.17/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner" daemon prio=5 tid=18 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at app//org.apache.hadoop.fs.FileSystem$Statistics$StatisticsDataReferenceCleaner.run(FileSystem.java:4012)
+        at java.base@11.0.17/java.lang.Thread.run(Thread.java:829)
+"Finalizer" daemon prio=8 tid=3 in Object.wait()
+java.lang.Thread.State: WAITING (on object monitor)
+        at java.base@11.0.17/java.lang.Object.wait(Native Method)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:155)
+        at java.base@11.0.17/java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:176)
+        at java.base@11.0.17/java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:170)
+"main"  prio=5 tid=1 runnable
+java.lang.Thread.State: RUNNABLE
+        at java.base@11.0.17/java.lang.Thread.dumpThreads(Native Method)
+        at java.base@11.0.17/java.lang.Thread.getAllStackTraces(Thread.java:1653)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDump(TimedOutTestsListener.java:87)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.buildThreadDiagnosticString(TimedOutTestsListener.java:73)
+        at app//org.apache.hadoop.test.TimedOutTestsListener.testFailure(TimedOutTestsListener.java:62)
+        at app//org.junit.runner.notification.SynchronizedRunListener.testFailure(SynchronizedRunListener.java:94)
+        at app//org.junit.runner.notification.RunNotifier$6.notifyListener(RunNotifier.java:177)
+        at app//org.junit.runner.notification.RunNotifier$SafeNotifier.run(RunNotifier.java:72)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailures(RunNotifier.java:173)
+        at app//org.junit.runner.notification.RunNotifier.fireTestFailure(RunNotifier.java:167)
+        at app//org.apache.maven.surefire.common.junit4.Notifier.fireTestFailure(Notifier.java:114)
+        at app//org.junit.internal.runners.model.EachTestNotifier.addFailure(EachTestNotifier.java:23)
+        at app//org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:370)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+        at app//org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+        at app//org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+        at app//org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+        at app//org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+        at app//org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+        at app//org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+        at app//org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+        at app//org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:365)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:273)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:238)
+        at app//org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:159)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+        at app//org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+        at app//org.apache.maven.sur2022-11-18 08:52:57,696 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:57,721 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:57,721 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:57,721 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:57,721 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:57,721 INFO  LogsCLI - [wasabi] LogsCLI 284
+2022-11-18 08:52:57,721 INFO  LogsCLI - [wasabi] LogsCLI 286
+2022-11-18 08:52:57,721 INFO  LogsCLI - [wasabi] LogsCLI 289
+2022-11-18 08:52:57,721 INFO  LogsCLI - [wasabi] LogsCLI 151
+2022-11-18 08:52:57,730 INFO  LogsCLI - [wasabi] LogsCLI 146
+2022-11-18 08:52:57,750 INFO  LogsCLI - [wasabi] LogsCLI 148
+2022-11-18 08:52:57,750 INFO  LogsCLI - [wasabi] LogsCLI 164
+2022-11-18 08:52:57,750 INFO  LogsCLI - [wasabi] LogsCLI 196
+2022-11-18 08:52:57,750 INFO  LogsCLI - [wasabi] LogsCLI 229
+2022-11-18 08:52:57,750 INFO  LogsCLI - [wasabi] LogsCLI 311
+2022-11-18 08:52:57,750 INFO  LogsCLI - [wasabi] LogsCLI 151
