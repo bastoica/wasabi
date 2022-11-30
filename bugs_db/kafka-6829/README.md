@@ -15,6 +15,7 @@ Client polls for request responsens from server, receives response with a UNKNOW
 
 	ConsumerNetworkClient.poll() -> ConsumerNetworkClient.firePendingCompletedRequests() -> ... -> ConsumerCoordinator$OffsetCommitResponseHandler.handle()
 
+```
 Stack trace:
 
 org.apache.kafka.common.KafkaException: Topic or Partition test1-0 does not exist                                                                                                                                                                   
@@ -32,6 +33,7 @@ org.apache.kafka.common.KafkaException: Topic or Partition test1-0 does not exis
         at app//org.apache.kafka.clients.consumer.internals.ConsumerNetworkClient.poll(ConsumerNetworkClient.java:214)                                                                                                                                  
         at app//org.apache.kafka.clients.consumer.internals.ConsumerCoordinator.commitOffsetsSync(ConsumerCoordinator.java:1169)                                                                                                                        
         at app//org.apache.kafka.clients.consumer.internals.ConsumerCoordinatorTest.testRetryCommitUnknownTopicOrPartition(ConsumerCoordinatorTest.java:2574)
+```
 
 ## Bug-triggering Test
 
