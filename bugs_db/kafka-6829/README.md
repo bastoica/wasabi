@@ -12,12 +12,12 @@ Kafka should retry after UNKNOWN_TOPIC_OR_PARTITION exception is thrown. Initial
 ## Propagation Chain
 
 Client polls for request responsens from server, receives response with a UNKNOWN_TOPIC_OR_PARTITION error, crashes when handling this exception.
-
-	ConsumerNetworkClient.poll() -> ConsumerNetworkClient.firePendingCompletedRequests() -> ... -> ConsumerCoordinator$OffsetCommitResponseHandler.handle()
-
 ```
-Stack trace:
+	ConsumerNetworkClient.poll() -> ConsumerNetworkClient.firePendingCompletedRequests() -> ... -> ConsumerCoordinator$OffsetCommitResponseHandler.handle()
+```
 
+Complete stack trace:
+```
 org.apache.kafka.common.KafkaException: Topic or Partition test1-0 does not exist                                                                                                                                                                   
         at app//org.apache.kafka.clients.consumer.internals.ConsumerCoordinator$OffsetCommitResponseHandler.handle(ConsumerCoordinator.java:1383)                                                                                                       
         at app//org.apache.kafka.clients.consumer.internals.ConsumerCoordinator$OffsetCommitResponseHandler.handle(ConsumerCoordinator.java:1336)                                                                                                       
