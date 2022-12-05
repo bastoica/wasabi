@@ -1,6 +1,6 @@
 ## Summary
 
-Kafka should retry after UNKNOWN_TOPIC_OR_PARTITION exception is thrown. Initially, Kafka's retry logic didn't include this error.
+Kafka should retry after `UNKNOWN_TOPIC_OR_PARTITION` exception is thrown. Initially, Kafka's retry logic didn't include this error.
 
 ## Metadata
 
@@ -11,9 +11,9 @@ Kafka should retry after UNKNOWN_TOPIC_OR_PARTITION exception is thrown. Initial
 
 ## Propagation Chain
 
-Client polls for request responsens from server, receives response with a UNKNOWN_TOPIC_OR_PARTITION error, crashes when handling this exception.
+Client polls for request responsens from server, receives response with a `UNKNOWN_TOPIC_OR_PARTITION` error, crashes when handling this exception.
 ```
-	ConsumerNetworkClient.poll() -> ConsumerNetworkClient.firePendingCompletedRequests() -> ... -> ConsumerCoordinator$OffsetCommitResponseHandler.handle()
+ConsumerNetworkClient.poll() -> ConsumerNetworkClient.firePendingCompletedRequests() -> ... -> ConsumerCoordinator$OffsetCommitResponseHandler.handle()
 ```
 
 Complete stack trace:
