@@ -26,7 +26,7 @@ mvn compile -DskipTests
 3. Re-compile without running the unit tests:
 ```
 cd hadoop/
-mvn compile -DskipTests
+mvn clean compile -DskipTests
 ```
 
 # Bug triggering steps
@@ -34,7 +34,7 @@ mvn compile -DskipTests
 1. Run bug-triggering unit test:
 ```
 cd hadoop/
-mvn -Dtest=TestSafeMode clean test 2>&1 > tee build.log
+mvn -Dtest=TestSafeMode clean test 2>&1 | tee build.log
 ```
 2. Re-format `build.log` to UTF-8 and check for a `NullPointerException` error:
 ```
