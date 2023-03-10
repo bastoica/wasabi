@@ -2,7 +2,7 @@
 
 1. Check out hadoop:
 ```
-git checkout https://github.com/apache/hadoop
+git clone https://github.com/apache/hadoop
 ```
 2. Checkout `442a5fb285af5e59`
 ```
