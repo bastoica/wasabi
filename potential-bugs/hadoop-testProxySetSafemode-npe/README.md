@@ -22,26 +22,7 @@ mvn compile -DskipTests
 # Instrumentation
 
 1. Copy `WasabiFaultInjector.java` to `./hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util`.
-2. Copy`Client.java` to `./hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java` (replacing the original file). 
-
-Alternatively, to modify the original `Client.java` source file, add the following lines
-```
-WASABI.printCallstack("Client.java:677");
-WASABI.injectConnectException(new ConnectException("Wasabi exception"), "Client.java:678 || ConnectException thrown");
-```
-to `Client.java:setupConnection:677`:
-```
-  ...
-  WASABI.printCallstack("Client.java:677");
-  WASABI.injectConnectException(new ConnectException("Wasabi exception"), "Client.java:678 || ConnectException thrown");
-  
-  NetUtils.connect(this.socket, server, bindAddr, connectionTimeout);
-  this.socket.setSoTimeout(soTimeout);
-  return;
-} catch (ConnectTimeoutException toe) {
-  ...
-```
-
+2. Copy`Client.java` to `./hadoop/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/` (replacing the original file). 
 3. Re-compile without running the unit tests:
 ```
 cd hadoop/
