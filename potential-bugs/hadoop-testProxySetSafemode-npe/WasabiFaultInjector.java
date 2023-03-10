@@ -25,7 +25,7 @@ public class WasabiFaultInjector {
    * Private helper methods
    */
 
-  private static final int MAX_FAULTS = 1;
+  private static final int MAX_FAULTS = -1;
   private int faultCount;
   private static final Logger LOG = LoggerFactory.getLogger(WasabiFaultInjector.class);
    
@@ -59,9 +59,8 @@ public class WasabiFaultInjector {
   }
 
   public void injectException(Exception e, String msg) throws Exception {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     } else {
@@ -70,9 +69,8 @@ public class WasabiFaultInjector {
   }
 
   public void injectIOException(IOException e, String msg) throws IOException {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     } else {
@@ -81,9 +79,8 @@ public class WasabiFaultInjector {
   }
 
   public void injectSocketException(SocketException e, String msg) throws SocketException {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     } else {
@@ -92,9 +89,8 @@ public class WasabiFaultInjector {
   }
 
   public void injectSocketTimeoutException(SocketTimeoutException e, String msg) throws SocketTimeoutException {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     } else {
@@ -103,9 +99,8 @@ public class WasabiFaultInjector {
   }
 
   public void injectConnectTimeoutException(ConnectTimeoutException e, String msg) throws ConnectTimeoutException {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     } else {
@@ -114,9 +109,8 @@ public class WasabiFaultInjector {
   }
 
   public void injectTimeoutException(TimeoutException e, String msg) throws TimeoutException {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     } else {
@@ -125,18 +119,16 @@ public class WasabiFaultInjector {
   }
   
   public void injectRetriableException(RetriableException e, String msg) throws RetriableException {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     }
   }
 
   public void injectInvocationTargetException(InvocationTargetException e, String msg) throws InvocationTargetException {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     } else {
@@ -145,9 +137,8 @@ public class WasabiFaultInjector {
   }
 
   public void injectRemoteException(RemoteException e, String msg) throws RemoteException {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     } else {
@@ -156,9 +147,8 @@ public class WasabiFaultInjector {
   }
   
   public void injectKeeperException(KeeperException e, String msg) throws KeeperException {
-    // if (this.faultCount < this.MAX_FAULTS) {
-    if (true) {  
-      this.faultCount++;
+    if (this.faultCount < 0 || this.faultCount < this.MAX_FAULTS) {
+      this.faultCount = (this.faultCount < 0) ? -1 : this.faultCount + 1;
       this.LOG.warn("[wasabi]: [thread: " + Thread.currentThread().getId() + "]: " + msg + ", fault count: " + this.faultCount + ", test: " + this.getTestName());
       throw e;
     } else {
