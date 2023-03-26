@@ -40,7 +40,7 @@ mvn -Dtest=TestSafeMode clean test 2>&1 | tee build.log
 ```
 perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" build.log
 ```
-3. Check detailed log at `org.apache.hadoop.hdfs.server.federation.router.TestSafeMode-output.txt` for evidence that the injection library threw `ConnectException` (e.g. search for `Client.java:678 || ConnectException thrown`)
+3. Check detailed log at `org.apache.hadoop.hdfs.server.federation.router.TestSafeMode-output.txt` for evidence that the injection library threw `ConnectException` (e.g. search for `Client.java:678 || ConnectTimeoutException thrown`)
 ```
 cd hadoop/
 less ./hadoop-hdfs-project/hadoop-hdfs-rbf/target/surefire-reports/org.apache.hadoop.hdfs.server.federation.router.TestSafeMode-output.txt
