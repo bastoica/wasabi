@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bom serialNumber="urn:uuid:618f8ba1-030f-4aa3-8cf8-1c5b6ee2aeb8" version="1" xmlns="http://cyclonedx.org/schema/bom/1.4">
+  <metadata>
+    <timestamp>2023-04-04T00:53:27Z</timestamp>
+    <tools>
+      <tool>
+        <vendor>OWASP Foundation</vendor>
+        <name>CycloneDX Maven plugin</name>
+        <version>2.7.3</version>
+        <hashes>
+          <hash alg="MD5">ab886f1cb1a79b4244ac54dde22a0989</hash>
+          <hash alg="SHA-1">9ed658496dfeef87fe6072b95c62ec37165cc741</hash>
+          <hash alg="SHA-256">df9b43417bef6aeac86a393abcc1ac2ed0518239ba544aaeb595b9619c603503</hash>
+          <hash alg="SHA-512">223da34bb51c5339e0f7285757608c1a56b1ea887f7ad835af9299fabacc693053163da74af352af86b16e18e04db730bd44214eda04291410c42b6ae657d85c</hash>
+          <hash alg="SHA-384">3aaf057329ed0f90ec3a49a45b3cf4ec5ce637fd75d6202e9483fa4274cec3e7b74308016e146b6ba087df5fce9397bb</hash>
+          <hash alg="SHA3-384">0e2ce6d2a0e0ddea90f63d2e521e640e83aeac1230c201042e542186e9f32bceaf54ed9d26e6a9dec04c0f7895bbae19</hash>
+          <hash alg="SHA3-256">dd3ba8325a1a759e5a8f159a3363213d4a34d51120c4e4c77097a6779964fb33</hash>
+          <hash alg="SHA3-512">e5f87b2380e9785330fce113fedd5866a1498d5a9e365b7b00cb6fea50fd47166c471a6347d46d3edb7dd247a583874169624db5be2845c5c87dfdbcd58d9e89</hash>
+        </hashes>
+      </tool>
+    </tools>
+    <component type="library" bom-ref="pkg:maven/org.apache.hadoop/wasabi@1.0.0?type=jar">
+      <publisher>Apache Software Foundation</publisher>
+      <group>org.apache.hadoop</group>
+      <name>wasabi</name>
+      <version>1.0.0</version>
+      <description>Wasabi Fault Injection Instrumentation Library</description>
+      <licenses>
+        <license>
+          <id>Apache-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.apache.hadoop/wasabi@1.0.0?type=jar</purl>
+      <externalReferences><reference type="website"><url>https://www.apache.org</url></reference><reference type="distribution"><url>https://repository.apache.org/service/local/staging/deploy/maven2</url></reference></externalReferences>
+    </component>
+  </metadata>
+  <components>
+    <component type="library" bom-ref="pkg:maven/org.aspectj/aspectjrt@1.9.8-SNAPSHOT?type=jar">
+      <group>org.aspectj</group>
+      <name>aspectjrt</name>
+      <version>1.9.8-SNAPSHOT</version>
+      <description>The AspectJ runtime is a small library necessary to run Java programs enhanced by AspectJ aspects during a previous
+		compile-time or post-compile-time (binary weaving) build step.</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">50f8a08b8f03683eae39d555f4f78528</hash>
+        <hash alg="SHA-1">a46686e045607a94a2d7c36510bab7924d22db14</hash>
+        <hash alg="SHA-256">0f5fcdee28c8d23e198728270922e0aadff4137de9bbfaa904dc6447d81076a1</hash>
+        <hash alg="SHA-512">806d85202d1386a349e04867966ae62215835d75498e0471f8d7f5d73f3b53322bdc2d757add065a4540784ad0abd72e4cba2998370cd3671dcd1a874d002f68</hash>
+        <hash alg="SHA-384">87e9278b470d43a3bad9ecddb642d02844c6f4ee7e50d3be058e555fddec6f58a829e3d8c92fe797b068acf393265aec</hash>
+        <hash alg="SHA3-384">96f423f7ef936314a5c4a488c99c14432009e0c785fdb1edd20c2fc7703bb7983f59fa021548c297ca0c72b869cab60c</hash>
+        <hash alg="SHA3-256">837b950a06590a2025db78009382676667d5485c53fe2629a4a32dd72d10bdc7</hash>
+        <hash alg="SHA3-512">f8deb8fccfe8b4b6924fbffc084034775db81306625370b50dd0ae5a5d54d7eff90d2bfd2299ec4c6f8493de34390bf29381171f62cbfdea2696c451d4102df7</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>EPL-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.aspectj/aspectjrt@1.9.8-SNAPSHOT?type=jar</purl>
+      <externalReferences><reference type="distribution"><url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url></reference><reference type="vcs"><url>https://github.com/eclipse/org.aspectj</url></reference></externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.aspectj/aspectjweaver@1.9.8-SNAPSHOT?type=jar">
+      <group>org.aspectj</group>
+      <name>aspectjweaver</name>
+      <version>1.9.8-SNAPSHOT</version>
+      <description>The AspectJ weaver applies aspects to Java classes. It can be used as a Java agent in order to apply load-time
+		weaving (LTW) during class-loading and also contains the AspectJ runtime classes.</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">3337e08c8cbbd9ccac702a1e4df28d62</hash>
+        <hash alg="SHA-1">484a601fea66e31a2612463a61256a3b21f0862c</hash>
+        <hash alg="SHA-256">52118bec08027bfedc7fdf9ec1acc46ac55d14aceb7af0882b92d0941765c37a</hash>
+        <hash alg="SHA-512">4f37b6cae08a39d651cd7554b4f5de80999788f1912e93d829ee2bc415434f0748a44b20e5c244ad188285dbf5ade3422593a3173d15093cf5ee348aa76b8a82</hash>
+        <hash alg="SHA-384">4f8b78933617f7151470c3d8875bc4a1e00b1c4ee16218761828e48c0083ddecf1a29d5ab55d1bd0a459024940fbadff</hash>
+        <hash alg="SHA3-384">99677e0f202cca912eb83ee1c0ed15b3595b19104de322175988f188ba1f563767820927b2591d3f0e9e23b421c4127b</hash>
+        <hash alg="SHA3-256">7b0b061ea034f3997f210fcd4391627d4ddb0919b8236d8817d9d3f4260cdb53</hash>
+        <hash alg="SHA3-512">0d04c999977f4536fa4a98155fc39e3bcb1b59beafbdcb1b8f7c7c0d11a7d74da3b0365ad0b93d8dcb0eaf26006b0cbfcba379c432a1764b3c9fe16a07d8cf54</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>EPL-2.0</id>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.aspectj/aspectjweaver@1.9.8-SNAPSHOT?type=jar</purl>
+      <externalReferences><reference type="distribution"><url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url></reference><reference type="vcs"><url>https://github.com/eclipse/org.aspectj</url></reference></externalReferences>
+    </component>
+    <component type="library" bom-ref="pkg:maven/org.slf4j/slf4j-api@2.0.0-alpha0?type=jar">
+      <publisher>QOS.ch</publisher>
+      <group>org.slf4j</group>
+      <name>slf4j-api</name>
+      <version>2.0.0-alpha0</version>
+      <description>The slf4j API</description>
+      <scope>required</scope>
+      <hashes>
+        <hash alg="MD5">a05f45c497dcd2bba1d97522b191351b</hash>
+        <hash alg="SHA-1">877d93f8a83ba01299fca0f75e1b9399480be1ab</hash>
+        <hash alg="SHA-256">cb111794c79ea249e9cfe1608e4c698604553d41b5a179a2786ff9f331cd7a37</hash>
+        <hash alg="SHA-512">43c04e81ade8903616f9cc05e0e05b8868a5c51cdd317bc0f820cc95577e6b03810e26283c4c1f3b1de47d40594aeb2e08b7a86e34b3f131c1b4bad69e0c8292</hash>
+        <hash alg="SHA-384">13b750bf434516955109c0d11ae22a557224b27114d2e51b569c506f2421888acc46422cac36f7ef9f2a153e04ec191d</hash>
+        <hash alg="SHA3-384">30b75d0aa99bdccdf82572bbb7302de0bf890a224202765929c39daa57fac4b355aa4e2a03aa7ee196db92000c06d878</hash>
+        <hash alg="SHA3-256">a19fff43120901b3577942d3a1bb6197a399b7b799052e4c5ec31f594f85e0b3</hash>
+        <hash alg="SHA3-512">294ece87c6bb97779b3695bc4a4277a764b570e0db3ae97f0bfeff5dc92834d6e9ffc3b093b2ef97bde53238e254f6407a6ae56f74c98c8c263a30a54912a991</hash>
+      </hashes>
+      <licenses>
+        <license>
+          <id>MIT</id>
+          <url>https://opensource.org/licenses/MIT</url>
+        </license>
+      </licenses>
+      <purl>pkg:maven/org.slf4j/slf4j-api@2.0.0-alpha0?type=jar</purl>
+      <externalReferences><reference type="website"><url>http://www.qos.ch</url></reference><reference type="distribution"><url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url></reference><reference type="vcs"><url>https://github.com/qos-ch/slf4j</url></reference></externalReferences>
+    </component>
+  </components>
+  <dependencies>
+    <dependency ref="pkg:maven/org.apache.hadoop/wasabi@1.0.0?type=jar">
+      <dependency ref="pkg:maven/org.aspectj/aspectjrt@1.9.8-SNAPSHOT?type=jar"/>
+      <dependency ref="pkg:maven/org.aspectj/aspectjweaver@1.9.8-SNAPSHOT?type=jar"/>
+      <dependency ref="pkg:maven/org.slf4j/slf4j-api@2.0.0-alpha0?type=jar"/>
+    </dependency>
+    <dependency ref="pkg:maven/org.aspectj/aspectjrt@1.9.8-SNAPSHOT?type=jar"/>
+    <dependency ref="pkg:maven/org.aspectj/aspectjweaver@1.9.8-SNAPSHOT?type=jar"/>
+    <dependency ref="pkg:maven/org.slf4j/slf4j-api@2.0.0-alpha0?type=jar"/>
+  </dependencies>
+</bom>
