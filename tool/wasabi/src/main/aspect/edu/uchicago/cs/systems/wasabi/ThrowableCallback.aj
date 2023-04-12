@@ -1,4 +1,4 @@
-package wasabi;
+package edu.uchicago.cs.systems.wasabi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +8,9 @@ public aspect ThrowableCallback {
   private static final Logger LOG = LoggerFactory.getLogger(ThrowableCallback.class);
 
   pointcut throwableMethods():
-    (execution(* org.apache.hadoop.hdfs..*(..)) || execution(* wasabi..*(..))) &&
+    (execution(* org.apache.hadoop.hdfs..*(..)) || 
+     execution(* org.apache.hbase..*(..)) || 
+     execution(* edu.uchicago.cs.systems.wasabi..*(..))) &&
     !within(ThrowableCallback) &&
     !within(is(FinalType)) &&
     !within(is(EnumType)) &&

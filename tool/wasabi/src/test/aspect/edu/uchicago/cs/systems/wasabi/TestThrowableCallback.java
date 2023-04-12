@@ -1,4 +1,4 @@
-package wasabi;
+package edu.uchicago.cs.systems.wasabi;
 
 import java.net.SocketTimeoutException;
 

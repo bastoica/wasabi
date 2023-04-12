@@ -16,24 +16,18 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  	<modelVersion>4.0.0</modelVersion>
-  	<parent>
-    	<groupId>org.apache.hadoop</groupId>
-    	<artifactId>hadoop-project</artifactId>
-    	<version>3.4.0-SNAPSHOT</version>
-    	<relativePath>../hadoop-project</relativePath>
- 	</parent>
- 	
+
+    <modelVersion>4.0.0</modelVersion> 
+    <groupId>edu.uchicago.cs.systems</groupId>
 	<artifactId>wasabi</artifactId>
-  
 	<description>Wasabi Fault Injection Instrumentation Library</description>
 	<name>Wasabi Library</name>
     <version>1.0.0</version>
     <packaging>jar</packaging>
     
   	<properties>
-    	<aspectj.version>1.9.8-SNAPSHOT</aspectj.version>
-    	<aspectj-maven.version>1.13</aspectj-maven.version>
+      <aspectj.version>1.9.8.RC1</aspectj.version>
+      <aspectj-maven.version>1.13.1</aspectj-maven.version>
   	</properties>
     
 	<dependencies>
@@ -42,21 +36,21 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
     		<artifactId>aspectjrt</artifactId>
 	    	<version>${aspectj.version}</version>
 		</dependency>
-    	<dependency>
+    	<!--dependency>
     		<groupId>org.aspectj</groupId>
     		<artifactId>aspectjweaver</artifactId>
     		<version>${aspectj.version}</version>
-		</dependency>
-		<!--dependency>
-      		<groupId>commons-logging</groupId>
-      		<artifactId>commons-logging</artifactId>
-			<version>1.2</version>
-    	</dependency-->
+		</dependency-->
   		<dependency>
-    		<groupId>org.slf4j</groupId>
-    		<artifactId>slf4j-api</artifactId>
-			<version>2.0.0-alpha0</version>
+    	  <groupId>org.slf4j</groupId>
+    	  <artifactId>slf4j-api</artifactId>
+          <version>2.0.6</version>
 		</dependency>
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-simple</artifactId>
+          <version>2.0.6</version>
+        </dependency>
     	<dependency>
     	    <groupId>junit</groupId>
     		<artifactId>junit</artifactId>
@@ -117,7 +111,7 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.10.1</version>
         <!-- Let the AspectJ compiler do the work -->
         <executions>
           <execution>
@@ -145,17 +139,17 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
         <configuration>
           <showWeaveInfo>true</showWeaveInfo>
           <verbose>true</verbose>
-          <complianceLevel>17</complianceLevel>
-          <!-- Set to true in order to compile with preview features -->
+          <source>11</source>
+          <target>11</target>
+          <encoding>UTF-8</encoding>
+          <complianceLevel>11</complianceLevel>
           <enablePreview>false</enablePreview>
-
-          <weaveDependencies>
+          <!--weaveDependencies>
             <weaveDependency>
               <groupId>org.aspectj</groupId>
               <artifactId>aspectjweaver</artifactId>
             </weaveDependency>
-          </weaveDependencies>
-
+          </weaveDependencies-->
         </configuration>
         <dependencies>
           <dependency>
