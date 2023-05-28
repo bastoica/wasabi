@@ -28,6 +28,7 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
   	<properties>
       <aspectj.version>1.9.8.RC1</aspectj.version>
       <aspectj-maven.version>1.13.1</aspectj-maven.version>
+      <csvFileName>codeql_data.csv</csvFileName>
   	</properties>
     
 	<dependencies>
@@ -107,6 +108,12 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
   </repositories>
 
   <build>
+    <resources>
+      <resource>
+        <directory>config</directory>
+      </resource>
+    </resources>
+    
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
