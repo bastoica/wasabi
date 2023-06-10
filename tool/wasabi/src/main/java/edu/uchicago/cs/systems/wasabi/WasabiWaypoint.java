@@ -1,7 +1,5 @@
 package edu.uchicago.cs.systems.wasabi;
 
-import java.util.HashMap;
-
 public class WasabiWaypoint {
     private String retryLocation;
     private String retryCaller;
@@ -31,6 +29,10 @@ public class WasabiWaypoint {
         return retriedException;
     }
 
+    public static String getHashValue(String retryCaller, String retriedCallee, String retriedException) {
+        return retryCaller + "@" + retriedCallee + "@" + retriedException;
+    }
+    
     public static String getHashValue(String retryLocation, String retryCaller, String retriedCallee, String retriedException) {
         return retryLocation + "@" + retryCaller + "@" + retriedCallee + "@" + retriedException;
     }

@@ -132,3 +132,4 @@ Note that you only have to run the compilation command once. If weaving is succe
 The `-fn` option tells the Maven build system not to stop building, compiling, testing, etc. if an error occurred. This is useful if not all components of the target application can be built/tested.
 
 The `-Dparallel-tests` and `-DtestsThreadCount` parameters control the number of threads used to build/test the application. This command assumes the machine has only `8` cores, but can be adapted based on the specifications. 
+

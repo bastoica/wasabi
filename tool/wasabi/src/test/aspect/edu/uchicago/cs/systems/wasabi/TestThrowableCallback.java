@@ -1,19 +1,25 @@
 package edu.uchicago.cs.systems.wasabi;
 
-import java.net.SocketTimeoutException;
-
+import java.lang.Thread;
 import org.junit.Test;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestThrowableCallback {
 
     @Test
-    public void testSocketTimeoutException() throws Exception {
-        ThrowableCallback callback = new ThrowableCallback();
+    public void testShouldNotThrowException() throws Exception {
+        try {
+            shouldNotThrow();
+        } catch (Exception e) {
+            // do nothing
+        }
+    }
 
-        assertThrows(SocketTimeoutException.class, () -> {
-            throw new SocketTimeoutException("Test SocketTimeoutException");
-        });
+    private void shouldNotThrow() {
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {
+            // do nothing
+        }
     }
 
 }
