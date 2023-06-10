@@ -1,6 +1,6 @@
 WASABI is a fault injection tool written in AspectJ. Integrating, building, and testing instructions to follow.
 
-# "Weaving" WASABI with a target application
+## "Weaving" WASABI through a target application
 
 Instrumenting a target application with AspectJ is called weaving. AspectJ weaving can be achieved in multiple ways. For this project we only discuss weaving when building both WASABI and the target application using Maven.
 
