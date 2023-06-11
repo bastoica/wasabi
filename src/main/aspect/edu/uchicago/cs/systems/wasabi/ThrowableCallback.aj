@@ -185,15 +185,17 @@ public aspect ThrowableCallback {
   before() throws IOException : forceIOException() {
     InjectionPoint ipt = getInjectionPoint();
 
-    LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
-      ipt.retryLocation + "~~ with callstack:\n" + 
-      ipt.stackTrace);
+    if (ipt.shouldRetry == true) {
+      LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
+        ipt.retryLocation + "~~ with callstack:\n" + 
+        ipt.stackTrace);
 
-    throw new IOException("[wasabi] " + 
-      ipt.retriedException + " thrown from " + 
-      ipt.retryLocation + " before calling " + 
-      ipt.retriedCallee + " | Retry attempt " + 
-      ipt.injectionCount);
+      throw new IOException("[wasabi] " + 
+        ipt.retriedException + " thrown from " + 
+        ipt.retryLocation + " before calling " + 
+        ipt.retriedCallee + " | Retry attempt " + 
+        ipt.injectionCount);
+    }
   }
 
 
@@ -210,15 +212,17 @@ public aspect ThrowableCallback {
   before() throws EOFException : forceEOFException() {
     InjectionPoint ipt = getInjectionPoint();
 
-    LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
-      ipt.retryLocation + "~~ with callstack:\n" + 
-      ipt.stackTrace);
+    if (ipt.shouldRetry == true) {
+      LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
+        ipt.retryLocation + "~~ with callstack:\n" + 
+        ipt.stackTrace);
 
-    throw new EOFException("[wasabi] " + 
-      ipt.retriedException + " thrown from " + 
-      ipt.retryLocation + " before calling " + 
-      ipt.retriedCallee + " | Retry attempt " + 
-      ipt.injectionCount);
+      throw new EOFException("[wasabi] " + 
+        ipt.retriedException + " thrown from " + 
+        ipt.retryLocation + " before calling " + 
+        ipt.retriedCallee + " | Retry attempt " + 
+        ipt.injectionCount);
+    }
   }
 
 
@@ -240,15 +244,17 @@ public aspect ThrowableCallback {
   before() throws FileNotFoundException : forceFileNotFoundException() {
     InjectionPoint ipt = getInjectionPoint();
 
-    LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
-      ipt.retryLocation + "~~ with callstack:\n" + 
-      ipt.stackTrace);
+    if (ipt.shouldRetry == true) {
+      LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
+        ipt.retryLocation + "~~ with callstack:\n" + 
+        ipt.stackTrace);
 
-    throw new FileNotFoundException("[wasabi] " + 
-      ipt.retriedException + " thrown from " + 
-      ipt.retryLocation + " before calling " + 
-      ipt.retriedCallee + " | Retry attempt " + 
-      ipt.injectionCount);
+      throw new FileNotFoundException("[wasabi] " + 
+        ipt.retriedException + " thrown from " + 
+        ipt.retryLocation + " before calling " + 
+        ipt.retriedCallee + " | Retry attempt " + 
+        ipt.injectionCount);
+    }
   }
 
 
@@ -265,15 +271,17 @@ public aspect ThrowableCallback {
   before() throws ConnectException : forceConnectException() {
     InjectionPoint ipt = getInjectionPoint();
  
-    LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
-      ipt.retryLocation + "~~ with callstack:\n" + 
-      ipt.stackTrace);
- 
-    throw new ConnectException("[wasabi] " + 
-      ipt.retriedException + " thrown from " + 
-      ipt.retryLocation + " before calling " + 
-      ipt.retriedCallee + " | Retry attempt " + 
-      ipt.injectionCount);
+    if (ipt.shouldRetry == true) {
+      LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
+        ipt.retryLocation + "~~ with callstack:\n" + 
+        ipt.stackTrace);
+  
+      throw new ConnectException("[wasabi] " + 
+        ipt.retriedException + " thrown from " + 
+        ipt.retryLocation + " before calling " + 
+        ipt.retriedCallee + " | Retry attempt " + 
+        ipt.injectionCount);
+    }
   } 
 
   
@@ -290,15 +298,17 @@ public aspect ThrowableCallback {
   before() throws SocketTimeoutException : forceSocketTimeoutException() {
     InjectionPoint ipt = getInjectionPoint();
  
-    LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
-      ipt.retryLocation + "~~ with callstack:\n" + 
-      ipt.stackTrace);
- 
-    throw new SocketTimeoutException("[wasabi] " + 
-      ipt.retriedException + " thrown from " + 
-      ipt.retryLocation + " before calling " + 
-      ipt.retriedCallee + " | Retry attempt " + 
-      ipt.injectionCount);
+    if (ipt.shouldRetry == true) {
+      LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
+        ipt.retryLocation + "~~ with callstack:\n" + 
+        ipt.stackTrace);
+  
+      throw new SocketTimeoutException("[wasabi] " + 
+        ipt.retriedException + " thrown from " + 
+        ipt.retryLocation + " before calling " + 
+        ipt.retriedCallee + " | Retry attempt " + 
+        ipt.injectionCount);
+    }
   }
 
 
@@ -428,14 +438,16 @@ public aspect ThrowableCallback {
   before() throws SocketException : forceSocketException() {
     InjectionPoint ipt = getInjectionPoint();
  
-    LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
-      ipt.retryLocation + "~~ with callstack:\n" + 
-      ipt.stackTrace);
- 
-    throw new SocketException("[wasabi] " + 
-      ipt.retriedException + " thrown from " + 
-      ipt.retryLocation + " before calling " + 
-      ipt.retriedCallee + " | Retry attempt " + 
-      ipt.injectionCount);
+    if (ipt.shouldRetry == true) {
+      LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
+        ipt.retryLocation + "~~ with callstack:\n" + 
+        ipt.stackTrace);
+  
+      throw new SocketException("[wasabi] " + 
+        ipt.retriedException + " thrown from " + 
+        ipt.retryLocation + " before calling " + 
+        ipt.retriedCallee + " | Retry attempt " + 
+        ipt.injectionCount);
+    }
   }
 }
