@@ -99,7 +99,7 @@ perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" build.log
             <complianceLevel>11</complianceLevel> 
             <enablePreview>false</enablePreview> 
             <showWeaveInfo>true</showWeaveInfo>
-            <verbose>true</verbose
+            <verbose>true</verbose>
             <Xlint>unmatchedSuperTypeInCall=ignore,adviceDidNotMatch=ignore,typeNotExposedToWeaver=ignore,uncheckedAdviceConversion=ignore,invalidAbsoluteTypeName=ignore</Xlint>
           </configuration>
         </execution>
