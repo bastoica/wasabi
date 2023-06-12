@@ -450,4 +450,23 @@ public aspect ThrowableCallback {
         ipt.injectionCount);
     }
   }
+
+  /* !!!
+   * Temporary workaround to test if WASABI can be "woven" with these applications 
+   * */
+
+  pointcut throwableMethods():
+   (execution(* org.apache.cassandra..*(..)) || 
+    execution(* org.apache.hbase..*(..)) || 
+    execution(* org.apache.hive..*(..)) ||
+    execution(* org.apache.zookeeper..*(..)) || 
+    execution(* org.elasticsearch..*(..))) &&
+    !within(ThrowableCallback) &&
+    !within(is(FinalType)) &&
+    !within(is(EnumType)) &&
+    !within(is(AnnotationType));
+
+  before() : throwableMethods() {
+    /* do nothing */
+  }
 }
