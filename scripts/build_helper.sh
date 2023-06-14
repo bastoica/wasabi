@@ -29,8 +29,9 @@ wasabi_dir="wasabi.data"
 date=$(date -d "today" +"%Y%m%d%H%M")
 
 mkdir -p ${wasabi_dir}/${date}/test_reports
-
 mv ${log_file} ${wasabi_dir}/${date}
+
 for file in $(find . -name "*-output.txt"); do
-    mv ${file} ${wasabi_dir}/${date}/test_reports/${file}
+    fname=`basename $file`
+    mv ${file} ${wasabi_dir}/${date}/test_reports/${fname}
 done
