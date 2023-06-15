@@ -1,5 +1,8 @@
 package edu.uchicago.cs.systems.wasabi;
 
+import java.util.Stack;
+import java.util.StringJoiner;
+
 public class WasabiWaypoint {
     private String retryLocation;
     private String retryCaller;
@@ -36,4 +39,15 @@ public class WasabiWaypoint {
     public static String getHashValue(String retryLocation, String retryCaller, String retriedCallee, String retriedException) {
         return retryLocation + "@" + retryCaller + "@" + retriedCallee + "@" + retriedException;
     }
+
+    public static int getHashValue(Stack<String> stackTrace) {
+        StringJoiner joiner = new StringJoiner("@");
+        for (String element : stackTrace) {
+            joiner.add(element);
+        }
+		
+		String hashString = joiner.toString();
+        return hashString.hashCode();
+    }
 }
+
