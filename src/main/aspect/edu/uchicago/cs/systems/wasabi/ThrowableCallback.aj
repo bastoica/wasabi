@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Stack;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public aspect ThrowableCallback {
   private static final HashMap<String, WasabiWaypoint> waypoints = new HashMap<>();
   private static final HashMap<String, HashMap<String, String>> callersToExceptionsMap = new HashMap<>();
   private static final HashMap<String, String> reverseRetryLocationsMap = new HashMap<>();
-  private static final HashMap<String, Float> injectionProbabilityMap = new HashMap<>();
+  private static final HashMap<String, Double> injectionProbabilityMap = new HashMap<>();
 
   private static final ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
 
@@ -43,7 +44,7 @@ public aspect ThrowableCallback {
     public String retryCaller = null;
     public String retriedCallee = null;
     public String retriedException = null;
-    Float injectionProbability = 0.0;
+    Double injectionProbability = 0.0;
     public Integer injectionCount = 0;
 
     public InjectionPoint(Boolean shouldRetry, 
@@ -52,7 +53,7 @@ public aspect ThrowableCallback {
                           String retryCaller,
                           String retriedCallee,
                           String retriedException,
-                          Float injectionProbability
+                          Double injectionProbability,
                           Integer injectionCount) {
       this.shouldRetry = shouldRetry;
       this.stackTrace = stackTrace;
@@ -124,7 +125,7 @@ public aspect ThrowableCallback {
         String retriedException = callersToExceptionsMap.get(retryCaller).get(retriedCallee);
         String key = WasabiWaypoint.getHashValue(retryCaller, retriedCallee, retriedException);
         String retryLocation = reverseRetryLocationsMap.get(key);
-        Float injectionProbability = injectionProbabilityMap.get(key);
+        Double injectionProbability = injectionProbabilityMap.get(key);
 
         int hval = WasabiWaypoint.getHashValue(stackTrace);
         int injectionCount = injectionCounts.compute(hval, (k, v) -> (v == null) ? 1 : v + 1);
@@ -145,7 +146,7 @@ public aspect ThrowableCallback {
       }
     }
 
-    return new InjectionPoint(false, null, null, null, null, null, 0); 
+    return new InjectionPoint(false, null, null, null, null, null, 0.0, 0); 
   }
 
 
@@ -175,7 +176,7 @@ public aspect ThrowableCallback {
     execution(* org.apache.hadoop.hdfs.DFSStripedInputStream.refreshLocatedBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.protocol.ClientProtocol.addBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.protocol.datatransfer.DataTransferProtoUtil.checkBlockOpStatus(..)) ||
-    execution(* org.apache.hadoop.hdfs.protocol.datatransfprivate static final Random random = new Random();er.Sender.writeBlock(..)) ||
+    execution(* org.apache.hadoop.hdfs.protocol.datatransfer.Sender.writeBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.protocolPB.DatanodeProtocolClientSideTranslatorPB.blockReceivedAndDeleted(..)) ||
     execution(* org.apache.hadoop.hdfs.ReaderStrategy.readFromBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.server.blockmanagement.BlockManagerTestUtil.getComputedDatanodeWork(..)) ||
@@ -205,7 +206,7 @@ public aspect ThrowableCallback {
   before() throws IOException : forceIOException() {
     InjectionPoint ipt = getInjectionPoint();
 
-    if (ipt.retryLocation != null) {          ipt.retriedCallee + " | Retry attempt " + 
+    if (ipt.retryLocation != null) { 
       LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
         ipt.retryLocation + "~~ with callstack:\n" + 
         ipt.stackTrace);
@@ -360,8 +361,7 @@ public aspect ThrowableCallback {
     execution(* java.net.Socket.setKeepAlive(..)) ||
     execution(* java.net.Socket.setReuseAddress(..)) ||
     execution(* java.net.Socket.setSoTimeout(..)) ||
-    execution(* java.net.Socket.setTcpNoDelay(..)) ||          ipt.retriedCallee + " | Injection probability " +
-    String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
+    execution(* java.net.Socket.setTcpNoDelay(..)) || 
     execution(* java.net.Socket.setTrafficClass(..)) ||
     execution(* java.net.URLConnection.connect(..)) ||
     execution(* org.apache.hadoop.crypto.key.KeyProviderCryptoExtension.warmUpEncryptedKeys(..)) ||
