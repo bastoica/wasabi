@@ -3,11 +3,18 @@
 
 # Set up config variables
 if [ -z "$1" ]; then
-    echo "[wasabi-helper] Usage ./build_helper.sh [configFile]"
+    echo "[wasabi] [ERROR] Usage ./build_helper.sh [config file] [optional: max injections per location (default is 'unbounded')]"
     exit -1
 fi
 
 config_file=$1
+max_injections="-1"
+if [ -z "$2" ]; then
+    read -p $'\n'$"[wasabi] [WARNING] No value for the max number of injection per retry location provided. The default option is 'unbouded'. Press any key to continue or ctrl-c to abort..."$'\n\n' -n1 -s
+else
+    max_injections=$2
+fi
+
 log_file="build.log"
 threads=$(($(grep -c ^processor /proc/cpuinfo)-1))
 
@@ -20,7 +27,7 @@ fi
 # Compile, build, and test the target application
 mvn clean 2>&1 | tee -a ${log_file} && \
     mvn -fn -DskipTests -DcsvFileName="${config_file}" compile 2>&1 | tee -a ${log_file} && \
-        mvn -DcsvFileName="${config_file}" -Dparallel-tests -DtestsThreadCount=${threads} -fn test 2>&1 | tee -a ${log_file}
+        mvn -DcsvFileName="${config_file}" -DmaxInjections="${max_injections}" -Dparallel-tests -DtestsThreadCount=${threads} -fn test 2>&1 | tee -a ${log_file}
 
 if [ $? -ne ]; then
     echo "[wasabi-helper] Build process failed"
