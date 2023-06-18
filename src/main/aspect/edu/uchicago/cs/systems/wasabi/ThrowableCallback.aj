@@ -23,12 +23,15 @@ public aspect ThrowableCallback {
 
   private static final Logger LOG = LoggerFactory.getLogger(ThrowableCallback.class);
 
+  private static final Random randomGenerator = new Random();
+
   private static Integer maxInjections = (System.getProperty("maxInjections") != null) ? 
                                             Integer.parseInt(System.getProperty("maxInjections")) : -1;
 
   private static final HashMap<String, WasabiWaypoint> waypoints = new HashMap<>();
   private static final HashMap<String, HashMap<String, String>> callersToExceptionsMap = new HashMap<>();
   private static final HashMap<String, String> reverseRetryLocationsMap = new HashMap<>();
+  private static final HashMap<String, Float> injectionProbabilityMap = new HashMap<>();
 
   private static final ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
 
@@ -40,6 +43,7 @@ public aspect ThrowableCallback {
     public String retryCaller = null;
     public String retriedCallee = null;
     public String retriedException = null;
+    Float injectionProbability = 0.0;
     public Integer injectionCount = 0;
 
     public InjectionPoint(Boolean shouldRetry, 
@@ -48,6 +52,7 @@ public aspect ThrowableCallback {
                           String retryCaller,
                           String retriedCallee,
                           String retriedException,
+                          Float injectionProbability
                           Integer injectionCount) {
       this.shouldRetry = shouldRetry;
       this.stackTrace = stackTrace;
@@ -55,6 +60,7 @@ public aspect ThrowableCallback {
       this.retryCaller = retryCaller;
       this.retriedCallee = retriedCallee;
       this.retriedException = retriedException;
+      this.injectionProbability = injectionProbability;
       this.injectionCount = injectionCount;
     }
   }
@@ -66,6 +72,7 @@ public aspect ThrowableCallback {
     waypoints.putAll(parser.getWaypoints());
     callersToExceptionsMap.putAll(parser.getCallersToExceptionsMap());
     reverseRetryLocationsMap.putAll(parser.getReverseRetryLocationsMap());
+    injectionProbabilityMap.putAll(parser.getInjectionProbabilityMap());
   }
 
   private static boolean isEnclosedByRetry(String retryCaller, String retriedCallee) {
@@ -117,6 +124,7 @@ public aspect ThrowableCallback {
         String retriedException = callersToExceptionsMap.get(retryCaller).get(retriedCallee);
         String key = WasabiWaypoint.getHashValue(retryCaller, retriedCallee, retriedException);
         String retryLocation = reverseRetryLocationsMap.get(key);
+        Float injectionProbability = injectionProbabilityMap.get(key);
 
         int hval = WasabiWaypoint.getHashValue(stackTrace);
         int injectionCount = injectionCounts.compute(hval, (k, v) -> (v == null) ? 1 : v + 1);
@@ -132,6 +140,7 @@ public aspect ThrowableCallback {
                                   retryCaller,
                                   retriedCallee,
                                   retriedException,
+                                  injectionProbability,
                                   injectionCount);
       }
     }
@@ -166,7 +175,7 @@ public aspect ThrowableCallback {
     execution(* org.apache.hadoop.hdfs.DFSStripedInputStream.refreshLocatedBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.protocol.ClientProtocol.addBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.protocol.datatransfer.DataTransferProtoUtil.checkBlockOpStatus(..)) ||
-    execution(* org.apache.hadoop.hdfs.protocol.datatransfer.Sender.writeBlock(..)) ||
+    execution(* org.apache.hadoop.hdfs.protocol.datatransfprivate static final Random random = new Random();er.Sender.writeBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.protocolPB.DatanodeProtocolClientSideTranslatorPB.blockReceivedAndDeleted(..)) ||
     execution(* org.apache.hadoop.hdfs.ReaderStrategy.readFromBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.server.blockmanagement.BlockManagerTestUtil.getComputedDatanodeWork(..)) ||
@@ -196,18 +205,20 @@ public aspect ThrowableCallback {
   before() throws IOException : forceIOException() {
     InjectionPoint ipt = getInjectionPoint();
 
-    if (ipt.retryLocation != null) {
+    if (ipt.retryLocation != null) {          ipt.retriedCallee + " | Retry attempt " + 
       LOG.warn("[wasabi] Pointcut inside retry logic at ~~" + 
         ipt.retryLocation + "~~ with callstack:\n" + 
         ipt.stackTrace);
     }
 
     if (ipt.shouldRetry == true) {
-
-      throw new IOException("[wasabi] IOException thrown from " + 
-        ipt.retryLocation + " before calling " + 
-        ipt.retriedCallee + " | Retry attempt " + 
-        ipt.injectionCount);
+      if (randomGenerator.nextDouble() < ipt.injectionProbability) {
+        throw new IOException("[wasabi] IOException thrown from " + 
+          ipt.retryLocation + " before calling " + 
+          ipt.retriedCallee + " | Injection probability " +
+          String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
+          ipt.injectionCount);
+      }
     }
   }
 
@@ -232,10 +243,13 @@ public aspect ThrowableCallback {
     }
     
     if (ipt.shouldRetry == true) {
-      throw new EOFException("[wasabi] EOFException thrown from " + 
-        ipt.retryLocation + " before calling " + 
-        ipt.retriedCallee + " | Retry attempt " + 
-        ipt.injectionCount);
+      if (randomGenerator.nextDouble() < ipt.injectionProbability) {
+        throw new EOFException("[wasabi] EOFException thrown from " + 
+          ipt.retryLocation + " before calling " + 
+          ipt.retriedCallee + " | Injection probability " +
+          String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
+          ipt.injectionCount);
+      }
     }
   }
 
@@ -267,7 +281,8 @@ public aspect ThrowableCallback {
     if (ipt.shouldRetry == true) {
       throw new FileNotFoundException("[wasabi] FileNotFoundException thrown from " + 
         ipt.retryLocation + " before calling " + 
-        ipt.retriedCallee + " | Retry attempt " + 
+        ipt.retriedCallee + " | Injection probability " +
+        String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
         ipt.injectionCount);
     }
   }
@@ -293,10 +308,13 @@ public aspect ThrowableCallback {
     }
 
     if (ipt.shouldRetry == true) {  
-      throw new ConnectException("[wasabi] ConnectException thrown from " + 
-        ipt.retryLocation + " before calling " + 
-        ipt.retriedCallee + " | Retry attempt " + 
-        ipt.injectionCount);
+      if (randomGenerator.nextDouble() < ipt.injectionProbability) {
+        throw new ConnectException("[wasabi] ConnectException thrown from " + 
+          ipt.retryLocation + " before calling " + 
+          ipt.retriedCallee + " | Injection probability " +
+          String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
+          ipt.injectionCount);
+      }
     }
   } 
 
@@ -321,10 +339,13 @@ public aspect ThrowableCallback {
     }
     
     if (ipt.shouldRetry == true) {
-      throw new SocketTimeoutException("[wasabi] SocketTimeoutException thrown from " + 
-        ipt.retryLocation + " before calling " + 
-        ipt.retriedCallee + " | Retry attempt " + 
-        ipt.injectionCount);
+      if (randomGenerator.nextDouble() < ipt.injectionProbability) {
+        throw new SocketTimeoutException("[wasabi] SocketTimeoutException thrown from " + 
+          ipt.retryLocation + " before calling " + 
+          ipt.retriedCallee + " | Injection probability " +
+          String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
+          ipt.injectionCount);
+      }
     }
   }
 
@@ -339,7 +360,8 @@ public aspect ThrowableCallback {
     execution(* java.net.Socket.setKeepAlive(..)) ||
     execution(* java.net.Socket.setReuseAddress(..)) ||
     execution(* java.net.Socket.setSoTimeout(..)) ||
-    execution(* java.net.Socket.setTcpNoDelay(..)) ||
+    execution(* java.net.Socket.setTcpNoDelay(..)) ||          ipt.retriedCallee + " | Injection probability " +
+    String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
     execution(* java.net.Socket.setTrafficClass(..)) ||
     execution(* java.net.URLConnection.connect(..)) ||
     execution(* org.apache.hadoop.crypto.key.KeyProviderCryptoExtension.warmUpEncryptedKeys(..)) ||
@@ -462,10 +484,13 @@ public aspect ThrowableCallback {
     }
 
     if (ipt.shouldRetry == true) {
-      throw new SocketException("[wasabi] SocketException thrown from " + 
-        ipt.retryLocation + " before calling " + 
-        ipt.retriedCallee + " | Retry attempt " + 
-        ipt.injectionCount);
+      if (randomGenerator.nextDouble() < ipt.injectionProbability) {
+        throw new SocketException("[wasabi] SocketException thrown from " + 
+          ipt.retryLocation + " before calling " + 
+          ipt.retriedCallee + " | Injection probability " +
+          String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
+          ipt.injectionCount);
+      }
     }
   }
 
@@ -488,4 +513,3 @@ public aspect ThrowableCallback {
     /* do nothing */
   }
 }
-

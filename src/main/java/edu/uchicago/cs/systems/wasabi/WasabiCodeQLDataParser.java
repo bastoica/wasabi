@@ -18,6 +18,7 @@ public class WasabiCodeQLDataParser {
     private HashMap<String, WasabiWaypoint> waypoints = new HashMap<>();
     private HashMap<String, HashMap<String, String>> callersToExceptionsMap = new HashMap<>();
     private HashMap<String, String> reverseRetryLocationsMap = new HashMap<>();
+    private HashMap<String, Float> injectionProbabilityMap = new HashMap<>();
     
     private String csvFileName = System.getProperty("csvFileName");
 
@@ -65,6 +66,15 @@ public class WasabiCodeQLDataParser {
 
             key = WasabiWaypoint.getHashValue(retryCaller, retriedCallee, retriedException);
             reverseRetryLocationsMap.put(key, retryLocation);
+            
+            try {
+                Float injectionProbablity = Float.parseFloat(injectionProbablityString);
+                injectionProbabilityMap.put(key, injectionProbablity);
+            } catch (Exception e) {
+                LOG.debug("[wasabi] An exception occured when parsing the injection probabilites: " + e.getMessage());
+                e.printStackTrace();
+            }
+            
         }
     }
 
@@ -94,5 +104,9 @@ public class WasabiCodeQLDataParser {
 
     public HashMap<String, String> getReverseRetryLocationsMap() {
         return reverseRetryLocationsMap;
+    }
+
+    public HashMap<String, Float> getInjectionProbabilityMap() {
+        return injectionProbabilityMap;
     }
 }
