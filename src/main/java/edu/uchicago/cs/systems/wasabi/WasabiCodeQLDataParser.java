@@ -22,7 +22,7 @@ public class WasabiCodeQLDataParser {
     
     private String csvFileName = System.getProperty("csvFileName");
 
-    private static final String[] CSV_COLUMN_NAMES = {"Retry location", "Enclosing method", "Retried method", "Exception"};
+    private static final String[] CSV_COLUMN_NAMES = {"Retry location", "Enclosing method", "Retried method", "Exception", "Injection Probablity", "Test coverage"};
    
     public void parseCodeQLOutput() {
         try {
@@ -31,7 +31,7 @@ public class WasabiCodeQLDataParser {
             boolean foundHeader = false;
             String line;
             while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
+                String[] values = line.split("!!!");
 
                 if (!foundHeader && arrayEquals(CSV_COLUMN_NAMES, values)) {
                     foundHeader = true;
@@ -72,7 +72,8 @@ public class WasabiCodeQLDataParser {
                 Double injectionProbablity = Double.parseDouble(injectionProbabilityString);
                 injectionProbabilityMap.put(key, injectionProbablity);
             } catch (Exception e) {
-                LOG.debug("[wasabi] An exception occured when parsing the injection probabilites: " + e.getMessage());
+                LOG.error("[wasabi] Parsing line " + record[0] + " , " + record[1] + " , " + record[2] + " , " + record[3] + " , " + record[4] + " , " + record[5]);
+                LOG.error("[wasabi] An exception occured when parsing the injection probabilites: " + e.getMessage());
                 e.printStackTrace();
             }
             
