@@ -29,11 +29,6 @@ mvn clean 2>&1 | tee -a ${log_file} && \
     mvn -fn -DskipTests -DcsvFileName="${config_file}" compile 2>&1 | tee -a ${log_file} && \
         mvn -DcsvFileName="${config_file}" -DmaxInjections="${max_injections}" -Dparallel-tests -DtestsThreadCount=${threads} -fn test 2>&1 | tee -a ${log_file}
 
-if [ $? -ne ]; then
-    echo "[wasabi-helper] Build process failed"
-    exit -1
-fi
-
 
 # Make the log file UTF-8 compliant
 perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" ${log_file}
