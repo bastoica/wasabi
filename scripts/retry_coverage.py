@@ -81,7 +81,7 @@ def print_counts(retry_locations, retry_locations_to_tests=None):
     if retry_locations_to_tests is not None:
         print("\n\n==== Retry location : number of tests covering it ====\n")
         for rloc, count in retry_locations_to_tests.items():
-            print(f"{rloc}: {count}")
+            print(f"{rloc} : {count}")
    
     print("\n\n")
 
@@ -100,7 +100,8 @@ def main():
 
     elif args.directory:
         counts, counts_per_file = directory_walk(args.directory)
-        print_counts(counts, counts_per_file, directory_name=args.directory)
+        print_counts(counts, counts_per_file)
+
 
 if __name__ == '__main__':
     main()
