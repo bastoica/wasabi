@@ -24,6 +24,15 @@ if [ $? -ne 0 ]; then
 fi
 
 
+# Print trial info
+echo "==== Experiment trial parameters ====" 2>&1 | tee -a ${log_file} 
+echo "Log file : "${log_file} 2>&1 | tee -a ${log_file} 
+echo "Parallel build thread count : "${threads} 2>&1 | tee -a ${log_file} 
+echo "CSV config file : "${config_file} 2>&1 | tee -a ${log_file} 
+echo "Max injections : "${max_injections} 2>&1 | tee -a ${log_file} 
+echo "====================================="$'\n\n' 2>&1 | tee -a ${log_file} 
+
+
 # Compile, build, and test the target application
 mvn -fn -DskipTests -DcsvFileName="${config_file}" clean compile 2>&1 | tee -a ${log_file} && \
     mvn -DcsvFileName="${config_file}" -DmaxInjections="${max_injections}" -Dparallel-tests -DtestsThreadCount=${threads} -fn test 2>&1 | tee -a ${log_file}
