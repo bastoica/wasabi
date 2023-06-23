@@ -25,6 +25,31 @@ def count_retry_locations(filename):
     return counts
 
 
+def count_exceptions_thrown(filename):
+    """
+    Counts the number of exceptions thrown in a given file.
+
+    Args:
+        filename (str): Path to the file.
+
+    Returns:
+        dict: Dictionary containing the counts of exceptions thrown.
+    """
+    pattern_leading = r"[wasabi] ([a-zA-Z]+)Exception thrown from ([^ ]+)"
+    pattern_trailing = "\| Retry attempt [0-9]+"
+    counts = Counter()
+
+    with open(filename, 'r', encoding='utf-8') as file:
+        for line in file:
+            match_leading = re.search(pattern_leading, line)
+            match_trailing = re.search(pattern_trailing, line);
+            if match_leading and match_trailing:
+                exception_type = match_leading.group(1)
+                retry_location = match_leading.group(2).strip()
+                counts[retry_location] += 1
+
+    return counts
+
 def update_retries_per_files_counts(retry_locations_to_tests, retries_per_file):
     """
     Updates the pattern files count based on the counts from a file.
@@ -52,19 +77,22 @@ def directory_walk(path):
     """
     retry_locations = Counter()
     retry_locations_to_tests = Counter()
+    exceptions = Counter()
 
     for root, _, files in os.walk(path):
         for file in files:
             if file.endswith("-output.txt"):
                 file_path = os.path.join(root, file)
                 retries_per_file = count_retry_locations(file_path)
+                exceptions_per_file = count_exceptions_thrown(file_path)
                 retry_locations.update(retries_per_file)
+                exceptions.update(exceptions_per_file)
                 update_retries_per_files_counts(retry_locations_to_tests, retries_per_file)
 
-    return retry_locations, retry_locations_to_tests
+    return retry_locations, retry_locations_to_tests, exceptions
 
 
-def print_counts(retry_locations, retry_locations_to_tests=None):
+def print_counts(retry_locations, msg):
     """
     Prints the counts in descending order.
 
@@ -74,15 +102,9 @@ def print_counts(retry_locations, retry_locations_to_tests=None):
             Defaults to None.
         directory_name (str, optional): Directory name. Defaults to None.
     """
-    print("==== Retry location : aggregted number of times exercised by a test ====\n")
-    for rloc, count in retry_locations.most_common():
-        print(f"{rloc} : {count}")
-
-    if retry_locations_to_tests is not None:
-        print("\n\n==== Retry location : number of tests covering it ====\n")
-        for rloc, count in retry_locations_to_tests.items():
-            print(f"{rloc} : {count}")
-   
+    print(msg)
+    for key, count in retry_locations.most_common():
+        print(f"{key} : {count}")
     print("\n\n")
 
 
@@ -96,11 +118,12 @@ def main():
 
     if args.filename:
         counts = count_retry_locations(args.filename)
-        print_counts(counts)
-
+        print_counts(counts, "==== Retry location : number of times exercised aggregated for all test ====\n")
     elif args.directory:
-        counts, counts_per_file = directory_walk(args.directory)
-        print_counts(counts, counts_per_file)
+        location_counts, location_counts_per_file, exception_counts = directory_walk(args.directory)
+        print_counts(location_counts_per_file, "==== Retry location : number of tests covering it ====\n")
+        print_counts(location_counts, "==== Retry location : aggregted number of exceptions thrown aggregated for all tests ====\n")
+        print_counts(exception_counts, "==== Retry location : aggregted number of exceptions thrown aggregated for all tests ====\n")
 
 
 if __name__ == '__main__':
