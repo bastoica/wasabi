@@ -1,183 +1,294 @@
 import argparse
+from collections import namedtuple
+import os
 import re
 
 
-def read_excluded_tests(filename):
+def read_line_by_line(filename):
     """
-    Reads a list of excluded test names from a file.
+    Reads a list of excluded tests from a file.
 
     Args:
-        filename (str): Path to the file containing excluded test names.
+        filename (str): Path to the file containing excluded tests.
 
     Returns:
-        list: Excluded test names
+        content: List of file content, line by line.
     """
-    excluded_tests = []
+    content = []
 
-    with open(filename, 'r') as file:
-        for line in file:
-            excluded_tests.append(line.strip())
+    if filename is not None and os.path.isfile(filename):
+        with open(filename, 'r') as file:
+            for line in file:
+                content.append(line.strip())
 
-    return excluded_tests
+    return content
 
 
-def get_retry_locations(logfile, excluded_tests):
+def log_compaction(log):
+    """
+    Removes any lines not relevant to the failure messages (e.g. call stacks).
+
+    Args:
+        log (List): Log file as a list of lines.
+
+    Returns:
+        compact_log: Compacted log.
+    """
+
+    test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+    
+    compact_log = []
+
+    for i in range(3, len(log)):
+        if re.compile(test_name_pattern).search(log[i-2]):
+            compact_log.append(log[i-2])
+            compact_log.append(log[i-1])
+            compact_log.append(log[i])
+
+    return compact_log
+
+
+def has_patterns(line, patterns):
+    """
+    Checks if the a given log line has any of a list of patterns.
+
+    Args:
+        line (str): The line to check for pattern matches.
+        patterns (list): List of patterns to match against.
+
+    Returns:
+        bool: True if any pattern matches, False otherwise.
+    """
+    return patterns is not None and any(pattern in line for pattern in patterns)
+
+
+def is_assertion_failure(line):
+    """
+    Checks if an assertion exception occurred at this particular log line.
+
+    Args:
+        line (str): The line to check for pattern matches.
+
+    Returns:
+        bool: True if any pattern matches, False otherwise.
+    """
+    assertion_pattern = r"java.lang.AssertionError"
+
+    if re.compile(assertion_pattern).search(line):
+        return True
+    
+    return False
+
+
+def is_timeout_failure(line):
+    """
+    Checks if an timeout exception occurred at this particular log line.
+
+    Args:
+        line (str): The line to check for pattern matches.
+
+    Returns:
+        bool: True if any pattern matches, False otherwise.
+    """
+    timeout_patterns = [r"\.[a-zA-Z]*TestTimedOutException", r"\.[a-zA-Z]*TimeoutException"]
+
+    for timeout_pattern in timeout_patterns:
+        if re.compile(timeout_pattern).search(line):
+            return True
+    
+    return False
+
+def get_retry_locations(log, exclude):
     """
     Parses the build log file and extracts test names and retry_locations.
 
     Args:
-        logfile (str): Path to the build log file.
-        excluded_tests (list): List of excluded test names.
+        log (List): Log file as a list of lines.
+        exclude.tests (list): List of excluded tests.
 
     Returns:
         Tuple: test_names (list), retry_locations (list)
     """
 
-    test_name_pattern = r"\[ERROR\].*"
+    test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
     retry_location_pattern = r"\[wasabi\].*thrown from https:\/\/.*Retry attempt"
 
     test_names = []
     retry_locations = []
 
-    with open(logfile, 'r') as file:
-        lines = file.readlines()
-        log = [line.strip() for line in lines if line.strip()]
+    for i in range(len(log)-1):
+        if (has_patterns(log[i], exclude.tests) == False and
+            has_patterns(log[i+1], exclude.patterns) == False and
+            re.compile(test_name_pattern).search(log[i]) and 
+            re.compile(retry_location_pattern).search(log[i+1])):
+            
+            tokens = log[i].split()
+            test_name = None
+            for token in tokens:
+                if token.startswith("test") and token not in exclude.tests:
+                    test_name = token
 
-        for i in range(len(log)-1):
-            if (re.compile(test_name_pattern).search(log[i]) and 
-                re.compile(retry_location_pattern).search(log[i+1])):
-                
-                tokens = log[i].split()
-                test_name = None
+            if test_name is not None:
+                tokens = log[i+1].split()
                 for token in tokens:
-                    if token.startswith("test") and token not in excluded_tests:
-                        test_name = token
-
-                if test_name is not None:
-                    tokens = log[i+1].split()
-                    for token in tokens:
-                        if token.startswith("https://") and re.search(r"java#L\d+$", token):
-                            retry_locations.append(token)
-                            test_names.append(test_name)
-                            break
+                    if token.startswith("https://") and re.search(r"java#L\d+$", token):
+                        retry_locations.append(token)
+                        test_names.append(test_name)
+                        break
 
     return test_names, retry_locations
 
 
-def get_tests_failing_with_different_exceptions(logfile, excluded_tests):
+def get_tests_failing_with_different_exceptions(log, exclude):
     """
     Extracts test names and exception names from the build log file.
 
     Args:
-        logfile (str): Path to the build log file.
-        excluded_tests (list): List of excluded test names.
+        log (List): Log file as a list of lines.
+        exclude.tests (list): List of excluded tests.
 
     Returns:
         Tuple: test_names (list), exception_names (list)
     """
 
-    test_name_pattern = r"\[ERROR\].*"
-    exception_pattern = r"\[wasabi\].*Exception thrown"
+    test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+    fault_injection_pattern = r"\[wasabi\] [a-zA-Z]*Exception thrown from"
+    exception_pattern = r"[a-zA-Z]*Exception"
 
     test_names = []
     exception_names = []
 
-    with open(logfile, 'r') as file:
-        log = file.readlines()
+    for i in range(len(log)-1):
+        if (has_patterns(log[i], exclude.tests) == False and
+            has_patterns(log[i+1], exclude.patterns) == False and
+            re.compile(test_name_pattern).search(log[i]) and 
+            re.compile(fault_injection_pattern).search(log[i+1])):
+            
+            tokens = log[i].split()
+            for token in tokens:
+                if token.startswith("test") and token not in exclude.tests:
+                    test_name = token
+                    break
 
-        for i in range(len(log)-1):
-            if (re.compile(test_name_pattern).search(log[i]) and 
-                re.compile(exception_pattern).search(log[i+1])):
-                
-                tokens = log[i].split()
-                for token in tokens:
-                    if token.startswith("test") and token not in excluded_tests:
-                        test_name = token
-                        break
-
-                tokens = re.findall(r"\b\w*{}+\w*\b".format("Exception"), log[i+1].strip())
+            if (is_assertion_failure(log[i+1]) == False and is_timeout_failure(log[i+1]) == False):
+                tokens = re.findall(exception_pattern, log[i+1].strip())
                 if len(tokens) >= 2:
                     if tokens[0].endswith(":"):
                         tokens[0] = tokens[0][:-1]
                     if tokens[1].endswith(":"):
                         tokens[1] = tokens[1][:-1]
 
-                    if "TimedOutException" not in tokens[0] and tokens[0] != tokens[1]:
+                    if tokens[0] != tokens[1]:
                         test_names.append(test_name)
                         exception_names.append((tokens[0], tokens[1]))
 
     return test_names, exception_names
 
 
-def get_tests_failing_with_assertions(logfile, excluded_tests):
+def get_tests_with_few_retry_attempts(log, max_attempts, exclude):
+    """
+    Extracts tests with a low number of retry attempts (less than a limit) 
+    from a log file.
+
+    Args:
+        log (List): Log file as a list of lines.
+        max_attempts (int): The max number of retry attempts.
+        exclude.tests (list): List of excluded tests.
+
+    Returns:
+        test_names: List of tests with a low number retry attempts.
+    """
+    test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+    retry_attempts_pattern = r"\| Retry attempt (\d+)$"
+    
+    test_names = []
+    retry_attempts = []
+
+    for i in range(len(log)-1):
+        if (has_patterns(log[i], exclude.tests) == False and
+            has_patterns(log[i+1], exclude.patterns) == False and
+            re.compile(test_name_pattern).search(log[i]) and 
+            re.compile(retry_attempts_pattern).search(log[i+1]) and
+            is_assertion_failure(log[i+1]) == False):
+
+            tokens = log[i].split()
+            for token in tokens:
+                if token.startswith("test") and token not in exclude.tests:
+                    test_name = token
+                    break
+
+            if (is_assertion_failure(log[i+1]) == False and is_timeout_failure(log[i+1]) == False):
+                attempts = 0
+                for ch in reversed(log[i+1].strip()):
+                    if ch.isdigit():
+                        attempts = attempts * 10 + int(ch)
+                    else:
+                        break
+                if attempts <= max_attempts:
+                    test_names.append(test_name)
+                    retry_attempts.append(attempts)
+
+    return test_names, retry_attempts
+
+
+def get_tests_failing_with_assertions(log, exclude):
     """
     Finds test names with the "java.lang.AssertionError" pattern in the build log file.
 
     Args:
-        logfile (str): Path to the build log file.
-        excluded_tests (list): List of excluded test names.
+        log (List): Log file as a list of lines.
+        exclude.tests (list): List of excluded tests.
 
-    Returns:
+    Returns:exclude.tests
         list: Test names with "java.lang.AssertionError" pattern
     """
 
-    test_name_pattern = r"\[ERROR\].*"
-    assertion_pattern = r"java.lang.AssertionError"
-    expected_pattern = r"expected.*but was"
-
+    test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+    
     test_names = []
 
-    with open(logfile, 'r') as file:
-        log = file.readlines()
-
-        for i in range(len(log)-1):
-            if (re.compile(test_name_pattern).search(log[i]) and 
-               (re.compile(assertion_pattern).search(log[i+1]) or 
-                re.compile(expected_pattern).search(log[i+1]))):
-                
-                tokens = log[i].split()
-                for token in tokens:
-                    if token.startswith("test") and token not in excluded_tests:
-                        test_names.append(token)
-                        break
+    for i in range(len(log)-1):
+        if (has_patterns(log[i], exclude.tests) == False and
+            has_patterns(log[i+1], exclude.patterns) == False and
+            re.compile(test_name_pattern).search(log[i]) and 
+            is_assertion_failure(log[i+1]) == True):
+            
+            tokens = log[i].split()
+            for token in tokens:
+                if token.startswith("test") and token not in exclude.tests:
+                    test_names.append(token)
+                    break
 
     return test_names
 
 
-def get_tests_timing_out(logfile, excluded_tests):
+def get_tests_timing_out(log, exclude):
     """
     Finds test names with the "org.junit.runners.model.TestTimedOutException" pattern in the build log file.
 
     Args:
-        logfile (str): Path to the build log file.
-        excluded_tests (list): List of excluded test names.
+        log (List): Log file as a list of lines.
+        exclude.tests (list): List of excluded tests.
 
     Returns:
         list: Test names with "org.junit.runners.model.TestTimedOutException" pattern
     """
 
-    test_name_pattern = r"\[ERROR\].*"
-    timeout_exception_pattern = r"org.junit.runners.model.TestTimedOutException"
+    test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
 
     test_names = []
 
-    with open(logfile, 'r') as file:
-        log = file.readlines()
-
-        for i in range(len(log)-1):
-            line1 = log[i]
-            line2 = log[i+1]
-
-            match1 = re.search(test_name_pattern, line1)
-            match2 = re.search(timeout_exception_pattern, line2)
-
-            if match1 and match2:
-                tokens1 = line1.split()
-
-                for token in tokens1:
-                    if token.startswith("test") and token not in excluded_tests:
-                        test_names.append(token)
-                        break
+    for i in range(len(log)-1):
+        if (has_patterns(log[i], exclude.tests) == False and
+            has_patterns(log[i+1], exclude.patterns) == False and
+            re.compile(test_name_pattern).search(log[i]) and 
+            is_timeout_failure(log[i+1]) == True):
+            
+            tokens = log[i].split()
+            for token in tokens:
+                if token.startswith("test") and token not in exclude.tests:
+                    test_names.append(token)
+                    break
 
     return test_names
 
@@ -186,43 +297,55 @@ def main():
         description='Build log parser'
         )
     parser.add_argument(
-        'logfile', 
+        '-f', '--file', 
         type=str, 
-        help='Path to the build log file'
+        help='Path to build log file'
         )
+
     parser.add_argument(
-        'excluded_tests', 
+        '-ext', '--excluded-tests', 
         type=str, 
-        help='Path to the file containing excluded test names'
-        )
+        help='List of excluded tests')
+    parser.add_argument(
+        '-exp', '--excluded-patterns', 
+        type=str,
+        help='List of excluded patterns')
+
     args = parser.parse_args()
 
-    excluded_tests = read_excluded_tests(args.excluded_tests)
+    excluded_tests = read_line_by_line(args.excluded_tests)
+    excluded_patterns = read_line_by_line(args.excluded_patterns)
+    Exclude = namedtuple('Exclude', ['tests', 'patterns'])
+    exclude = Exclude(tests=excluded_tests, patterns=excluded_patterns)
 
-    test_names, retry_locations = get_retry_locations(args.logfile, excluded_tests)
-    if test_names and retry_locations:
-        print("==== Retry locations ====")
-        for i in range(0, len(test_names)):
-            print(test_names[i] + " : " + retry_locations[i])
+    contents = read_line_by_line(args.file)
+    log = log_compaction(contents)
 
-    test_names, exception_names = get_tests_failing_with_different_exceptions(args.logfile, excluded_tests)
-    if test_names and exception_names:
-        print("\n==== Tests failing with different exceptions ====")
-        for i in range(0, len(test_names)):
-            print(test_names[i] + " : " + exception_names[i][0] + " vs. " + exception_names[i][1])
+    test_names, retry_locations = get_retry_locations(log, exclude)
+    print("==== Retry locations ====\n")
+    for i in range(0, len(test_names)):
+        print(test_names[i] + " : " + retry_locations[i])
 
-    test_names = get_tests_failing_with_assertions(args.logfile, excluded_tests)
-    if test_names:
-        print("\n==== Tests failing with assertions ====")
-        for i in range(0, len(test_names)):
-            print(test_names[i])
+    test_names, exception_names = get_tests_failing_with_different_exceptions(log, exclude)
+    print("\n\n==== Tests failing with different exceptions ====\n")
+    for i in range(0, len(test_names)):
+        print(test_names[i] + " : " + exception_names[i][0] + " vs. " + exception_names[i][1])
 
-    test_names = get_tests_timing_out(args.logfile, excluded_tests)
-    if test_names:
-        print("\n==== Tests timing out ====")
-        for i in range(0, len(test_names)):
-            print(test_names[i])
+    MAX_ATTEMPTS = 10
+    test_names, retry_attempts = get_tests_with_few_retry_attempts(log, MAX_ATTEMPTS, exclude)
+    print("\n\n==== Tests with few retry attempts (<= " + str(MAX_ATTEMPTS) + ") ====\n")
+    for i in range(0, len(test_names)):
+        print(test_names[i] + " : " + str(retry_attempts[i]))
+
+    test_names = get_tests_failing_with_assertions(log, exclude)
+    print("\n\n==== Tests failing with assertions ====\n")
+    for i in range(0, len(test_names)):
+        print(test_names[i])
+
+    test_names = get_tests_timing_out(log, exclude)
+    print("\n\n==== Tests timing out ====\n")
+    for i in range(0, len(test_names)):
+        print(test_names[i])
 
 if __name__ == '__main__':
     main()
-
