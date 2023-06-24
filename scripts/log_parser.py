@@ -40,7 +40,8 @@ def log_compaction(log):
     compact_log = []
 
     for i in range(3, len(log)):
-        if re.compile(test_name_pattern).search(log[i-2]):
+        if re.compile(test_name_pattern).search(log[i-3]):
+            compact_log.append(log[i-3])
             compact_log.append(log[i-2])
             compact_log.append(log[i-1])
             compact_log.append(log[i])
@@ -59,7 +60,7 @@ def has_patterns(line, patterns):
     Returns:
         bool: True if any pattern matches, False otherwise.
     """
-    return patterns is not None and any(pattern in line for pattern in patterns)
+    return patterns is not None and any(re.compile(pattern).search(line) for pattern in patterns)
 
 
 def is_assertion_failure(line):
@@ -98,7 +99,7 @@ def is_timeout_failure(line):
     
     return False
 
-def get_retry_locations(log, exclude):
+def get_all_failing_tests(log, exclude):
     """
     Parses the build log file and extracts test names and retry_locations.
 
@@ -321,7 +322,7 @@ def main():
     contents = read_line_by_line(args.file)
     log = log_compaction(contents)
 
-    test_names, retry_locations = get_retry_locations(log, exclude)
+    test_names, retry_locations = get_all_failing_tests(log, exclude)
     print("==== Retry locations ====\n")
     for i in range(0, len(test_names)):
         print(test_names[i] + " : " + retry_locations[i])
