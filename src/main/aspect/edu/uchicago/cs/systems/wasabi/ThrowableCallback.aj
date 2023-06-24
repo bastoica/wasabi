@@ -112,7 +112,7 @@ public aspect ThrowableCallback {
   private static String stackTraceToString(Stack<String> stackTrace) {
       StringBuilder builder = new StringBuilder();
       for (String frame : stackTrace) {
-          builder.append(frame).append("\n");
+          builder.append("\t").append(frame).append("\n");
       }
       return builder.toString();
   }
