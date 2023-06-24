@@ -34,6 +34,9 @@ public aspect ThrowableCallback {
   private static final HashMap<String, String> reverseRetryLocationsMap = new HashMap<>();
   private static final HashMap<String, Double> injectionProbabilityMap = new HashMap<>();
 
+  private static final ConcurrentHashMap<String, Long> lastRetryTimestamps = new ConcurrentHashMap<>();
+  private static final ConcurrentHashMap<String, Long> lastBlackoffTimestamps = new ConcurrentHashMap<>();
+
   private static final ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
 
   private static class InjectionPoint {
@@ -130,6 +133,17 @@ public aspect ThrowableCallback {
         int hval = WasabiWaypoint.getHashValue(stackTrace);
         int injectionCount = injectionCounts.compute(hval, (k, v) -> (v == null) ? 1 : v + 1);
 
+        long lastRetry = lastRetryTimestamps.getOrDefault(retryCaller, 0L);
+        long lastBackoff = lastBlackoffTimestamps.getOrDefault(retryCaller, 0L);
+        long currentTimestamp = System.nanoTime();
+
+        lastRetryTimestamps.put(retryCaller, lastRetryTimestamps.getOrDefault(retryCaller, currentTimestamp));
+        if (injectionCount > 1 && lastRetry > lastBackoff) {
+          LOG.warn("[wasabi] No backoff between retry attempts at %%" + 
+            retryLocation + "%% with callstack:\n" + 
+            stackTraceToString(stackTrace));
+        }
+
         Boolean shouldRetry = false;
         if (maxInjections < 0 || injectionCount < maxInjections) {
           shouldRetry = true;
@@ -147,6 +161,30 @@ public aspect ThrowableCallback {
     }
 
     return new InjectionPoint(false, null, null, null, null, null, 0.0, 0); 
+  }
+
+
+  /* 
+   * Callback before calling Thread.sleep(...)
+   */
+
+  pointcut recordThreadSleep():
+    execution(* java.lang.Thread.sleep(..)) &&
+    !within(is(FinalType)) &&
+    !within(is(EnumType)) &&
+    !within(is(AnnotationType));
+
+  before() : recordThreadSleep() {
+    Stack<String> stackTrace = getStackTrace();
+    LOG.warn("[wasabi] Thread sleep detected, callstack:" + stackTraceToString(stackTrace));
+
+    String frame = null;
+    long currentTimestamp = 0;
+    for (int index = 1; index < stackTrace.size(); ++index) {
+      frame = getQualifiedName(stackTrace.get(index));
+      currentTimestamp = System.nanoTime();
+      lastBlackoffTimestamps.put(frame, lastBlackoffTimestamps.getOrDefault(frame, currentTimestamp));
+    }
   }
 
 
