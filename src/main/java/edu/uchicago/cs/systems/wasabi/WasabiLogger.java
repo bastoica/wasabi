@@ -11,7 +11,7 @@ public class WasabiLogger {
   public static final int LOG_LEVEL_DEBUG = 3;
   public static final int LOG_LEVEL_ERROR = 4;
 
-  public void printMessage(int logLevel, String msg) {
+  public synchronized void printMessage(int logLevel, String msg) {
     long timestamp = System.nanoTime();
     long threadId = Thread.currentThread().getId();
 

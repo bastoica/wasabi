@@ -7,8 +7,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.System;
+import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 public class WasabiCodeQLDataParser {
 
@@ -25,15 +28,14 @@ public class WasabiCodeQLDataParser {
     private static final String[] CSV_COLUMN_NAMES = {"Retry location", "Enclosing method", "Retried method", "Exception", "Injection Probablity", "Test coverage"};
    
     public void parseCodeQLOutput() {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(this.csvFileName));
+        try (BufferedReader br = new BufferedReader(new FileReader(this.csvFileName))) {
 
             boolean foundHeader = false;
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split("!!!");
 
-                if (!foundHeader && arrayEquals(CSV_COLUMN_NAMES, values)) {
+                if (!foundHeader && Arrays.equals(CSV_COLUMN_NAMES, values)) {
                     foundHeader = true;
                     continue;
                 }
@@ -80,35 +82,23 @@ public class WasabiCodeQLDataParser {
         }
     }
 
-    private static boolean arrayEquals(String[] sourceArray, String[] targetArray) {
-        if (sourceArray.length != targetArray.length) {
-            return false;
-        }
-        for (int i = 0; i < sourceArray.length; i++) {
-            if (!sourceArray[i].equals(targetArray[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public ArrayList<String[]> getRawRecords() {
+    private ArrayList<String[]> getRawRecords() {
         return rawRecords;
     }
 
-    public HashMap<String, WasabiWaypoint> getWaypoints() {
-        return waypoints;
+    public Map<String, WasabiWaypoint> getWaypoints() {
+        return Collections.unmodifiableMap(waypoints);
     }
 
-    public HashMap<String, HashMap<String, String>> getCallersToExceptionsMap() {
-        return callersToExceptionsMap;
+    public Map<String, HashMap<String, String>> getCallersToExceptionsMap() {
+        return Collections.unmodifiableMap(callersToExceptionsMap);
     }
 
-    public HashMap<String, String> getReverseRetryLocationsMap() {
-        return reverseRetryLocationsMap;
+    public Map<String, String> getReverseRetryLocationsMap() {
+        return Collections.unmodifiableMap(reverseRetryLocationsMap);
     }
 
-    public HashMap<String, Double> getInjectionProbabilityMap() {
-        return injectionProbabilityMap;
+    public Map<String, Double> getInjectionProbabilityMap() {
+        return Collections.unmodifiableMap(injectionProbabilityMap);
     }
 }

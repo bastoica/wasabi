@@ -3,11 +3,15 @@ package edu.uchicago.cs.systems.wasabi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import java.io.IOException;
 import java.io.EOFException;
@@ -30,10 +34,10 @@ public aspect ThrowableCallback {
   private static Integer maxInjections = (System.getProperty("maxInjections") != null) ? 
                                             Integer.parseInt(System.getProperty("maxInjections")) : -1;
 
-  private static final HashMap<String, WasabiWaypoint> waypoints = new HashMap<>();
-  private static final HashMap<String, HashMap<String, String>> callersToExceptionsMap = new HashMap<>();
-  private static final HashMap<String, String> reverseRetryLocationsMap = new HashMap<>();
-  private static final HashMap<String, Double> injectionProbabilityMap = new HashMap<>();
+  private static final Map<String, WasabiWaypoint> waypoints;
+  private static final Map<String, HashMap<String, String>> callersToExceptionsMap;
+  private static final Map<String, String> reverseRetryLocationsMap;
+  private static final Map<String, Double> injectionProbabilityMap;
 
   private static ThreadLocal<ArrayList<OpEntry>> threadLocalOpCache =
     new ThreadLocal<ArrayList<OpEntry>>() {
@@ -48,8 +52,6 @@ public aspect ThrowableCallback {
           return new HashMap<Integer, Integer>();
       }
   };
-
-  //private static final ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
 
   private static class InjectionPoint {
 
@@ -160,10 +162,10 @@ public aspect ThrowableCallback {
     WasabiCodeQLDataParser parser = new WasabiCodeQLDataParser();
     parser.parseCodeQLOutput();
 
-    waypoints.putAll(parser.getWaypoints());
-    callersToExceptionsMap.putAll(parser.getCallersToExceptionsMap());
-    reverseRetryLocationsMap.putAll(parser.getReverseRetryLocationsMap());
-    injectionProbabilityMap.putAll(parser.getInjectionProbabilityMap());
+    waypoints = Collections.unmodifiableMap(parser.getWaypoints());
+    callersToExceptionsMap = Collections.unmodifiableMap(parser.getCallersToExceptionsMap());
+    reverseRetryLocationsMap = Collections.unmodifiableMap(parser.getReverseRetryLocationsMap());
+    injectionProbabilityMap = Collections.unmodifiableMap(parser.getInjectionProbabilityMap());
   }
 
   private static Boolean isEnclosedByRetry(String retryCaller, String retriedCallee) { 
