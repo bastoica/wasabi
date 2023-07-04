@@ -138,7 +138,7 @@ public aspect ThrowableCallback {
         return false;
       }
 
-      if (!Objects.equals(this.exception, exception)) {
+      if (!this.exception.equals(exception)) {
         return false;
       }
 
@@ -146,10 +146,12 @@ public aspect ThrowableCallback {
         return false;
       }
 
-      if (this.stackTrace.size() != stackTrace.size())
+      if (this.stackTrace.size() != stackTrace.size()) {
+        return false;
+      }
 
       for (int i = 0; i < this.stackTrace.size(); ++i) {
-        if (!Objects.equals(this.stackTrace.get(i), stackTrace.get(i))) {
+        if (!this.stackTrace.get(i).equals(stackTrace.get(i))) {
           return false;
         }
       }
@@ -169,68 +171,25 @@ public aspect ThrowableCallback {
   }
 
   private static Boolean isEnclosedByRetry(String retryCaller, String retriedCallee) { 
-    if (retryCaller == null || retryCaller.isEmpty() || retriedCallee == null || retriedCallee.isEmpty()) {
-        return false;
-    }
-
-    if (!callersToExceptionsMap.containsKey(retryCaller)) {
-      return false;
-    }
-
-    HashMap<String, String> retriedMethods = callersToExceptionsMap.get(retryCaller);
-    if (retriedMethods == null) {
-        return false;
-    }
-
-    return retriedMethods.containsKey(retriedCallee);
+    return callersToExceptionsMap.containsKey(retryCaller) && 
+           callersToExceptionsMap.get(retryCaller).containsKey(retriedCallee);
   }
   
   private static String getQualifiedName(String frame) {
-    if (frame.contains("(")) {
-        return frame.split("\\(")[0];
-    }
-    return frame;
+    return frame.split("\\(")[0];
   }
 
   private static ArrayList<String> getStackTrace() {
     StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-    ArrayList<String> frames = new ArrayList<>();
-    for (StackTraceElement frame : stackTrace) {
-        if (frame.getClassName().contains("edu.uchicago.cs.systems.wasabi")) {
-          continue;
-        }
-        frames.add(frame.toString());
-    }
-    return frames;
+    return Arrays.stream(stackTrace).filter(frame -> !frame.getClassName().contains("edu.uchicago.cs.systems.wasabi")).map(StackTraceElement::toString).collect(Collectors.toCollection(ArrayList::new));
   }
 
   private static String stackTraceToString(ArrayList<String> stackTrace) {
-    StringBuilder serializedStacktrace = new StringBuilder();
-    for (String frame : stackTrace) {
-      serializedStacktrace.append("\t").append(frame).append("\n");
-    }
-    return serializedStacktrace.toString();
+    return stackTrace.stream().map(frame -> "\t" + frame).collect(Collectors.joining("\n"));
   }
 
   private static ArrayList<String> removeStacktraceTopAt(ArrayList<String> stackTrace, String retryCaller) {
-    ArrayList<String> trimmedStackTrace = new ArrayList<>();
-    boolean foundRetryCaller = false;
-
-    if (stackTrace != null && !stackTrace.isEmpty() && retryCaller != null && !retryCaller.isEmpty()) {
-      for (String frame : stackTrace) {
-          if (!foundRetryCaller && frame != null && frame.startsWith(retryCaller)) {
-              trimmedStackTrace.add(getQualifiedName(frame));
-              foundRetryCaller = true;
-              continue;
-          }
-          
-          if (foundRetryCaller) {
-              trimmedStackTrace.add(frame);
-          }
-      }
-    }
-    
-    return trimmedStackTrace;
+    return stackTrace.stream().dropWhile(frame -> frame == null || !frame.startsWith(retryCaller)).map(frame -> frame.startsWith(retryCaller) ? getQualifiedName(frame) : frame).collect(Collectors.toCollection(ArrayList::new));
   }
 
   private static Boolean isSameRetryAttempt(ArrayList<String> stackTrace, String exception) { 
@@ -252,19 +211,15 @@ public aspect ThrowableCallback {
              opCache.get(opCache.size() - 1).hasFrame(retryCaller) );  
   }
 
-  private static int updateInjectionCount(InjectionPoint ipt) {
-    int hval = WasabiWaypoint.getHashValue(ipt.stackTrace);
+  private static int updateInjectionCount(InjectionPoint ipt) { 
+    int hval = WasabiWaypoint.getHashValue(ipt.stackTrace); 
     HashMap<Integer, Integer> injectionCounts = threadLocalInjectionCounts.get();
-
-    injectionCounts.compute(hval, (k, value) -> {
-          if (isSameRetryAttempt(removeStacktraceTopAt(ipt.stackTrace, ipt.retryCaller), ipt.retriedException)) {
-              return (value != null) ? value + 1 : 1;
-          } else {
-              return 1;
-          }
+    
+    int newValue = injectionCounts.merge(hval, 1, (oldValue, one) -> {
+        return isSameRetryAttempt(removeStacktraceTopAt(ipt.stackTrace, ipt.retryCaller), ipt.retriedException) ? oldValue + one : one;
       });
-
-    return injectionCounts.containsKey(hval) ? injectionCounts.get(hval) : 0;
+    
+    return newValue;
   }
 
   private static int getInjectionCount(ArrayList<String> stackTrace) {
@@ -296,9 +251,7 @@ public aspect ThrowableCallback {
   
               int injectionCount = getInjectionCount(stackTrace);            
               if (injectionCount > 1 && !isRetryBackoff(retryCaller)) {
-                LOG.printMessage(LOG.LOG_LEVEL_WARN, "No backoff between retry attempts at %%" +
-                  retryLocation + "%% with callstack:\n" +
-                  stackTraceToString(stackTrace));
+                LOG.printMessage(LOG.LOG_LEVEL_WARN, String.format("No backoff between retry attempts at !!%s!! with callstack:\n%s", retryLocation, stackTraceToString(stackTrace)));
               }
   
               ArrayList<OpEntry> opCache = threadLocalOpCache.get();
@@ -331,10 +284,8 @@ public aspect ThrowableCallback {
    */
 
   pointcut recordThreadSleep():
-   (execution(* Thread.sleep(..)) ||
-    call(* Thread.sleep(..))) &&
-    !within(ThrowableCallback) &&
-    !within(TestThrowableCallback) &&
+    call(* Thread.sleep(..)) &&
+    !within(ThrowableCallback+) &&
     !within(Wasabi.*) &&
     !within(is(FinalType)) &&
     !within(is(EnumType)) &&
@@ -343,13 +294,13 @@ public aspect ThrowableCallback {
   before() : recordThreadSleep() { // use a try-catch block to handle any exceptions 
     try { 
       ArrayList<String> stackTrace = getStackTrace(); 
-      LOG.printMessage(LOG.LOG_LEVEL_WARN, "Thread sleep detected, callstack:" + stackTraceToString(stackTrace));
+      LOG.printMessage(LOG.LOG_LEVEL_WARN, String.format("Thread sleep detected, callstack: %s", stackTraceToString(stackTrace)));
   
       ArrayList<OpEntry> opCache = threadLocalOpCache.get();
       Long currentTime = System.nanoTime();
       opCache.add(new OpEntry(OpEntry.THREAD_SLEEP_OP, currentTime, stackTrace));
     } catch (Exception e) {
-      LOG.printMessage(LOG.LOG_LEVEL_ERROR, "Exception occurred in recordThreadSleep(): " + e.getMessage());
+      LOG.printMessage(LOG.LOG_LEVEL_ERROR, String.format("Exception occurred in recordThreadSleep(): %s", e.getMessage()));
     }
   }
 
@@ -411,20 +362,14 @@ public aspect ThrowableCallback {
     InjectionPoint ipt = getInjectionPoint();
 
     if (ipt.retryLocation != null) { 
-      LOG.printMessage(LOG.LOG_LEVEL_WARN, "Pointcut inside retry logic at ~~" + 
-        ipt.retryLocation + "~~ with callstack:\n" + 
-        stackTraceToString(ipt.stackTrace));
+      LOG.printMessage(LOG.LOG_LEVEL_WARN, String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", ipt.retryLocation, stackTraceToString(ipt.stackTrace)));
     }
 
     if (ipt.shouldRetry == true) {
       if (!ipt.isEmpty()) {
         if (randomGenerator.nextDouble() < ipt.injectionProbability) {
           ipt.injectionCount = updateInjectionCount(ipt);
-          throw new IOException("[wasabi] IOException thrown from " + 
-            ipt.retryLocation + " before calling " + 
-            ipt.retriedCallee + " | Injection probability " +
-            String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
-            ipt.injectionCount);
+          throw new IOException(String.format("[wasabi] IOException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount));
         }
       }
     }
@@ -445,20 +390,14 @@ public aspect ThrowableCallback {
     InjectionPoint ipt = getInjectionPoint();
 
     if (ipt.retryLocation != null) {
-      LOG.printMessage(LOG.LOG_LEVEL_WARN, "Pointcut inside retry logic at ~~" + 
-        ipt.retryLocation + "~~ with callstack:\n" + 
-        stackTraceToString(ipt.stackTrace));
+      LOG.printMessage(LOG.LOG_LEVEL_WARN, String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", ipt.retryLocation, stackTraceToString(ipt.stackTrace)));
     }
     
     if (ipt.shouldRetry == true) {
       if (!ipt.isEmpty()) {
         if (randomGenerator.nextDouble() < ipt.injectionProbability) {
           ipt.injectionCount = updateInjectionCount(ipt);
-          throw new EOFException("[wasabi] EOFException thrown from " + 
-            ipt.retryLocation + " before calling " + 
-            ipt.retriedCallee + " | Injection probability " +
-            String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
-            ipt.injectionCount);
+          throw new EOFException(String.format("[wasabi] EOFException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount));
         }
       }
     }
@@ -484,20 +423,14 @@ public aspect ThrowableCallback {
     InjectionPoint ipt = getInjectionPoint();
 
     if (ipt.retryLocation != null) {
-      LOG.printMessage(LOG.LOG_LEVEL_WARN, "Pointcut inside retry logic at ~~" + 
-        ipt.retryLocation + "~~ with callstack:\n" + 
-        stackTraceToString(ipt.stackTrace));
+      LOG.printMessage(LOG.LOG_LEVEL_WARN, String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", ipt.retryLocation, stackTraceToString(ipt.stackTrace)));
     }
 
     if (ipt.shouldRetry == true) {
       if (!ipt.isEmpty()) {
         if (randomGenerator.nextDouble() < ipt.injectionProbability) {
           ipt.injectionCount = updateInjectionCount(ipt);
-          throw new FileNotFoundException("[wasabi] FileNotFoundException thrown from " + 
-            ipt.retryLocation + " before calling " + 
-            ipt.retriedCallee + " | Injection probability " +
-            String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
-            ipt.injectionCount);
+          throw new FileNotFoundException(String.format("[wasabi] FileNotFoundException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount));
         }
       }
     }
@@ -518,20 +451,14 @@ public aspect ThrowableCallback {
     InjectionPoint ipt = getInjectionPoint();
  
     if (ipt.retryLocation != null) {
-      LOG.printMessage(LOG.LOG_LEVEL_WARN, "Pointcut inside retry logic at ~~" + 
-        ipt.retryLocation + "~~ with callstack:\n" + 
-        stackTraceToString(ipt.stackTrace));
+      LOG.printMessage(LOG.LOG_LEVEL_WARN, String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", ipt.retryLocation, stackTraceToString(ipt.stackTrace)));
     }
 
     if (ipt.shouldRetry == true) {
       if (!ipt.isEmpty()) {
         if (randomGenerator.nextDouble() < ipt.injectionProbability) {
           ipt.injectionCount = updateInjectionCount(ipt);
-          throw new ConnectException("[wasabi] ConnectException thrown from " + 
-            ipt.retryLocation + " before calling " + 
-            ipt.retriedCallee + " | Injection probability " +
-            String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
-            ipt.injectionCount);
+          throw new ConnectException(String.format("[wasabi] ConnectException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount));
         }
       }
     }
@@ -552,20 +479,14 @@ public aspect ThrowableCallback {
     InjectionPoint ipt = getInjectionPoint();
 
     if (ipt.retryLocation != null) {
-      LOG.printMessage(LOG.LOG_LEVEL_WARN, "Pointcut inside retry logic at ~~" + 
-        ipt.retryLocation + "~~ with callstack:\n" + 
-        stackTraceToString(ipt.stackTrace));
+      LOG.printMessage(LOG.LOG_LEVEL_WARN, String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", ipt.retryLocation, stackTraceToString(ipt.stackTrace)));
     }
     
     if (ipt.shouldRetry == true) {
       if (!ipt.isEmpty()) {
         if (randomGenerator.nextDouble() < ipt.injectionProbability) {
           ipt.injectionCount = updateInjectionCount(ipt);
-          throw new SocketTimeoutException("[wasabi] SocketTimeoutException thrown from " + 
-            ipt.retryLocation + " before calling " + 
-            ipt.retriedCallee + " | Injection probability " +
-            String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
-            ipt.injectionCount);
+          throw new SocketTimeoutException(String.format("[wasabi] SocketTimeoutException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount));
         }
       }
     }
@@ -699,20 +620,14 @@ public aspect ThrowableCallback {
     InjectionPoint ipt = getInjectionPoint();
   
     if (ipt.retryLocation != null) {
-      LOG.printMessage(LOG.LOG_LEVEL_WARN, "Pointcut inside retry logic at ~~" + 
-        ipt.retryLocation + "~~ with callstack:\n" + 
-        stackTraceToString(ipt.stackTrace));
+      LOG.printMessage(LOG.LOG_LEVEL_WARN, String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", ipt.retryLocation, stackTraceToString(ipt.stackTrace)));
     }
 
     if (ipt.shouldRetry == true) {
       if (!ipt.isEmpty()) {
         if (randomGenerator.nextDouble() < ipt.injectionProbability) {
           ipt.injectionCount = updateInjectionCount(ipt);
-          throw new SocketException("[wasabi] SocketException thrown from " + 
-            ipt.retryLocation + " before calling " + 
-            ipt.retriedCallee + " | Injection probability " +
-            String.valueOf(ipt.injectionProbability) + " | Retry attempt " + 
-            ipt.injectionCount);
+          throw new SocketException(String.format("[wasabi] SocketException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount));
         }
       }
     }
