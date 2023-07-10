@@ -166,7 +166,7 @@ public class WasabiContext {
           execTrace.checkIfOpHasFrame(secondToLastIndex, retryCaller))
         LOG.printMessage(
           LOG.LOG_LEVEL_WARN, 
-          String.format("No backoff between retry attempts at !!%s!! with callstack:\n%s", 
+          String.format("[wasabi] No backoff between retry attempts at !!%s!! with callstack:\n%s", 
             retryLocation, stackSnapshot.toString()));
     }
   }
