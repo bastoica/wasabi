@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WasabiLogger {
-  private static final Logger LOG = LoggerFactory.getLogger(Logger.class);
+  private final Logger LOG = LoggerFactory.getLogger(WasabiLogger.class);
 
-  public static final int LOG_LEVEL_INFO = 1;
-  public static final int LOG_LEVEL_WARN = 2;
-  public static final int LOG_LEVEL_DEBUG = 3;
-  public static final int LOG_LEVEL_ERROR = 4;
+  public final int LOG_LEVEL_INFO = 1;
+  public final int LOG_LEVEL_WARN = 2;
+  public final int LOG_LEVEL_DEBUG = 3;
+  public final int LOG_LEVEL_ERROR = 4;
 
   public synchronized void printMessage(int logLevel, String msg) {
     long timestamp = System.nanoTime();

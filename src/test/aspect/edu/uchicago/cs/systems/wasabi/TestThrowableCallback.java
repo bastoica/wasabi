@@ -1,6 +1,8 @@
 package edu.uchicago.cs.systems.wasabi;
 
 import java.lang.Thread;
+
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class TestThrowableCallback {
