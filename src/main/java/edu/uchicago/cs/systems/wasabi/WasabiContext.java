@@ -113,8 +113,8 @@ public class WasabiContext {
 
     if (
       isRetryLogic(
-          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(1)), // retry caller
-          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0))  // retried callee
+        StackSnapshot.getQualifiedName(stackSnapshot.getFrame(1)), // retry caller
+        StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0))  // retried callee
         ) 
     ) {
       String retriedCallee = StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0));
@@ -128,7 +128,12 @@ public class WasabiContext {
       addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, retriedException);
 
       int injectionCount = getInjectionCount(stackSnapshot.getStacktrace());
-      Boolean hasBackoff = checkIfRetryHasBackoff(injectionCount, stackSnapshot, retryCaller, retryLocation);
+      Boolean hasBackoff = checkMissingBackoffDuringRetry(
+          injectionCount, 
+          stackSnapshot, 
+          retryCaller, 
+          retryLocation
+        );
       
       return new InjectionPoint(
           stackSnapshot,
@@ -162,19 +167,24 @@ public class WasabiContext {
    * needed, move all such checks to a separate BugOracles class.
    */
 
-   private static void (int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {           
+  public static Boolean checkMissingBackoffDuringRetry(int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {           
     if (injectionCount >= 2) {
       int lastIndex = execTrace.getSize() - 1;
       int secondToLastIndex = execTrace.getSize() - 2;
       int thirdToLastIndex = execTrace.getSize() - 3;
-      
-      if (execTrace.checkIfOpsAreEqual(lastIndex, thirdToLastIndex) &&
-          execTrace.checkIfOpIsOfType(secondToLastIndex, OpEntry.THREAD_SLEEP_OP) &&
-          execTrace.checkIfOpHasFrame(secondToLastIndex, retryCaller))
+
+      if (!(execTrace.checkIfOpsAreEqual(lastIndex, thirdToLastIndex) &&
+            execTrace.checkIfOpIsOfType(secondToLastIndex, OpEntry.THREAD_SLEEP_OP) &&
+            execTrace.checkIfOpHasFrame(secondToLastIndex, retryCaller))) {
         LOG.printMessage(
-          LOG.LOG_LEVEL_WARN, 
-          String.format("[wasabi] No backoff between retry attempts at !!%s!! with callstack:\n%s", 
-            retryLocation, stackSnapshot.toString()));
+            LOG.LOG_LEVEL_WARN, 
+            String.format("[wasabi] No backoff between retry attempts at !!%s!! with callstack:\n%s", 
+              retryLocation, stackSnapshot.toString())
+          );
+        return true; // missing backoff
+      }
     }
+
+    return false; // backoff either present or not yet needed
   }
 }
