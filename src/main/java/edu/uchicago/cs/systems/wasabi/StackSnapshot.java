@@ -46,22 +46,6 @@ class StackSnapshot {
     return this.stacktrace.stream().anyMatch(frame -> frame.contains(target));
   }
 
-  /*
-  public ArrayList<String> removeStacktraceTopAt(String target) {
-    ArrayList<String> trimmedStack = new ArrayList<>();
-    boolean foundTarget = false;
-    for (String frame : stacktrace) {
-        if (!foundTarget && frame.equals(target)) {
-            trimmedStack.add(getQualifiedName(target));
-            foundTarget = true;
-        } else if (foundTarget) {
-            trimmedStack.add(frame);
-        }
-    }
-    return trimmedStack;
-  }
-  */
-
   public Boolean isEqual(StackSnapshot target) {
     if (target.isNullOrEmpty()) {
       return false;

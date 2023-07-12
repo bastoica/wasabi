@@ -35,35 +35,6 @@ class TestStackSnapshot {
     assertFalse(stackSnap.hasFrame("not-a-frame"));
   }
 
-  /*
-  @Test
-  public void testRemoveStacktraceTopAt() {
-    ArrayList<String> testStack = new ArrayList() { 
-        {
-          add("fob(Fab.java:42)");
-          add("baz(Baz.java:42)");
-          add("bar(Bar.java:42)"); 
-          add("foo(Foo.java:42)"); 
-        } 
-      };
-    ArrayList<String> expectedStack = new ArrayList() { 
-        {
-          add("baz");
-          add("bar(Bar.java:42)"); 
-          add("foo(Foo.java:42)"); 
-        } 
-      };
-
-    StackSnapshot stackSnap = new StackSnapshot(testStack);
-    ArrayList<String> trimmedStack = stackSnap.removeStacktraceTopAt(testStack.get(1));
-    
-    assertEquals(trimmedStack.size(), expectedStack.size());
-    for (int i = 0; i < expectedStack.size(); ++i) {
-      assertEquals(trimmedStack.get(i), expectedStack.get(i));
-    }
-  }
-  */
-
   @Test
   public void testGetQualifiedName() {
     String frameFoo = "foo(Foo.java:42)";
