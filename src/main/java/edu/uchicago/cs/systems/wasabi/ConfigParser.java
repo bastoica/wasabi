@@ -16,22 +16,23 @@ import java.util.Map;
 public class ConfigParser {
 
   private static WasabiLogger LOG;
-
+  private static String configFile;
+  
   private static final ArrayList<String[]> rawRecords = new ArrayList<>();
   private static final Map<String, HashMap<String, String>> callersToExceptionsMap = new HashMap<>();
   private static final Map<Integer, String> reverseRetryLocationsMap = new HashMap<>();
   private static final Map<Integer, Double> injectionProbabilityMap = new HashMap<>();
   
   private static final HashingPrimitives hashingPrimitives = new HashingPrimitives();
-  private static final String csvFileName = System.getProperty("csvFileName");
   private static final String[] CSV_COLUMN_NAMES = {"Retry location", "Enclosing method", "Retried method", "Exception", "Injection Probablity", "Test coverage"};
   
-  public ConfigParser(WasabiLogger logger) {
-    LOG = logger;
+  public ConfigParser(WasabiLogger logger, String configFile) {
+    this.LOG = logger;
+    this.configFile = configFile;
   }
 
   public void parseCodeQLOutput() {
-    try (BufferedReader br = new BufferedReader(new FileReader(this.csvFileName))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(this.configFile))) {
       boolean foundHeader = false;
       String line;
       while ((line = br.readLine()) != null) {
@@ -47,7 +48,7 @@ public class ConfigParser {
         }
       }
     } catch (IOException e) {
-      LOG.printMessage(
+      this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
           String.format("[wasabi] An exception occured in the parser code: %s\n", e.getMessage())
         );
@@ -71,7 +72,7 @@ public class ConfigParser {
         Double injectionProbablity = Double.parseDouble(injectionProbabilityString);
         injectionProbabilityMap.put(key, injectionProbablity);
       } catch (Exception e) {
-        LOG.printMessage(
+        this.LOG.printMessage(
             LOG.LOG_LEVEL_ERROR, 
             String.format("[wasabi] An exception occured when parsing parsing entry ( %s , %s , %s , %s ): %s\n", 
               record[0], record[1], record[2], record[3], e.getMessage())
