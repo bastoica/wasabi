@@ -2,7 +2,7 @@ package edu.uchicago.cs.systems.wasabi;
 
 import java.util.Random;
 
-public abstract class InjectionPolicy {
+abstract class InjectionPolicy {
 
   public abstract boolean shouldInject(int injectionCount, double injectionProbability);
 }
