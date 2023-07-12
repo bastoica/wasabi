@@ -113,8 +113,8 @@ public class WasabiContext {
 
     if (
       isRetryLogic(
-          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0)), 
-          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(1))
+          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(1)), // retry caller
+          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0))  // retried callee
         ) 
     ) {
       String retriedCallee = StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0));
