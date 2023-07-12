@@ -25,8 +25,8 @@ public class WasabiContext {
   private static ExecutionTrace execTrace = new ExecutionTrace();
   private static HashMap<Integer, Integer> injectionCounts = new HashMap<>();
 
-  public WasabiContext(WasabiLogger logger, String injectionPolicyConfig, int maxInjectionCount) {
-    ConfigParser parser = new ConfigParser(logger);
+  public WasabiContext(WasabiLogger logger, String configFile, String injectionPolicyConfig, int maxInjectionCount) {
+    ConfigParser parser = new ConfigParser(logger, configFile);
     parser.parseCodeQLOutput();
 
     callersToExceptionsMap = Collections.unmodifiableMap(parser.getCallersToExceptionsMap());
@@ -61,34 +61,32 @@ public class WasabiContext {
     return str == null || str.isEmpty();
   }
 
-  private static Boolean isRetryLogic(String retryCaller, String retriedCallee) { 
-    return ( 
-      !isNullOrEmpty(retryCaller) && 
-      !isNullOrEmpty(retriedCallee) &&
-      callersToExceptionsMap.containsKey(retryCaller) && 
-      callersToExceptionsMap.get(retryCaller).containsKey(retriedCallee)
-    );
-  }
-
   private static int getInjectionCount(ArrayList<String> stacktrace) {
     int hval = hashingPrimitives.getHashValue(stacktrace);
     return injectionCounts.getOrDefault(hval, 0);
   }
 
-  private static int updateInjectionCount(ArrayList<String> stacktrace) { 
+  private static int updateInjectionCount(ArrayList<String> stacktrace) {   
     int hval = hashingPrimitives.getHashValue(stacktrace);
-    Integer newCount = injectionCounts.merge(
-        hval, 1, (oldValue, one) -> {
-          int lastIndex = execTrace.getSize() - 1;
-          int secondToLastIndex = execTrace.getSize() - 2;
-          return ( 
-            execTrace.checkIfOpsAreEqual(lastIndex, secondToLastIndex) ? 
-              (oldValue + one) : one 
-          );
-        }
-      );
+    
+    if (!injectionCounts.containsKey(hval)) {
+      injectionCounts.put(hval, 1);
+    } else {
+      int i = execTrace.getSize() - 1;
+      int j = execTrace.getSize() - 2;
 
-    return newCount != null ? (int)newCount : 0;
+      while (j > 0 && !execTrace.checkIfOpIsOfType(j, OpEntry.RETRY_CALLER_OP)) {
+        --j;
+      }
+
+      if (execTrace.checkIfOpsAreEqual(i, j)) {
+        injectionCounts.computeIfPresent(hval, (k, v) -> v + 1);
+      } else {
+        injectionCounts.computeIfPresent(hval, (k, v) -> 1);
+      }
+    }
+
+    return injectionCounts.get(hval);
   }
 
   public static void addToExecTrace(int opType, StackSnapshot stackSnapshot) {
@@ -99,6 +97,15 @@ public class WasabiContext {
   public static void addToExecTrace(int opType, StackSnapshot stackSnapshot, String retriedException) {
     long currentTime = System.nanoTime();
     execTrace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retriedException));
+  }
+
+  public static Boolean isRetryLogic(String retryCaller, String retriedCallee) {
+    return ( 
+      !isNullOrEmpty(retryCaller) && 
+      !isNullOrEmpty(retriedCallee) &&
+      callersToExceptionsMap.containsKey(retryCaller) && 
+      callersToExceptionsMap.get(retryCaller).containsKey(retriedCallee)
+    );
   }
 
   public static InjectionPoint getInjectionPoint() {
@@ -121,7 +128,7 @@ public class WasabiContext {
       addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, retriedException);
 
       int injectionCount = getInjectionCount(stackSnapshot.getStacktrace());
-      checkIfRetryHasBackoff(injectionCount, stackSnapshot, retryCaller, retryLocation);
+      Boolean hasBackoff = checkIfRetryHasBackoff(injectionCount, stackSnapshot, retryCaller, retryLocation);
       
       return new InjectionPoint(
           stackSnapshot,
@@ -155,7 +162,7 @@ public class WasabiContext {
    * needed, move all such checks to a separate BugOracles class.
    */
 
-  private static void checkIfRetryHasBackoff(int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {           
+   private static void (int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {           
     if (injectionCount >= 2) {
       int lastIndex = execTrace.getSize() - 1;
       int secondToLastIndex = execTrace.getSize() - 2;
