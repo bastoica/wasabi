@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConfigParser {
+class ConfigParser {
 
   private static WasabiLogger LOG;
   private static String configFile;

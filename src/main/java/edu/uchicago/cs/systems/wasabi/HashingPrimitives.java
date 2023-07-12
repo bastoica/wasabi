@@ -3,7 +3,7 @@ package edu.uchicago.cs.systems.wasabi;
 import java.util.ArrayList;
 import java.util.StringJoiner;
 
-public class HashingPrimitives {
+class HashingPrimitives {
   public static int getHashValue(String str1, String str2, String str3) {
     StringJoiner joiner = new StringJoiner("@");
     joiner.add(str1);

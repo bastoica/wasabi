@@ -62,7 +62,7 @@ class OpEntry {
   }
 }
 
-public class ExecutionTrace {
+class ExecutionTrace {
 
   private final int INFINITE_CACHE = -1; 
 

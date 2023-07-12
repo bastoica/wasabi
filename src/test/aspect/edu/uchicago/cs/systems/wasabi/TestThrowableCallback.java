@@ -5,7 +5,7 @@ import java.lang.Thread;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class TestThrowableCallback {
+class TestThrowableCallback {
 
     @Test
     public void testShouldNotThrowException() throws Exception {

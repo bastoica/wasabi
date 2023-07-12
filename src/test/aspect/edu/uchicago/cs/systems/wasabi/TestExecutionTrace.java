@@ -7,7 +7,7 @@ import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class TestExecutionTrace {
+class TestExecutionTrace {
   
   @Test
   public void testIsSameOpEntry() {

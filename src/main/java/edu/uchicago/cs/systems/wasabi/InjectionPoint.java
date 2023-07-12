@@ -1,6 +1,6 @@
 package edu.uchicago.cs.systems.wasabi;
 
-public class InjectionPoint {
+class InjectionPoint {
 
   public StackSnapshot stackSnapshot = null;
   public String retryLocation = null;

@@ -6,7 +6,7 @@ import edu.uchicago.cs.systems.wasabi.StackSnapshot;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class TestStackSnapshot {
+class TestStackSnapshot {
   
   @Test
   public void testIsNullOrEmpty() {

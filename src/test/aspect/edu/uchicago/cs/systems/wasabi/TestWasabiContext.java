@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class TestWasabiContext {
+class TestWasabiContext {
   
   private final String configFile = "./output.csv";
   private final WasabiLogger LOG = new WasabiLogger();

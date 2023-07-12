@@ -12,7 +12,7 @@ import edu.uchicago.cs.systems.wasabi.StackSnapshot;
 import edu.uchicago.cs.systems.wasabi.InjectionPoint;
 import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 
-public class WasabiContext {
+class WasabiContext {
 
   private static WasabiLogger LOG;
   private static final HashingPrimitives hashingPrimitives = new HashingPrimitives();
