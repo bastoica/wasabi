@@ -40,13 +40,14 @@ public aspect Interceptor {
   static {
     maxInjectionCount = (System.getProperty("maxInjectionCount") != null) ? Integer.parseInt(System.getProperty("maxInjectionCount")) : -1;
     String injectionPolicyString = (System.getProperty("injectionPolicy") != null) ? System.getProperty("injectionPolicy") : "no-injection";
+    String configFile = System.getProperty("configFile");
 
     LOG = new WasabiLogger();
 
     threadLocalWasabiCtx = new ThreadLocal<>() {
         @Override
         protected WasabiContext initialValue() {
-            return new WasabiContext(LOG, injectionPolicyString, maxInjectionCount);
+            return new WasabiContext(LOG, configFile, injectionPolicyString, maxInjectionCount);
         }
       };
   }
