@@ -6,7 +6,7 @@ import edu.uchicago.cs.systems.wasabi.StackSnapshot;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-class TestInjectionPolicies {
+public class TestInjectionPolicies {
   
   int fakeCount = 1;
   int fakeBound = 2;
