@@ -15,13 +15,31 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-class TestWasabiContext {
+public class TestWasabiContext {
   
-  private final String configFile = "./output.csv";
   private final WasabiLogger LOG = new WasabiLogger();
   
-  private void generateConfigFile(String[][] records) {
-    try (FileWriter writer = new FileWriter(this.configFile)) {
+  private final String testConfigFile = "./_test.conf";
+  private final String testCsvFile = "./_test_data.csv";
+  private final String testRetryPolicy = "forever";
+  private final int testMaxCount = 42;
+  
+  private void generateConfigFile(String retryPolicy, int maxCount) {
+    try (FileWriter writer = new FileWriter(this.testConfigFile)) {
+      writer.append("csv_file: " + this.testCsvFile + "\n");
+      writer.append("injection_policy: " + retryPolicy + "\n");
+      writer.append("max_injection_count: " + String.valueOf(maxCount) + "\n");
+    } catch (IOException e) {
+      this.LOG.printMessage(
+          LOG.LOG_LEVEL_ERROR, 
+          String.format("[wasabi] Error occurred while generating CSV file: %s", e.getMessage())
+        );
+      e.printStackTrace();
+    }
+  }
+
+  private void generateCsvFile(String[][] records) {
+    try (FileWriter writer = new FileWriter(this.testCsvFile)) {
       writer.append("Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection Probablity!!!Test coverage\n");
 
       for (String[] record : records) {
@@ -38,8 +56,25 @@ class TestWasabiContext {
     }
   }
 
+  private void overwriteConfigFile(String retryPolicy, int maxCount) {
+    try {
+      Path path = Paths.get(this.testConfigFile);
+      Files.deleteIfExists(path);
+    } catch (IOException e) {
+      this.LOG.printMessage(
+          LOG.LOG_LEVEL_ERROR, 
+          String.format("[wasabi] Error occurred while deleting test configuration files: %s", e.getMessage())
+        );
+      e.printStackTrace();
+    }
+
+    generateConfigFile(retryPolicy, maxCount);
+  }
+
   @Before
   public void startUp() {
+    generateConfigFile(this.testRetryPolicy, this.testMaxCount);
+
     StackSnapshot stackSnapshot = new StackSnapshot();
     String[][] records = {
         {
@@ -51,14 +86,13 @@ class TestWasabiContext {
           "0" // test coverage metrics
         }
       };
-    
-    generateConfigFile(records);
+    generateCsvFile(records);
   }
 
   @Test
   public void testIsRetryLogic() {
     StackSnapshot stackSnapshot = new StackSnapshot();
-    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configFile, "forever", 42);
+    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.testConfigFile);
 
     assertTrue(
         wasabiCtx.isRetryLogic(
@@ -77,7 +111,9 @@ class TestWasabiContext {
 
   @Test
   public void testShouldInject() {
-    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configFile, "max-count", 0);
+    overwriteConfigFile("max-count", this.testMaxCount);
+
+    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.testConfigFile);
     InjectionPoint validInjectionPoint = wasabiCtx.getInjectionPoint();
     
     assertTrue(validInjectionPoint != null);
@@ -99,7 +135,7 @@ class TestWasabiContext {
 
   @Test
   public void testUpdateInjectionCount() {
-    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configFile, "forever", 42);
+    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.testConfigFile);
     InjectionPoint ipt = wasabiCtx.getInjectionPoint(); // new injection point
     int initialCount = ipt.injectionCount;
 
@@ -119,7 +155,7 @@ class TestWasabiContext {
 
   @Test
   public void testCheckMissingBackoffDuringRetry() {
-    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configFile, "forever", 42);
+    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.testConfigFile);
     StackSnapshot stackSnapshot = new StackSnapshot();
     
     wasabiCtx.addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
@@ -136,7 +172,7 @@ class TestWasabiContext {
         )
       );
 
-    // Thread sleep present on different from different call path
+    // No backoff present, because the Tread.sleep() is on a totally differen callpath
     assertTrue(
         wasabiCtx.checkMissingBackoffDuringRetry(
           2,
@@ -146,7 +182,7 @@ class TestWasabiContext {
         )
       );
 
-    // No retry backoff needed before first attempt
+    // No backoff needed before first retry attempt
     assertFalse(
         wasabiCtx.checkMissingBackoffDuringRetry(
           1,
@@ -160,12 +196,16 @@ class TestWasabiContext {
   @After
   public void tearDown() {
     try {
-      Path path = Paths.get(this.configFile);
+      Path path = Paths.get(this.testCsvFile);
       Files.deleteIfExists(path);
+
+      path = Paths.get(this.testConfigFile);
+      Files.deleteIfExists(path);
+
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] Error occurred while deleting CSV file: %s", e.getMessage())
+          String.format("[wasabi] Error occurred while deleting test configuration files: %s", e.getMessage())
         );
       e.printStackTrace();
     }

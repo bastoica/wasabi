@@ -25,15 +25,15 @@ class WasabiContext {
   private static ExecutionTrace execTrace = new ExecutionTrace();
   private static HashMap<Integer, Integer> injectionCounts = new HashMap<>();
 
-  public WasabiContext(WasabiLogger logger, String configFile, String injectionPolicyConfig, int maxInjectionCount) {
+  public WasabiContext(WasabiLogger logger, String configFile) {
+    LOG = logger;
+    
     ConfigParser parser = new ConfigParser(logger, configFile);
-    parser.parseCodeQLOutput();
+    
+    int maxInjectionCount = parser.getMaxInjectionCount();
 
-    callersToExceptionsMap = Collections.unmodifiableMap(parser.getCallersToExceptionsMap());
-    reverseRetryLocationsMap = Collections.unmodifiableMap(parser.getReverseRetryLocationsMap());
-    injectionProbabilityMap = Collections.unmodifiableMap(parser.getInjectionProbabilityMap());
-
-    switch (injectionPolicyConfig) {
+    String injectionPolicyString = parser.getInjectionPolicy();
+    switch (injectionPolicyString) {
       case "no-injection":
         injectionPolicy = new NoInjection();
         break;
@@ -54,7 +54,9 @@ class WasabiContext {
         break;
     }
 
-    LOG = logger;
+    callersToExceptionsMap = Collections.unmodifiableMap(parser.getCallersToExceptionsMap());
+    reverseRetryLocationsMap = Collections.unmodifiableMap(parser.getReverseRetryLocationsMap());
+    injectionProbabilityMap = Collections.unmodifiableMap(parser.getInjectionProbabilityMap());
   }
 
   private static Boolean isNullOrEmpty(String str) {
@@ -177,7 +179,7 @@ class WasabiContext {
             execTrace.checkIfOpIsOfType(secondToLastIndex, OpEntry.THREAD_SLEEP_OP) &&
             execTrace.checkIfOpHasFrame(secondToLastIndex, retryCaller))) {
         LOG.printMessage(
-            LOG.LOG_LEVEL_WARN, 
+            LOG.LOG_LEVEL_INFO, 
             String.format("[wasabi] No backoff between retry attempts at !!%s!! with callstack:\n%s", 
               retryLocation, stackSnapshot.toString())
           );

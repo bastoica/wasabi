@@ -56,7 +56,6 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
     	  <groupId>junit</groupId>
     	  <artifactId>junit</artifactId>
     	  <version>4.13.2</version>
-    	  <scope>test</scope>
 	</dependency>
 	<dependency>
     	  <groupId>org.junit.jupiter</groupId>

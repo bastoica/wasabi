@@ -8,12 +8,6 @@ if [ -z "$1" ]; then
 fi
 
 config_file=$1
-max_injections="-1"
-if [ -z "$2" ]; then
-    read -p $'\n'$"[wasabi] [WARNING] No value for the max number of injection per retry location provided. The default option is 'unbouded'. Press any key to continue or ctrl-c to abort..."$'\n\n' -n1 -s
-else
-    max_injections=$2
-fi
 
 log_file="build.log"
 threads=$(($(grep -c ^processor /proc/cpuinfo)-1))
@@ -28,20 +22,22 @@ fi
 echo "==== Experiment trial parameters ====" 2>&1 | tee -a ${log_file} 
 echo "Log file : "${log_file} 2>&1 | tee -a ${log_file} 
 echo "Parallel build thread count : "${threads} 2>&1 | tee -a ${log_file} 
-echo "CSV config file : "${config_file} 2>&1 | tee -a ${log_file} 
-echo "Max injections : "${max_injections} 2>&1 | tee -a ${log_file} 
+echo "Config file : "${config_file} 2>&1 | tee -a ${log_file} 
+echo "+++++++++" | tee -a ${log_file} 
+cat ${config_file} | tee -a ${log_file} 
+echo "+++++++++" | tee -a ${log_file} 
 echo "====================================="$'\n\n' 2>&1 | tee -a ${log_file} 
 
 
 # Compile, build, and test the target application
 mvn -fn -DskipTests -DcsvFileName="${config_file}" clean compile 2>&1 | tee -a ${log_file} && \
-    mvn -DcsvFileName="${config_file}" -DmaxInjections="${max_injections}" -Dparallel-tests -DtestsThreadCount=${threads} -fn test 2>&1 | tee -a ${log_file}
+    mvn -DconfigFile="${config_file}" -Dparallel-tests -DtestsThreadCount=${threads} -fn test 2>&1 | tee -a ${log_file}
 
 
 # Make the log file UTF-8 compliant
 perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" ${log_file}
 
-
+exit 0
 # Move logs to a separate directory
 wasabi_dir="wasabi.data"
 date=$(date -d "today" +"%Y%m%d%H%M")

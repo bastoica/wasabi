@@ -13,10 +13,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Assert;
+
 class ConfigParser {
 
   private static WasabiLogger LOG;
   private static String configFile;
+
+  private static String csvFile;
+  private static String injectionPolicy;
+  private static int maxInjectionCount;
   
   private static final ArrayList<String[]> rawRecords = new ArrayList<>();
   private static final Map<String, HashMap<String, String>> callersToExceptionsMap = new HashMap<>();
@@ -29,10 +35,53 @@ class ConfigParser {
   public ConfigParser(WasabiLogger logger, String configFile) {
     this.LOG = logger;
     this.configFile = configFile;
+
+    parseConfigFile();
+    parseCodeQLOutput();
   }
 
-  public void parseCodeQLOutput() {
+  private void parseConfigFile() {
     try (BufferedReader br = new BufferedReader(new FileReader(this.configFile))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        String[] parts = line.split(":");
+        Assert.assertEquals("[wasabi] Invalid line format for <" + line + ">", 2, parts.length);
+
+        String parameter = parts[0].trim();
+        String value = parts[1].replaceAll("\\s+", "").trim();
+        switch (parameter) {
+          case "csv_file":
+            this.csvFile = value;
+            break;
+          case "injection_policy":
+            this.injectionPolicy = value;
+            break;
+          case "max_injection_count":
+            try {
+              this.maxInjectionCount = Integer.parseInt(value);
+              break;
+            } catch (Exception e) {
+              this.LOG.printMessage(
+                  LOG.LOG_LEVEL_ERROR, 
+                  String.format("[wasabi] An exception occured when parsing line <%s>: %s\n", 
+                    line, e.getMessage())
+                );
+              e.printStackTrace();
+            } 
+        }
+          
+      }
+    } catch (IOException e) {
+      this.LOG.printMessage(
+          LOG.LOG_LEVEL_ERROR, 
+          String.format("[wasabi] An exception when parsing the config file: %s\n", e.getMessage())
+        );
+      e.printStackTrace();
+    }
+  }
+  
+  private void parseCodeQLOutput() {
+    try (BufferedReader br = new BufferedReader(new FileReader(this.csvFile))) {
       boolean foundHeader = false;
       String line;
       while ((line = br.readLine()) != null) {
@@ -50,7 +99,7 @@ class ConfigParser {
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] An exception occured in the parser code: %s\n", e.getMessage())
+          String.format("[wasabi] An exception occured when parsing the CSV data: %s\n", e.getMessage())
         );
       e.printStackTrace();
     }
@@ -74,7 +123,7 @@ class ConfigParser {
       } catch (Exception e) {
         this.LOG.printMessage(
             LOG.LOG_LEVEL_ERROR, 
-            String.format("[wasabi] An exception occured when parsing parsing entry ( %s , %s , %s , %s ): %s\n", 
+            String.format("[wasabi] An exception occured when parsing entry ( %s , %s , %s , %s ): %s\n", 
               record[0], record[1], record[2], record[3], e.getMessage())
           );
         e.printStackTrace();
@@ -82,7 +131,7 @@ class ConfigParser {
     }
   }
 
-  private ArrayList<String[]> getRawRecords() {
+  public ArrayList<String[]> getRawRecords() {
     return rawRecords;
   }
 
@@ -96,5 +145,13 @@ class ConfigParser {
 
   public Map<Integer, Double> getInjectionProbabilityMap() {
     return Collections.unmodifiableMap(injectionProbabilityMap);
+  }
+
+  public int getMaxInjectionCount() {
+    return this.maxInjectionCount;
+  }
+
+  public String getInjectionPolicy() {
+    return this.injectionPolicy;
   }
 }

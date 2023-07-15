@@ -38,16 +38,12 @@ public aspect Interceptor {
   private static final ThreadLocal<WasabiContext> threadLocalWasabiCtx;
 
   static {
-    maxInjectionCount = (System.getProperty("maxInjectionCount") != null) ? Integer.parseInt(System.getProperty("maxInjectionCount")) : -1;
-    String injectionPolicyString = (System.getProperty("injectionPolicy") != null) ? System.getProperty("injectionPolicy") : "no-injection";
-    String configFile = System.getProperty("configFile");
-
+    String configFile = (System.getProperty("configFile") != null) ? System.getProperty("configFile") : "default.conf";
     LOG = new WasabiLogger();
-
     threadLocalWasabiCtx = new ThreadLocal<>() {
         @Override
         protected WasabiContext initialValue() {
-            return new WasabiContext(LOG, configFile, injectionPolicyString, maxInjectionCount);
+            return new WasabiContext(LOG, configFile);
         }
       };
   }
