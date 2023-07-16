@@ -21,14 +21,16 @@ public class TestWasabiContext {
   
   private final String testConfigFile = "./_test.conf";
   private final String testCsvFile = "./_test_data.csv";
-  private final String testRetryPolicy = "forever";
+  private final String testRetryPolicy = "max-count";
   private final int testMaxCount = 42;
+
+  private ConfigParser configParser;
   
-  private void generateConfigFile(String retryPolicy, int maxCount) {
+  private void generateConfigFile() {
     try (FileWriter writer = new FileWriter(this.testConfigFile)) {
       writer.append("csv_file: " + this.testCsvFile + "\n");
-      writer.append("injection_policy: " + retryPolicy + "\n");
-      writer.append("max_injection_count: " + String.valueOf(maxCount) + "\n");
+      writer.append("injection_policy: " + this.testRetryPolicy + "\n");
+      writer.append("max_injection_count: " + String.valueOf(this.testMaxCount) + "\n");
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
@@ -38,7 +40,19 @@ public class TestWasabiContext {
     }
   }
 
-  private void generateCsvFile(String[][] records) {
+  private void generateCsvFile() {
+    StackSnapshot stackSnapshot = new StackSnapshot();
+    String[][] records = {
+        {
+          "test_retry_location:TestWasabiContext.javaL#0", // retry location 
+          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(1)), // enclosing method
+          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0)), // retried method 
+          "SocketException", // exception
+          "1.0", // injection probability
+          "0" // test coverage metrics
+        }
+      };
+
     try (FileWriter writer = new FileWriter(this.testCsvFile)) {
       writer.append("Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection Probablity!!!Test coverage\n");
 
@@ -56,43 +70,17 @@ public class TestWasabiContext {
     }
   }
 
-  private void overwriteConfigFile(String retryPolicy, int maxCount) {
-    try {
-      Path path = Paths.get(this.testConfigFile);
-      Files.deleteIfExists(path);
-    } catch (IOException e) {
-      this.LOG.printMessage(
-          LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] Error occurred while deleting test configuration files: %s", e.getMessage())
-        );
-      e.printStackTrace();
-    }
-
-    generateConfigFile(retryPolicy, maxCount);
-  }
-
   @Before
   public void startUp() {
-    generateConfigFile(this.testRetryPolicy, this.testMaxCount);
-
-    StackSnapshot stackSnapshot = new StackSnapshot();
-    String[][] records = {
-        {
-          "test_retry_location:TestWasabiContext.javaL#0", // retry location 
-          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(1)), // enclosing method
-          StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0)), // retried method 
-          "SocketException", // exception
-          "1.0", // injection probability
-          "0" // test coverage metrics
-        }
-      };
-    generateCsvFile(records);
+    generateConfigFile();
+    generateCsvFile();
+    this.configParser = new ConfigParser(LOG, testConfigFile);
   }
 
   @Test
   public void testIsRetryLogic() {
     StackSnapshot stackSnapshot = new StackSnapshot();
-    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.testConfigFile);
+    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configParser);
 
     assertTrue(
         wasabiCtx.isRetryLogic(
@@ -111,9 +99,7 @@ public class TestWasabiContext {
 
   @Test
   public void testShouldInject() {
-    overwriteConfigFile("max-count", this.testMaxCount);
-
-    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.testConfigFile);
+    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configParser);
     InjectionPoint validInjectionPoint = wasabiCtx.getInjectionPoint();
     
     assertTrue(validInjectionPoint != null);
@@ -135,7 +121,7 @@ public class TestWasabiContext {
 
   @Test
   public void testUpdateInjectionCount() {
-    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.testConfigFile);
+    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configParser);
     InjectionPoint ipt = wasabiCtx.getInjectionPoint(); // new injection point
     int initialCount = ipt.injectionCount;
 
@@ -155,7 +141,7 @@ public class TestWasabiContext {
 
   @Test
   public void testCheckMissingBackoffDuringRetry() {
-    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.testConfigFile);
+    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configParser);
     StackSnapshot stackSnapshot = new StackSnapshot();
     
     wasabiCtx.addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");

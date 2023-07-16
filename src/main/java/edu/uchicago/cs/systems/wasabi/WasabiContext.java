@@ -15,6 +15,8 @@ import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 class WasabiContext {
 
   private static WasabiLogger LOG;
+  private static ConfigParser configParser;
+
   private static final HashingPrimitives hashingPrimitives = new HashingPrimitives();
 
   private static Map<String, HashMap<String, String>> callersToExceptionsMap;
@@ -25,14 +27,13 @@ class WasabiContext {
   private static ExecutionTrace execTrace = new ExecutionTrace();
   private static HashMap<Integer, Integer> injectionCounts = new HashMap<>();
 
-  public WasabiContext(WasabiLogger logger, String configFile) {
-    LOG = logger;
+  public WasabiContext(WasabiLogger logger, ConfigParser configParser) {
+    this.LOG = logger;
+    this.configParser = configParser;
     
-    ConfigParser parser = new ConfigParser(logger, configFile);
-    
-    int maxInjectionCount = parser.getMaxInjectionCount();
+    int maxInjectionCount = this.configParser.getMaxInjectionCount();
 
-    String injectionPolicyString = parser.getInjectionPolicy();
+    String injectionPolicyString = this.configParser.getInjectionPolicy();
     switch (injectionPolicyString) {
       case "no-injection":
         injectionPolicy = new NoInjection();
@@ -54,21 +55,21 @@ class WasabiContext {
         break;
     }
 
-    callersToExceptionsMap = Collections.unmodifiableMap(parser.getCallersToExceptionsMap());
-    reverseRetryLocationsMap = Collections.unmodifiableMap(parser.getReverseRetryLocationsMap());
-    injectionProbabilityMap = Collections.unmodifiableMap(parser.getInjectionProbabilityMap());
+    callersToExceptionsMap = Collections.unmodifiableMap(this.configParser.getCallersToExceptionsMap());
+    reverseRetryLocationsMap = Collections.unmodifiableMap(this.configParser.getReverseRetryLocationsMap());
+    injectionProbabilityMap = Collections.unmodifiableMap(this.configParser.getInjectionProbabilityMap());
   }
 
-  private static Boolean isNullOrEmpty(String str) {
+  private Boolean isNullOrEmpty(String str) {
     return str == null || str.isEmpty();
   }
 
-  private static int getInjectionCount(ArrayList<String> stacktrace) {
+  private int getInjectionCount(ArrayList<String> stacktrace) {
     int hval = hashingPrimitives.getHashValue(stacktrace);
     return injectionCounts.getOrDefault(hval, 0);
   }
 
-  private static int updateInjectionCount(ArrayList<String> stacktrace) {   
+  private int updateInjectionCount(ArrayList<String> stacktrace) {   
     int hval = hashingPrimitives.getHashValue(stacktrace);
     
     if (!injectionCounts.containsKey(hval)) {
@@ -91,17 +92,17 @@ class WasabiContext {
     return injectionCounts.get(hval);
   }
 
-  public static void addToExecTrace(int opType, StackSnapshot stackSnapshot) {
+  public void addToExecTrace(int opType, StackSnapshot stackSnapshot) {
     long currentTime = System.nanoTime();
     execTrace.addLast(new OpEntry(opType, currentTime, stackSnapshot));
   }
 
-  public static void addToExecTrace(int opType, StackSnapshot stackSnapshot, String retriedException) {
+  public void addToExecTrace(int opType, StackSnapshot stackSnapshot, String retriedException) {
     long currentTime = System.nanoTime();
     execTrace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retriedException));
   }
 
-  public static Boolean isRetryLogic(String retryCaller, String retriedCallee) {
+  public Boolean isRetryLogic(String retryCaller, String retriedCallee) {
     return ( 
       !isNullOrEmpty(retryCaller) && 
       !isNullOrEmpty(retriedCallee) &&
@@ -110,7 +111,7 @@ class WasabiContext {
     );
   }
 
-  public static InjectionPoint getInjectionPoint() {
+  public InjectionPoint getInjectionPoint() {
     StackSnapshot stackSnapshot = new StackSnapshot();
 
     if (
@@ -169,7 +170,7 @@ class WasabiContext {
    * needed, move all such checks to a separate BugOracles class.
    */
 
-  public static Boolean checkMissingBackoffDuringRetry(int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {           
+  public Boolean checkMissingBackoffDuringRetry(int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {           
     if (injectionCount >= 2) {
       int lastIndex = execTrace.getSize() - 1;
       int secondToLastIndex = execTrace.getSize() - 2;
@@ -178,8 +179,8 @@ class WasabiContext {
       if (!(execTrace.checkIfOpsAreEqual(lastIndex, thirdToLastIndex) &&
             execTrace.checkIfOpIsOfType(secondToLastIndex, OpEntry.THREAD_SLEEP_OP) &&
             execTrace.checkIfOpHasFrame(secondToLastIndex, retryCaller))) {
-        LOG.printMessage(
-            LOG.LOG_LEVEL_INFO, 
+        this.LOG.printMessage(
+            WasabiLogger.LOG_LEVEL_INFO, 
             String.format("[wasabi] No backoff between retry attempts at !!%s!! with callstack:\n%s", 
               retryLocation, stackSnapshot.toString())
           );
