@@ -63,7 +63,7 @@ class ConfigParser {
             } catch (Exception e) {
               this.LOG.printMessage(
                   LOG.LOG_LEVEL_ERROR, 
-                  String.format("[wasabi] An exception occured when parsing line <%s>: %s\n", 
+                  String.format("[wasabi] An exception occurred when parsing line <%s>: %s\n", 
                     line, e.getMessage())
                 );
               e.printStackTrace();
@@ -74,12 +74,12 @@ class ConfigParser {
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] An exception when parsing the config file: %s\n", e.getMessage())
+          String.format("[wasabi] An exception occurred when parsing the config file: %s\n", e.getMessage())
         );
       e.printStackTrace();
     }
   }
-  
+
   private void parseCodeQLOutput() {
     try (BufferedReader br = new BufferedReader(new FileReader(this.csvFile))) {
       boolean foundHeader = false;
@@ -99,7 +99,7 @@ class ConfigParser {
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] An exception occured when parsing the CSV data: %s\n", e.getMessage())
+          String.format("[wasabi] An exception occurred when parsing the CSV data: %s\n", e.getMessage())
         );
       e.printStackTrace();
     }
@@ -123,7 +123,7 @@ class ConfigParser {
       } catch (Exception e) {
         this.LOG.printMessage(
             LOG.LOG_LEVEL_ERROR, 
-            String.format("[wasabi] An exception occured when parsing entry ( %s , %s , %s , %s ): %s\n", 
+            String.format("[wasabi] An exception occurred when parsing entry ( %s , %s , %s , %s ): %s\n", 
               record[0], record[1], record[2], record[3], e.getMessage())
           );
         e.printStackTrace();
