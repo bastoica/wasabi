@@ -57,18 +57,19 @@ public aspect Interceptor {
     !within(is(AnnotationType)));
 
   before() : recordThreadSleep() { 
+    long threadId = Thread.currentThread().getId();
     try {
       WasabiContext wasabiCtx = threadLocalWasabiCtx.get(); 
       StackSnapshot stackSnapshot = new StackSnapshot();
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
-          String.format("[wasabi] Thread sleep detected, callstack:\n%s", stackSnapshot.toString())
+          String.format("[wasabi] [thread=%d] Thread sleep detected, callstack:\n%s", stackSnapshot.toString())
         );
       wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot);
     } catch (Exception e) {
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] Exception occurred in recordThreadSleep(): %s", e.toString())
+          String.format("[wasabi] [thread=%d] Exception occurred in recordThreadSleep(): %s", e.toString())
         );
       e.printStackTrace();
     }
@@ -141,9 +142,10 @@ public aspect Interceptor {
         );
       
       if (wasabiCtx.shouldInject(ipt)) {
+        long threadId = Thread.currentThread().getId();
         throw new IOException(
-            String.format("[wasabi] IOException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
-              ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
+            String.format("[wasabi] [thread=%d] IOException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
+              threadId, ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
           );
       }
 
@@ -175,9 +177,10 @@ public aspect Interceptor {
         );
       
       if (wasabiCtx.shouldInject(ipt)) {
+        long threadId = Thread.currentThread().getId();
         throw new EOFException(
-            String.format("[wasabi] EOFException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
-              ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
+            String.format("[wasabi] [thread=%d] EOFException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
+              threadId, ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
           );
       }
 
@@ -214,9 +217,10 @@ public aspect Interceptor {
         );
       
       if (wasabiCtx.shouldInject(ipt)) {
+        long threadId = Thread.currentThread().getId();
         throw new FileNotFoundException(
-            String.format("[wasabi] FileNotFoundException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
-              ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
+            String.format("[wasabi] [thread=%d] FileNotFoundException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
+              threadId, ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
           );
       }
 
@@ -248,9 +252,10 @@ public aspect Interceptor {
         );
       
       if (wasabiCtx.shouldInject(ipt)) {
+        long threadId = Thread.currentThread().getId();
         throw new ConnectException(
-            String.format("[wasabi] ConnectException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
-              ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
+            String.format("[wasabi] [thread=%d] ConnectException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
+              threadId, ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
           );
       }
 
@@ -282,9 +287,10 @@ public aspect Interceptor {
         );
 
       if (wasabiCtx.shouldInject(ipt)) {
+        long threadId = Thread.currentThread().getId();
         throw new SocketTimeoutException(
-            String.format("[wasabi] SocketTimeoutException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
-              ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
+            String.format("[wasabi] [thread=%d] SocketTimeoutException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
+              threadId, ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
           );
       }
 
@@ -429,9 +435,10 @@ public aspect Interceptor {
         );
 
       if (wasabiCtx.shouldInject(ipt)) {
+        long threadId = Thread.currentThread().getId();
         throw new SocketException(
-            String.format("[wasabi] SocketException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
-              ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
+            String.format("[wasabi] [thread=%d] SocketException thrown from %s before calling %s | Injection probability %s | Retry attempt %d", 
+              threadId, ipt.retryLocation, ipt.retriedCallee, String.valueOf(ipt.injectionProbability), ipt.injectionCount)
           );
       }
 
