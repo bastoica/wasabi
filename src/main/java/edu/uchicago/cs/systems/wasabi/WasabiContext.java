@@ -180,7 +180,7 @@ class WasabiContext {
             execTrace.checkIfOpIsOfType(secondToLastIndex, OpEntry.THREAD_SLEEP_OP) &&
             execTrace.checkIfOpHasFrame(secondToLastIndex, retryCaller))) {
         this.LOG.printMessage(
-            WasabiLogger.LOG_LEVEL_INFO, 
+            WasabiLogger.LOG_LEVEL_DEBUG, 
             String.format("[wasabi] No backoff between retry attempts at !!%s!! with callstack:\n%s", 
               retryLocation, stackSnapshot.toString())
           );
