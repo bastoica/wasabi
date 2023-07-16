@@ -132,7 +132,7 @@ def get_all_failing_tests(log, exclude):
             if test_name is not None:
                 tokens = log[i+1].split()
                 for token in tokens:
-                    if token.startswith("https://") and re.search(r"java#L\d+$", token):
+                    if token.startswith("https://") and re.compile(r"java#L\d+$").search(token):
                         retry_locations.append(token)
                         test_names.append(test_name)
                         break
@@ -231,6 +231,49 @@ def get_tests_with_few_retry_attempts(log, max_attempts, exclude):
 
     return test_names, retry_attempts
 
+
+
+def get_tests_with_no_backoff(log, exclude):
+    """
+    Extracts tests with no backoff mechanism implemented between retry
+    attempts.
+
+    Args:
+        log (List): Log file as a list of lines.
+        exclude.tests (list): List of excluded tests.
+
+    Returns:
+        test_names: List of tests with a no backoff between retry attempts.
+    """
+    test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+    backoff_pattern = r"No backoff between retry attempts"
+    retry_location_pattern = r"\%\%(.*?)java#L(\d+)\%\%"
+    
+    test_names = []
+    retry_locations = []
+
+    for i in range(len(log)-1):
+        if (has_patterns(log[i], exclude.tests) == False and
+            has_patterns(log[i+1], exclude.patterns) == False and
+            re.compile(test_name_pattern).search(log[i]) and 
+            re.compile(backoff_pattern).search(log[i+1]) and
+            is_assertion_failure(log[i+1]) == False):
+
+            tokens = log[i].split()
+            for token in tokens:
+                if token.startswith("test") and token not in exclude.tests:
+                    test_name = token
+                    break
+
+            if test_name is not None:
+                tokens = log[i+1].split()
+                for token in tokens:
+                    if token.compile(retry_location_pattern).search(token):
+                        retry_locations.append(token.strip("\%\%"))
+                        test_names.append(test_name)
+                        break
+
+    return test_names, retry_locations
 
 def get_tests_failing_with_assertions(log, exclude):
     """
@@ -337,6 +380,11 @@ def main():
     print("\n\n==== Tests with few retry attempts (<= " + str(MAX_ATTEMPTS) + ") ====\n")
     for i in range(0, len(test_names)):
         print(test_names[i] + " : " + str(retry_attempts[i]))
+
+    test_names, retry_locations = get_tests_with_no_backoff(log, exclude)
+    print("==== Retry locations potentially without backoff ====\n")
+    for i in range(0, len(test_names)):
+        print(test_names[i] + " : " + retry_locations[i])
 
     test_names = get_tests_failing_with_assertions(log, exclude)
     print("\n\n==== Tests failing with assertions ====\n")
