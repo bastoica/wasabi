@@ -81,14 +81,14 @@ public aspect Interceptor {
    */
 
   pointcut forceIOException():
-   (execution(* org.apache.hadoop.fs.azure.StorageInterface.*.commitBlockList(..)) ||
-    execution(* org.apache.hadoop.fs.azure.StorageInterface.*.uploadBlock(..)) ||
+   (execution(* org.apache.hadoop.fs.azure.StorageInterface*.commitBlockList(..)) ||
+    execution(* org.apache.hadoop.fs.azure.StorageInterface*.uploadBlock(..)) ||
     execution(* org.apache.hadoop.fs.FSInputChecker.readChunk(..)) ||
     execution(* org.apache.hadoop.fs.impl.prefetch.CachingBlockManager.getInternal(..)) ||
     execution(* org.apache.hadoop.fs.obs.OBSInputStream.reopen(..)) ||
     execution(* org.apache.hadoop.fs.obs.OBSInputStream.seekInStream(..)) ||
     execution(* org.apache.hadoop.fs.obs.OBSInputStream.tryToReadFromInputStream(..)) ||
-    execution(* org.apache.hadoop.hdfs.DataStreamer.*.sendTransferBlock(..)) ||
+    execution(* org.apache.hadoop.hdfs.DataStreamer*.sendTransferBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.DFSClient.getLocatedBlocks(..)) ||
     execution(* org.apache.hadoop.hdfs.DFSInputStream.blockSeekTo(..)) ||
     execution(* org.apache.hadoop.hdfs.DFSInputStream.chooseDataNode(..)) ||
@@ -105,15 +105,13 @@ public aspect Interceptor {
     execution(* org.apache.hadoop.hdfs.protocol.datatransfer.Sender.writeBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.protocolPB.DatanodeProtocolClientSideTranslatorPB.blockReceivedAndDeleted(..)) ||
     execution(* org.apache.hadoop.hdfs.ReaderStrategy.readFromBlock(..)) ||
+    execution(* org.apache.hadoop.hdfs.server.common.blockaliasmap.BlockAliasMap*.getReader(..)) ||
     execution(* org.apache.hadoop.hdfs.server.blockmanagement.BlockManagerTestUtil.getComputedDatanodeWork(..)) ||
     execution(* org.apache.hadoop.hdfs.server.common.sps.BlockDispatcher.moveBlock(..)) ||
-    execution(* org.apache.hadoop.hdfs.server.datanode.TestReadOnlySharedStorage.getLocatedBlock(..)) ||
     execution(* org.apache.hadoop.hdfs.server.namenode.sps.BlockStorageMovementNeeded.removeItemTrackInfo(..)) ||
     execution(* org.apache.hadoop.hdfs.server.namenode.sps.StoragePolicySatisfier.analyseBlocksStorageMovementsAndAssignToDN(..)) ||
     execution(* org.apache.hadoop.io.IOUtils.readFully(..)) ||
-    execution(* org.apache.hadoop.ipc.Client.*.writeConnectionContext(..)) ||
-    execution(* org.apache.hadoop.ipc.Client.*.writeConnectionHeader(..)) ||
-    execution(* org.apache.hadoop.net.NetUtils.getInputStream(..)) ||
+    execution(* org.apache.hadoop.tools.dynamometer.DynoInfraUtils.fetchNameNodeJMXValue(..)) ||
     execution(* org.apache.hadoop.thirdparty.protobuf.CodedInputStream.readBytes(..)) ||
     execution(* org.apache.hadoop.thirdparty.protobuf.CodedInputStream.readEnum(..)) ||
     execution(* org.apache.hadoop.thirdparty.protobuf.CodedInputStream.readInt32(..)) ||
@@ -129,7 +127,7 @@ public aspect Interceptor {
     !within(is(FinalType)) &&
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
-
+    
   before() throws IOException : forceIOException() {
     WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
@@ -196,8 +194,6 @@ public aspect Interceptor {
   pointcut forceFileNotFoundException():
    (execution(* org.apache.hadoop.fs.obs.OBSCommonUtils.innerIsFolderEmpty(..)) ||
     execution(* org.apache.hadoop.fs.obs.OBSPosixBucketUtils.innerFsRenameFile(..)) ||
-    execution(* org.apache.hadoop.fs.FileSystemTestWrapper.delete(..)) ||
-    execution(* org.apache.hadoop.fs.FileSystemTestWrapper.mkdir(..)) ||
     execution(* org.apache.hadoop.hdfs.client.HdfsAdmin.createEncryptionZone(..)) ||
     execution(* org.apache.hadoop.fs.FileContext.open(..))) &&
     !within(edu.uchicago.cs.systems.wasabi.*) &&
@@ -304,7 +300,8 @@ public aspect Interceptor {
    */
 
   pointcut forceSocketException():
-   (execution(* java.net.Socket.bind(..)) ||
+   (execution(* *.net.SocketFactory.createSocket(..)) ||
+    execution(* java.net.Socket.bind(..)) ||
     execution(* java.net.SocketFactory.createSocket(..)) ||
     execution(* java.net.Socket.setKeepAlive(..)) ||
     execution(* java.net.Socket.setReuseAddress(..)) ||
@@ -330,8 +327,8 @@ public aspect Interceptor {
     execution(* org.apache.hadoop.hdfs.DFSUtilClient.createClientDatanodeProtocolProxy(..)) ||
     execution(* org.apache.hadoop.hdfs.DistributedFileSystem.recoverLease(..)) ||
     execution(* org.apache.hadoop.hdfs.DistributedFileSystem.rollingUpgrade(..)) ||
-    execution(* org.apache.hadoop.hdfs.FileChecksumHelper.*.tryDatanode(..)) ||
-    execution(* org.apache.hadoop.hdfs.MiniDFSCluster.*.build(..)) ||
+    execution(* org.apache.hadoop.hdfs.FileChecksumHelper*.tryDatanode(..)) ||
+    execution(* org.apache.hadoop.hdfs.MiniDFSCluster*.build(..)) ||
     execution(* org.apache.hadoop.hdfs.MiniDFSCluster.getFileSystem(..)) ||
     execution(* org.apache.hadoop.hdfs.MiniDFSCluster.makeDataNodeDirs(..)) ||
     execution(* org.apache.hadoop.hdfs.MiniDFSCluster.restartNameNodes(..)) ||
@@ -343,23 +340,18 @@ public aspect Interceptor {
     execution(* org.apache.hadoop.hdfs.protocol.ClientProtocol.create(..)) ||
     execution(* org.apache.hadoop.hdfs.protocol.datatransfer.sasl.SaslDataTransferClient.socketSend(..)) ||
     execution(* org.apache.hadoop.hdfs.protocol.datatransfer.Sender.releaseShortCircuitFds(..)) ||
-    execution(* org.apache.hadoop.hdfs.protocol.proto.DataTransferProtos.*.parseFrom(..)) ||
-    execution(* org.apache.hadoop.hdfs.qjournal.MiniJournalCluster.*.build(..)) ||
+    execution(* org.apache.hadoop.hdfs.protocol.proto.DataTransferProtos*.parseFrom(..)) ||
+    execution(* org.apache.hadoop.hdfs.qjournal.MiniJournalCluster*.build(..)) ||
     execution(* org.apache.hadoop.hdfs.qjournal.MiniJournalCluster.waitActive(..)) ||
     execution(* org.apache.hadoop.hdfs.server.balancer.Balancer.doBalance(..)) ||
     execution(* org.apache.hadoop.hdfs.server.balancer.KeyManager.getAccessToken(..)) ||
-    execution(* org.apache.hadoop.hdfs.server.balancer.TestBalancer.runBalancer(..)) ||
-    execution(* org.apache.hadoop.hdfs.server.balancer.TestBalancer.waitForBalancer(..)) ||
-    execution(* org.apache.hadoop.hdfs.server.balancer.TestBalancer.waitForHeartBeat(..)) ||
     execution(* org.apache.hadoop.hdfs.server.datanode.BPServiceActor.connectToNNAndHandshake(..)) ||
     execution(* org.apache.hadoop.hdfs.server.datanode.DataNode.instantiateDataNode(..)) ||
     execution(* org.apache.hadoop.hdfs.server.datanode.DataNode.runDatanodeDaemon(..)) ||
     execution(* org.apache.hadoop.hdfs.server.datanode.DataXceiver.create(..)) ||
     execution(* org.apache.hadoop.hdfs.server.datanode.DirectoryScanner.reconcile(..)) ||
     execution(* org.apache.hadoop.hdfs.server.federation.resolver.MultipleDestinationMountTableResolver.getDestinationForPath(..)) ||
-    execution(* org.apache.hadoop.hdfs.server.namenode.FSNamesystem.*.clearCorruptLazyPersistFiles(..)) ||
-    execution(* org.apache.hadoop.hdfs.server.namenode.ha.HATestUtil.configureFailoverFs(..)) ||
-    execution(* org.apache.hadoop.hdfs.server.namenode.ha.HATestUtil.waitForStandbyToCatchUp(..)) ||
+    execution(* org.apache.hadoop.hdfs.server.namenode.FSNamesystem*.clearCorruptLazyPersistFiles(..)) ||
     execution(* org.apache.hadoop.hdfs.server.namenode.NameNode.initializeSharedEdits(..)) ||
     execution(* org.apache.hadoop.hdfs.server.namenode.ReencryptionHandler.reencryptEncryptionZone(..)) ||
     execution(* org.apache.hadoop.hdfs.server.namenode.ReencryptionUpdater.processTask(..)) ||
@@ -369,14 +361,13 @@ public aspect Interceptor {
     execution(* org.apache.hadoop.hdfs.server.namenode.sps.Context.removeSPSHint(..)) ||
     execution(* org.apache.hadoop.hdfs.server.namenode.sps.Context.scanAndCollectFiles(..)) ||
     execution(* org.apache.hadoop.hdfs.server.sps.ExternalSPSFaultInjector.mockAnException(..)) ||
-    execution(* org.apache.hadoop.hdfs.TestDFSUpgradeFromImage.dfsOpenFileWithRetries(..)) ||
-    execution(* org.apache.hadoop.hdfs.TestDFSUpgradeFromImage.verifyChecksum(..)) ||
-    execution(* org.apache.hadoop.hdfs.TestDFSUpgradeFromImage.verifyDir(..)) ||
-    execution(* org.apache.hadoop.hdfs.web.WebHdfsFileSystem.*.connect(..)) ||
-    execution(* org.apache.hadoop.hdfs.web.WebHdfsFileSystem.*.getResponse(..)) ||
-    execution(* org.apache.hadoop.hdfs.web.WebHdfsFileSystem.*.getUrl(..)) ||
-    execution(* org.apache.hadoop.ipc.Client.*.setSaslClient(..)) ||
-    execution(* org.apache.hadoop.ipc.Client.*.setupConnection(..)) ||
+    execution(* org.apache.hadoop.hdfs.web.WebHdfsFileSystem*.connect(..)) ||
+    execution(* org.apache.hadoop.hdfs.web.WebHdfsFileSystem*.getResponse(..)) ||
+    execution(* org.apache.hadoop.hdfs.web.WebHdfsFileSystem*.getUrl(..)) ||
+    execution(* org.apache.hadoop.ipc.Client*.setSaslClient(..)) ||
+    execution(* org.apache.hadoop.ipc.Client*.setupConnection(..)) ||
+    execution(* org.apache.hadoop.ipc.Client*.writeConnectionContext(..)) ||
+    execution(* org.apache.hadoop.ipc.Client*.writeConnectionHeader(..)) ||
     execution(* org.apache.hadoop.ipc.RPC.getProtocolProxy(..)) ||
     execution(* org.apache.hadoop.ipc.RPC.waitForProxy(..)) ||
     execution(* org.apache.hadoop.mapred.ClientServiceDelegate.getProxy(..)) ||
@@ -385,6 +376,7 @@ public aspect Interceptor {
     execution(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.canCommit(..)) ||
     execution(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.commitPending(..)) ||
     execution(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.done(..)) ||
+    execution(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.getTask(..) throws *IOException*) ||
     execution(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.statusUpdate(..)) ||
     execution(* org.apache.hadoop.mapreduce.Cluster.getJob(..)) ||
     execution(* org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter.commitJobInternal(..)) ||
@@ -393,27 +385,33 @@ public aspect Interceptor {
     execution(* org.apache.hadoop.mapreduce.task.reduce.Fetcher.openConnection(..)) ||
     execution(* org.apache.hadoop.mapreduce.v2.app.MRAppMaster.initAndStartAppMaster(..)) ||
     execution(* org.apache.hadoop.net.NetUtils.getLocalInetAddress(..)) ||
+    execution(* org.apache.hadoop.net.NetUtils.getInputStream(..)) ||
     execution(* org.apache.hadoop.net.NetUtils.getOutputStream(..)) ||
     execution(* org.apache.hadoop.net.unix.DomainSocket.connect(..)) ||
-    execution(* org.apache.hadoop.security.token.delegation.TestZKDelegationTokenSecretManager.verifyTokenFail(..)) ||
     execution(* org.apache.hadoop.security.token.delegation.web.DelegationTokenManager.cancelToken(..)) ||
     execution(* org.apache.hadoop.security.token.delegation.web.DelegationTokenManager.renewToken(..)) ||
     execution(* org.apache.hadoop.security.token.delegation.web.DelegationTokenManager.verifyToken(..)) ||
+    execution(* org.apache.hadoop.security.UserGroupInformation.doAs(..) throws *IOException*) ||
     execution(* org.apache.hadoop.security.UserGroupInformation.checkTGTAndReloginFromKeytab(..)) ||
     execution(* org.apache.hadoop.security.UserGroupInformation.getCurrentUser(..)) ||
-    execution(* org.apache.hadoop.security.UserGroupInformation.*.relogin(..)) ||
+    execution(* org.apache.hadoop.security.UserGroupInformation*.relogin(..)) ||
     execution(* org.apache.hadoop.thirdparty.protobuf.GeneratedMessageV3.parseUnknownField(..)) ||
-    execution(* org.apache.hadoop.tools.dynamometer.DynoInfraUtils.fetchNameNodeJMXValue(..)) ||
     execution(* org.apache.hadoop.tools.SimpleCopyListing.addToFileListing(..)) ||
     execution(* org.apache.hadoop.tools.util.DistCpUtils.toCopyListingFileStatus(..)) ||
+    execution(* org.apache.hadoop.tools.util.RetriableCommand.doExecute(..)) ||
     execution(* org.apache.hadoop.yarn.api.ApplicationBaseProtocol.getApplicationAttemptReport(..)) ||
     execution(* org.apache.hadoop.yarn.api.ApplicationClientProtocol.getNewReservation(..)) ||
     execution(* org.apache.hadoop.yarn.api.ApplicationClientProtocol.submitReservation(..)) ||
+    execution(* org.apache.hadoop.yarn.client.api.impl.TimelineConnector*.run(..) throws *Exception*) ||
     execution(* org.apache.hadoop.yarn.client.api.impl.TimelineV2ClientImpl.putObjects(..)) ||
     execution(* org.apache.hadoop.yarn.client.api.YarnClient.getApplications(..)) ||
-    execution(* org.apache.hadoop.yarn.server.nodemanager.containermanager.container.ResourceMappings.*.fromBytes(..)) ||
+    execution(* org.apache.hadoop.yarn.client.cli.LogsCLI*.run(..) throws *Exception*) ||
+    execution(* org.apache.hadoop.yarn.logaggregation.filecontroller.ifile.LogAggregationIndexedFileController.deleteFileWithRetries(..)) ||
+    execution(* org.apache.hadoop.yarn.server.federation.retry.FederationActionRetry.run(..)) ||
+    execution(* org.apache.hadoop.yarn.server.nodemanager.containermanager.container.ResourceMappings*.fromBytes(..)) ||
     execution(* org.apache.hadoop.yarn.server.resourcemanager.AdminService.getServiceStatus(..)) ||
-    execution(* org.apache.hadoop.yarn.server.timelineservice.storage.FileSystemTimelineWriterImpl.*.run(..)) ||
+    execution(* org.apache.hadoop.yarn.server.resourcemanager.recovery.FileSystemRMStateStore*.run(..) throws *Exception*) ||
+    execution(* org.apache.hadoop.yarn.server.timelineservice.storage.FileSystemTimelineWriterImpl*.run(..)) ||
     execution(* org.apache.hadoop.yarn.server.uam.UnmanagedApplicationManager.getApplicationReport(..)) ||
     execution(* org.apache.hadoop.yarn.server.utils.BuilderUtils.newContainerTokenIdentifier(..)) ||
     execution(* org.apache.http.client.HttpClient.execute(..)) ||
@@ -422,7 +420,7 @@ public aspect Interceptor {
     !within(is(FinalType)) &&
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
-  
+
   before() throws SocketException : forceSocketException() {
     WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
