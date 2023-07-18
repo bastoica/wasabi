@@ -1,6 +1,6 @@
-[submodule "coconut"]
-	path = coconut
-	url = https://github.com/cyruszzhou/coconut.git
 [submodule "tempura"]
 	path = tempura
 	url = https://github.com/cyruszzhou/tempura.git
+[submodule "coconut"]
+	path = coconut
+	url = https://github.com/cyruszzhou/coconut.git
