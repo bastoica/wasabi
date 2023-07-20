@@ -1,0 +1,12 @@
+Var name!!!Assigned value!!!Assign method!!!Test class
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!3!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!3!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!3!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!3!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!3!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!4!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!5!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!10!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!10!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!10!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
+KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY!!!10!!!org.apache.hadoop.conf.Configuration.setInt!!!TestLoadBalancingKMSClientProvider
