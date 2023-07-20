@@ -3,7 +3,7 @@
 
 # Set up config variables
 if [ -z "$1" ]; then
-    echo "[wasabi] [ERROR] Usage ./build_helper.sh [config file] [optional: max injections per location (default is 'unbounded')]"
+    echo "[wasabi] [ERROR] Usage ./build_helper.sh [config file]"
     exit -1
 fi
 
@@ -37,7 +37,6 @@ mvn -fn -DskipTests -DcsvFileName="${config_file}" clean compile 2>&1 | tee -a $
 # Make the log file UTF-8 compliant
 perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" ${log_file}
 
-exit 0
 # Move logs to a separate directory
 wasabi_dir="wasabi.data"
 date=$(date -d "today" +"%Y%m%d%H%M")

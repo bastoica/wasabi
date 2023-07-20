@@ -36,7 +36,7 @@ def find_and_modify_assignment(test_class, assign_method, var_name, new_value, t
         bool: True if modification is successful, False otherwise.
     """
     java_file = find_java_file(test_class, test_directory_path)
-    java_file_copy = f"{test_class}.original"
+    java_file_copy = f"{java_file}.original"
 
     if not java_file:
         return
@@ -57,7 +57,7 @@ def find_and_modify_assignment(test_class, assign_method, var_name, new_value, t
             while index < len(lines) and ");" not in lines[index - 1]:
                 to_change += lines[index].strip()
                 index = index + 1
-            to_change = re.sub(r"\d+", lambda m: f"{new_value}" if int(m.group()) < new_value else m.group(), to_change)
+            to_change = re.sub(r"\d+\);", lambda m: f"{new_value});" if int(m.group().strip("\);")) < new_value else m.group(), to_change)
             modified_lines.append(to_change + "\n")
         else:
             modified_lines.append(lines[index])
