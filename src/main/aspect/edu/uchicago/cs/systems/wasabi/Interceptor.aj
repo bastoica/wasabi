@@ -37,13 +37,7 @@ public aspect Interceptor {
   
   private static final String configFile = (System.getProperty("configFile") != null) ? System.getProperty("configFile") : "default.conf";
   private static final ConfigParser configParser = new ConfigParser(LOG, configFile);
-
-  private static final ThreadLocal<WasabiContext> threadLocalWasabiCtx = new ThreadLocal<>() {
-        @Override
-        protected WasabiContext initialValue() {
-            return new WasabiContext(LOG, configParser);
-        }
-    };
+  private static final WasabiContext wasabiCtx = new WasabiContext(LOG, configParser);
 
   /* 
    * Callback before calling Thread.sleep(...)
@@ -58,7 +52,7 @@ public aspect Interceptor {
 
   before() : recordThreadSleep() { 
     try {
-      WasabiContext wasabiCtx = threadLocalWasabiCtx.get(); 
+   
       StackSnapshot stackSnapshot = new StackSnapshot();
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
@@ -127,9 +121,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
     
-  before() throws IOException : forceIOException() {
-    WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
-    InjectionPoint ipt = wasabiCtx.getInjectionPoint();
+  before() throws IOException : forceIOException() {    InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
       this.LOG.printMessage(
@@ -163,7 +155,6 @@ public aspect Interceptor {
     !within(is(AnnotationType));
  
   before() throws EOFException : forceEOFException() {
-    WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
@@ -201,7 +192,6 @@ public aspect Interceptor {
     !within(is(AnnotationType));
  
   before() throws FileNotFoundException : forceFileNotFoundException() {
-    WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
@@ -236,7 +226,6 @@ public aspect Interceptor {
     !within(is(AnnotationType));
   
   before() throws ConnectException : forceConnectException() {
-    WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
@@ -271,7 +260,6 @@ public aspect Interceptor {
     !within(is(AnnotationType));
    
   before() throws SocketTimeoutException : forceSocketTimeoutException() {
-    WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
@@ -421,7 +409,6 @@ public aspect Interceptor {
     !within(is(AnnotationType));
 
   before() throws SocketException : forceSocketException() {
-    WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {

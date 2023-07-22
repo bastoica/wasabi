@@ -2,6 +2,8 @@ package edu.uchicago.cs.systems.wasabi;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -64,6 +66,7 @@ class OpEntry {
 
 class ExecutionTrace {
 
+  private final Lock etLock = new ReentrantLock();
   private final int INFINITE_CACHE = -1; 
 
   private ArrayDeque<OpEntry> opCache;
@@ -92,10 +95,15 @@ class ExecutionTrace {
   }
 
   public void addLast(OpEntry opEntry) {
-    if (this.maxOpCacheSize != this.INFINITE_CACHE && this.opCache.size() >= this.maxOpCacheSize) {
-      this.opCache.removeFirst();
+    etLock.lock();
+    try {
+      if (this.maxOpCacheSize != this.INFINITE_CACHE && this.opCache.size() >= this.maxOpCacheSize) {
+        this.opCache.removeFirst();
+      }
+      this.opCache.addLast(opEntry);
+    } finally {
+      etLock.unlock();
     }
-    this.opCache.addLast(opEntry);
   }
 
   public Boolean checkIfOpsAreEqual(int leftIndex, int rightIndex) {

@@ -1,6 +1,7 @@
 package edu.uchicago.cs.systems.wasabi;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
@@ -25,7 +26,7 @@ class WasabiContext {
   private static InjectionPolicy injectionPolicy;
 
   private static ExecutionTrace execTrace = new ExecutionTrace();
-  private static HashMap<Integer, Integer> injectionCounts = new HashMap<>();
+  private static ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
 
   public WasabiContext(WasabiLogger logger, ConfigParser configParser) {
     this.LOG = logger;
