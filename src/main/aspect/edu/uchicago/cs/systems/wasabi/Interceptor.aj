@@ -50,7 +50,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType)));
 
-  before() : recordThreadSleep() { 
+  after() : recordThreadSleep() { 
     try {
    
       StackSnapshot stackSnapshot = new StackSnapshot();
@@ -121,7 +121,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
     
-  before() throws IOException : forceIOException() {    InjectionPoint ipt = wasabiCtx.getInjectionPoint();
+  after() throws IOException : forceIOException() {    InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
       this.LOG.printMessage(
@@ -154,7 +154,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
  
-  before() throws EOFException : forceEOFException() {
+  after() throws EOFException : forceEOFException() {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
@@ -191,7 +191,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
  
-  before() throws FileNotFoundException : forceFileNotFoundException() {
+  after() throws FileNotFoundException : forceFileNotFoundException() {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
@@ -225,7 +225,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
   
-  before() throws ConnectException : forceConnectException() {
+  after() throws ConnectException : forceConnectException() {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
@@ -259,7 +259,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
    
-  before() throws SocketTimeoutException : forceSocketTimeoutException() {
+  after() throws SocketTimeoutException : forceSocketTimeoutException() {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
@@ -408,7 +408,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
 
-  before() throws SocketException : forceSocketException() {
+  after() throws SocketException : forceSocketException() {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
@@ -445,7 +445,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType));
 
-  before() : throwableMethods() {
+  after() : throwableMethods() {
     /* do nothing */
   }
 }
