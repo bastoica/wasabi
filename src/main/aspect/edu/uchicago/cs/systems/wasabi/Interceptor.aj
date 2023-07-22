@@ -57,19 +57,18 @@ public aspect Interceptor {
     !within(is(AnnotationType)));
 
   before() : recordThreadSleep() { 
-    long threadId = Thread.currentThread().getId();
     try {
       WasabiContext wasabiCtx = threadLocalWasabiCtx.get(); 
       StackSnapshot stackSnapshot = new StackSnapshot();
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
-          String.format("[wasabi] [thread=%d] Thread sleep detected, callstack:\n%s", threadId, stackSnapshot.toString())
+          String.format("Thread sleep detected, callstack:\n%s", stackSnapshot.toString())
         );
       wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot);
     } catch (Exception e) {
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] [thread=%d] Exception occurred in recordThreadSleep(): %s", threadId, e.getMessage())
+          String.format("Exception occurred in recordThreadSleep(): %s", e.getMessage())
         );
       e.printStackTrace();
     }
