@@ -83,15 +83,30 @@ class ExecutionTrace {
   }
 
   public Boolean isNullOrEmpty() {
-    return this.opCache == null || this.opCache.isEmpty();
+    etLock.lock();
+    try {
+      return this.opCache == null || this.opCache.isEmpty();
+    } finally {
+      etLock.unlock();
+    }
   }
 
   public int getMaxOpCacheSize() {
-    return this.maxOpCacheSize;
+    etLock.lock();
+    try {
+      return this.maxOpCacheSize;
+    } finally {
+      etLock.unlock();
+    }
   }
 
   public int getSize() {
-    return this.opCache.size();
+    etLock.lock();
+    try {
+      return this.opCache.size();
+    } finally {
+      etLock.unlock();
+    }
   }
 
   public void addLast(OpEntry opEntry) {
@@ -107,71 +122,89 @@ class ExecutionTrace {
   }
 
   public Boolean checkIfOpsAreEqual(int leftIndex, int rightIndex) {
-    if (this.opCache.size() < Math.max(leftIndex, rightIndex)) {
-      return false;
-    }
-
-    OpEntry leftOp = null;
-    OpEntry rightOp = null;
-
-    int index = this.opCache.size() - 1; 
-    Iterator<OpEntry> itr = this.opCache.descendingIterator();
-    while (itr.hasNext() && index >= Math.min(leftIndex, rightIndex)) {
-      OpEntry current = itr.next();
-
-      if (index == leftIndex) {
-        leftOp = current;
-      } else if (index == rightIndex) {
-        rightOp = current;
+    etLock.lock();
+    try {
+      if (this.opCache.size() < Math.max(leftIndex, rightIndex)) {
+        return false;
       }
 
-      --index;
-    }
+      OpEntry leftOp = null;
+      OpEntry rightOp = null;
 
-    return leftOp != null && rightOp != null && leftOp.isSameOp(rightOp);
+      int index = this.opCache.size() - 1; 
+      Iterator<OpEntry> itr = this.opCache.descendingIterator();
+      while (itr.hasNext() && index >= Math.min(leftIndex, rightIndex)) {
+        OpEntry current = itr.next();
+
+        if (index == leftIndex) {
+          leftOp = current;
+        } else if (index == rightIndex) {
+          rightOp = current;
+        }
+
+        --index;
+      }
+  
+      return leftOp != null && rightOp != null && leftOp.isSameOp(rightOp);
+
+    } finally {
+      etLock.unlock();
+    }
   }
 
   public Boolean checkIfOpIsOfType(int targetIndex, int targetOpType) {
-    if (this.opCache.size() < targetIndex) {
-      return false;
-    }
-
-    OpEntry targetOp = null;
-
-    int index = this.opCache.size() - 1; 
-    Iterator<OpEntry> itr = this.opCache.descendingIterator();
-    while (itr.hasNext() && index >= targetIndex) {
-      OpEntry current = itr.next();
-
-      if (index == targetIndex) {
-        targetOp = current;
+    etLock.lock();
+    try {
+      if (this.opCache.size() < targetIndex) {
+        return false;
       }
 
-      --index;
-    }
+      OpEntry targetOp = null;
 
-    return targetOp != null && targetOp.isOfType(targetOpType);
+      int index = this.opCache.size() - 1; 
+      Iterator<OpEntry> itr = this.opCache.descendingIterator();
+      while (itr.hasNext() && index >= targetIndex) {
+        OpEntry current = itr.next();
+
+        if (index == targetIndex) {
+          targetOp = current;
+        }
+
+        --index;
+      }
+
+      return targetOp != null && targetOp.isOfType(targetOpType);
+
+    } finally {
+      etLock.unlock();
+    }
   }
   
   public Boolean checkIfOpHasFrame(int targetIndex, String targetFrame) {
-    if (this.opCache.size() < targetIndex) {
-      return false;
-    }
-
-    OpEntry targetOp = null;
-
-    int index = this.opCache.size() - 1; 
-    Iterator<OpEntry> itr = this.opCache.descendingIterator();
-    while (itr.hasNext() && index >= targetIndex) {
-      OpEntry current = itr.next();
-
-      if (index == targetIndex) {
-        targetOp = current;
+    etLock.lock();
+    try {
+      if (this.opCache.size() < targetIndex) {
+        return false;
       }
 
-      --index;
-    }
+      OpEntry targetOp = null;
 
-    return targetOp != null && targetOp.hasFrame(targetFrame);
+      int index = this.opCache.size() - 1; 
+      Iterator<OpEntry> itr = this.opCache.descendingIterator();
+      while (itr.hasNext() && index >= targetIndex) {
+        OpEntry current = itr.next();
+
+        if (index == targetIndex) {
+          targetOp = current;
+        }
+
+        --index;
+      }
+
+      return targetOp != null && targetOp.hasFrame(targetFrame);
+
+    } finally {
+      etLock.unlock();
+    }
   }
 }
