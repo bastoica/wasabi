@@ -138,7 +138,6 @@ def main():
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-f', dest='filename', help='Path to a single file')
     group.add_argument('-p', dest='directory', help='Path to a directory')
-
     args = parser.parse_args()
 
     if args.filename:
