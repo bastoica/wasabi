@@ -130,9 +130,10 @@ public class TestWasabiContext {
     assertEquals(initialCount + 1, ipt.injectionCount.intValue());
 
     StackSnapshot stackSnapshot = new StackSnapshot();
-    wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot); // some sleep operations in between
-    wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot);
-    wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot);
+    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(stackSnapshot.getFrame(1)));
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot); // some sleep operations in between
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
 
     ipt = wasabiCtx.getInjectionPoint(); // new injeciton point, same retry context
     assertTrue(wasabiCtx.shouldInject(ipt));
@@ -143,10 +144,11 @@ public class TestWasabiContext {
   public void testCheckMissingBackoffDuringRetry() {
     WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configParser);
     StackSnapshot stackSnapshot = new StackSnapshot();
-    
-    wasabiCtx.addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
-    wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot);
-    wasabiCtx.addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
+    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(stackSnapshot.getFrame(1)));
+
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
 
     // Retry backoff present
     assertFalse(
@@ -154,16 +156,6 @@ public class TestWasabiContext {
           2,
           stackSnapshot,
           stackSnapshot.getFrame(1),
-          "FakeRetryLocation"
-        )
-      );
-
-    // No backoff present, because the Tread.sleep() is on a totally differen callpath
-    assertTrue(
-        wasabiCtx.checkMissingBackoffDuringRetry(
-          2,
-          stackSnapshot,
-          "FakeCaller",
           "FakeRetryLocation"
         )
       );

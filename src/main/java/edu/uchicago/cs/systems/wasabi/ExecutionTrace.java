@@ -58,71 +58,83 @@ class OpEntry {
   public Boolean isSameOp(OpEntry target) {      
     return ( 
         this.opType == target.opType && 
-        this.exception.equals(target.exception) &&
+        (this.exception == null || this.exception.equals(target.exception)) &&
         this.stackSnapshot.isEqual(target.stackSnapshot)
       );
+  }
+
+  public void printOpEntry(WasabiLogger log) {
+
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("-------------------------------"));
+
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Op type: %d", this.opType));
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Timestamp: %d", this.timestamp));
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Callstack:\n%s", this.stackSnapshot.toString()));
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Exception: %s", this.exception));
+
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("-------------------------------\n"));
   }
 }
 
 class ExecutionTrace {
 
-  private final Lock etLock = new ReentrantLock();
+  private final Lock mutex = new ReentrantLock();
   private final int INFINITE_CACHE = -1; 
 
   private ArrayDeque<OpEntry> opCache;
   private int maxOpCacheSize;
 
   public ExecutionTrace() {
-    this.opCache = new ArrayDeque<OpEntry>(); 
+    this.opCache = new ArrayDeque<OpEntry>();
     this.maxOpCacheSize = this.INFINITE_CACHE;
   }
 
   public ExecutionTrace(int maxOpCacheSize) {
-    this.opCache = new ArrayDeque<OpEntry>(); 
+    this.opCache = new ArrayDeque<OpEntry>();
     this.maxOpCacheSize = maxOpCacheSize;
   }
 
   public Boolean isNullOrEmpty() {
-    etLock.lock();
+    mutex.lock();
     try {
       return this.opCache == null || this.opCache.isEmpty();
     } finally {
-      etLock.unlock();
+      mutex.unlock();
     }
   }
 
   public int getMaxOpCacheSize() {
-    etLock.lock();
+    mutex.lock();
     try {
       return this.maxOpCacheSize;
     } finally {
-      etLock.unlock();
+      mutex.unlock();
     }
   }
 
   public int getSize() {
-    etLock.lock();
+    mutex.lock();
     try {
       return this.opCache.size();
     } finally {
-      etLock.unlock();
+      mutex.unlock();
     }
   }
 
   public void addLast(OpEntry opEntry) {
-    etLock.lock();
+    mutex.lock();
     try {
       if (this.maxOpCacheSize != this.INFINITE_CACHE && this.opCache.size() >= this.maxOpCacheSize) {
         this.opCache.removeFirst();
       }
       this.opCache.addLast(opEntry);
     } finally {
-      etLock.unlock();
+      mutex.unlock();
     }
   }
 
   public Boolean checkIfOpsAreEqual(int leftIndex, int rightIndex) {
-    etLock.lock();
+    mutex.lock();
     try {
       if (this.opCache.size() < Math.max(leftIndex, rightIndex)) {
         return false;
@@ -148,12 +160,12 @@ class ExecutionTrace {
       return leftOp != null && rightOp != null && leftOp.isSameOp(rightOp);
 
     } finally {
-      etLock.unlock();
+      mutex.unlock();
     }
   }
 
   public Boolean checkIfOpIsOfType(int targetIndex, int targetOpType) {
-    etLock.lock();
+    mutex.lock();
     try {
       if (this.opCache.size() < targetIndex) {
         return false;
@@ -176,12 +188,12 @@ class ExecutionTrace {
       return targetOp != null && targetOp.isOfType(targetOpType);
 
     } finally {
-      etLock.unlock();
+      mutex.unlock();
     }
   }
   
   public Boolean checkIfOpHasFrame(int targetIndex, String targetFrame) {
-    etLock.lock();
+    mutex.lock();
     try {
       if (this.opCache.size() < targetIndex) {
         return false;
@@ -204,7 +216,19 @@ class ExecutionTrace {
       return targetOp != null && targetOp.hasFrame(targetFrame);
 
     } finally {
-      etLock.unlock();
+      mutex.unlock();
+    }
+  }
+
+  public void printExecTrace(WasabiLogger log) {
+    mutex.lock();
+    try {
+      for (OpEntry op : this.opCache) {
+        op.printOpEntry(log);
+      }
+
+    } finally {
+      mutex.unlock();
     }
   }
 }
