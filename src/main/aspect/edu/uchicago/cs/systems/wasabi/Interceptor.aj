@@ -66,7 +66,7 @@ public aspect Interceptor {
       // Get the WasabiContext object from the runnable
       WasabiContext wasabiCtx = ((WasabiContextHolder) r).getWasabiContext();
       // Set the ThreadLocal<WasabiContext> field to that object
-      threadLocalWasabiCtx.set(ctx);
+      threadLocalWasabiCtx.set(wasabiCtx);
     }
     // Otherwise, leave the ThreadLocal<WasabiContext> field as it is
   }
