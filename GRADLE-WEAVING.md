@@ -41,3 +41,5 @@ Finally, open `Interceptor.aj` again, on line 40, change `default.conf` to the a
 Run ``mvn clean install`` in your WASABI root directory. 
 
 The jar file is in `wasabi/target/`, should be named as `wasabi-x.x.x.jar`
+
+Now, you are ready to weave!
