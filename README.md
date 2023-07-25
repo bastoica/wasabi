@@ -2,6 +2,8 @@ WASABI is a fault injection tool written in AspectJ. Integrating, building, and 
 
 ## "Weaving" WASABI through a target application
 
+For Gradle post-compile time weaving, see [GRADLE-WEAVING.md](GRADLE-WEAVING.md)
+
 Instrumenting a target application with AspectJ is called weaving. AspectJ weaving can be achieved in multiple ways. For this project we only discuss weaving when building both WASABI and the target application using Maven.
 
 **Step 1:** Make sure the directory structure looks as illustrated in the diagram below. Note that the target application and wasabi should be located in the same directory.
