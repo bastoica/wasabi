@@ -11,19 +11,23 @@ def directory_walk(path):
   Args:
     path (str): Directory path to start the walk.
   """
-  graph = {}  # A dictionary to store the merged graph from all files.
+  graph = set()  # A set to store the merged graph from all files.
+  processed_files = set() # A set to store the processed files.
   
   for root, _, files in os.walk(path):
     for file in files:
       if file.endswith("-output.txt"):
         file_path = os.path.join(root, file)
-        graph_per_file = retry_locations_graph(file_path)
-        
-        # Combine the graph_per_file dictionaries to the larger graph dictionary.
-        for retry_location, tests in graph_per_file.items():
-          graph.setdefault(retry_location, set()).update(tests)
+        # Check if the file has already been processed
+        if file_path not in processed_files:
+          graph_per_file = retry_locations_graph(file_path)
+          # Combine the graph_per_file sets to the larger graph set.
+          graph.update(graph_per_file)
+          # Add the file to the processed files set
+          processed_files.add(file_path)
 
-  return graph
+  return list(graph)
+
 
 def retry_locations_graph(filename):
   """
@@ -33,9 +37,9 @@ def retry_locations_graph(filename):
     filename (str): Path to the input file containing retry locations and associated tests.
 
   Returns:
-    dict: A dictionary representing the graph, where keys are retry locations and values are sets of tests.
+    list: A list of tuples representing the graph, where each tuple contains a retry location and a test.
   """
-  graph = {}
+  graph = []
   test_name = "Test" + re.search(r".Test(.*?)\-output", filename).group(1)
   retry_location_pattern = r"~~(.*?)~~"
 
@@ -45,119 +49,121 @@ def retry_locations_graph(filename):
       if retry_location:
         retry_location = retry_location[0]
         # Using set to ensure no duplicates in the list of tests associated with a retry location.
-        graph.setdefault(retry_location, set()).add(test_name)
+        graph.append((retry_location, test_name))
 
   return graph
+
 
 def is_valid_matching(matching, retry_location, test):
   """
   Checks if the given retry_location-test pair is a valid matching.
 
   Args:
-    matching (dict): The current matching dictionary.
+    matching (list): The current matching list.
     retry_location (str): The retry location to be matched.
     test (str): The test to be matched.
 
   Returns:
     bool: True if the matching is valid, False otherwise.
   """
-  return test not in matching.values() and retry_location not in matching
+  return (retry_location, test) not in matching
+
 
 def find_matching(graph):
   """
   Performs a best-effort matching of retry locations to unique tests.
 
   Args:
-    graph (dict): The retry locations graph where keys are retry locations and values are sets of tests.
+    graph (list): The retry locations graph where each element is a tuple of a retry location and a test.
 
   Returns:
-    dict: A dictionary representing the matching, where keys are retry locations and values are matched tests.
+    list: A list of tuples representing the matching, where each tuple contains a matched retry location and a test.
   """
-  matching = {}
-  retry_locations = list(graph.keys())
+  matching = []
+  retry_locations = list(set([loc for loc, _ in graph]))
   random.shuffle(retry_locations)
     
   for retry_location in retry_locations:
-    tests = random.shuffle(graph[retry_location])
-    for test in tests:
-      if is_valid_matching(matching, retry_location, test):
-        matching.setdefault(retry_location, set()).add(test)
-        break
+    # Get the list of tests for this retry location
+    tests = [test for loc, test in graph if loc == retry_location]
+    # Check if the list is not empty
+    if tests:
+      # Shuffle the list of tests
+      tests = random.sample(tests, len(tests))
+      for test in tests:
+        if is_valid_matching(matching, retry_location, test):
+          matching.append((retry_location, test))
+          break
   
   return matching
+
 
 def add_unmatched(matching, graph):
   """
   Appends remaining unmatched tests to the existing matching while ensuring no test is matched with two retry locations.
 
   Args:
-    matching (dict): The current matching dictionary.
-    graph (dict): The retry locations graph where keys are retry locations and values are sets of tests.
+    matching (list): The current matching list.
+    graph (list): The retry locations graph where each element is a tuple of a retry location and a test.
 
   Returns:
-    dict: A dictionary representing the updated matching with all retry locations matched to tests.
+    list: A list of tuples representing the updated matching with all retry locations matched to tests.
   """
-  unmatched_tests = set()
-  for retry_location, tests in graph.items():
-    for test in tests:
-      if test not in matching.values():
-        unmatched_tests.add(test)
+  
+  unmatched_tests = set([test for _, test in graph]) - set([test for _, test in matching])
+  
+  # Sort the retry locations by the number of matched tests in ascending order
+  sorted_retry_locations = sorted(set([loc for loc, _ in graph]), key=lambda x: len([test for loc, test in matching if loc == x]))
 
-  for retry_location, tests in graph.items():
-    for test in tests:
-      if test in unmatched_tests:
-        matching.setdefault(retry_location, set()).add(test)
-        unmatched_tests.remove(test)
-
-  print(unmatched_tests)
+  
+  for retry_location in sorted_retry_locations:
+    # Skip the retry location if it is already matched to some tests
+    if any(loc == retry_location for loc, _ in matching):
+      continue
+    # Get the unmatched tests that are associated with this retry location
+    tests = unmatched_tests & set([test for loc, test in graph if loc == retry_location])
+    # If there are any such tests, match one of them randomly and remove it from the unmatched set
+    if tests:
+      test = random.choice(list(tests))
+      matching.append((retry_location, test))
+      unmatched_tests.remove(test)
 
   return matching
+
 
 def find_unmatched(matching, graph):
   """
   Finds and returns unmatched tests and retry locations.
 
   Args:
-    matching (dict): The matching dictionary where keys are retry locations and values are matched tests.
-    graph (dict): The retry locations graph where keys are retry locations and values are sets of tests.
+    matching (list): The matching list where each element is a tuple of a retry location and a matched test.
+    graph (list): The retry locations graph where each element is a tuple of a retry location and a test.
 
   Returns:
-    tuple: A tuple containing three lists - the first list contains unmatched tests, the second list contains
-         retry locations that are not matched with any tests, and the third list contains tests that are
-         matched to multiple retry locations in the matching dictionary.
+    tuple: A tuple containing three sets - the first set contains unmatched tests, the second set contains
+         retry locations that are not matched with any tests, and the third set contains tests that are
+         matched to multiple retry locations in the matching list.
   """
-  unmatched_tests = set()
-  test_to_retry_map = {}  # Dictionary to keep track of tests and their associated retry locations
-  multi_matched_tests = set()  # List to store tests matched to multiple retry locations
-
-  for retry_location, tests in graph.items():
-    for test in tests:
-      if test in matching.values():
-        # Test is matched to a retry location, add it to the dictionary
-        test_to_retry_map.setdefault(retry_location, set()).add(test)
   
-  for test, retry_locations in test_to_retry_map.items():
-    if (len(retry_locations) > 1):
-      multi_matched_tests.add(test)
+  # Get the set of all tests and retry locations from the graph
+  all_tests = set([test for _, test in graph])
+  all_retry_locations = set([loc for loc, _ in graph])
 
-  for retry_location, tests in graph.items():
-    for test in tests:
-      if test not in matching.values():
-        unmatched_tests.add(test)
+  # Get the set of matched tests and retry locations from the matching
+  matched_tests = set([test for _, test in matching])
+  matched_retry_locations = set([loc for loc, _ in matching])
 
-  unmatched_retry_locations = [loc for loc in graph.keys() if loc not in matching]
-  
+  # Get the set of unmatched tests and retry locations by taking the difference
+  unmatched_tests = all_tests - matched_tests
+  unmatched_retry_locations = all_retry_locations - matched_retry_locations
+
+  # Get the set of tests that are matched to multiple retry locations by taking the intersection
+  multi_matched_tests = {test for test in matched_tests if len([loc for loc, t in matching if t == test]) > 1}
+
   return unmatched_tests, unmatched_retry_locations, multi_matched_tests
 
-def append_to_config_file(input_config, dir_path, matching):
-  """
-  Appends matching RetryLocations to separate config files.
 
-  Args:
-    input_config (str): The input config file containing retry locations and associated data.
-    dir_path (str): The path to the directory where the output config files will be stored.
-    matching (dict): The matching dictionary where keys are retry locations and values are matched tests.
-  """
+def append_to_config_file(input_config, dir_path, matching):
   with open(input_config, "r") as file:
     lines = file.readlines()
   
@@ -168,7 +174,8 @@ def append_to_config_file(input_config, dir_path, matching):
 
   for line in lines:
     retry_location = line.strip().split("!!!")[0]
-    tests = matching.get(retry_location, [])
+    # Get the tests that are matched to this retry location
+    tests = [test for loc, test in matching if loc == retry_location]
     for test in tests:
       output_filename = os.path.join(partitions_dir, f"{os.path.splitext(os.path.basename(input_config))[0]}-{test}.csv")
       with open(output_filename, "a") as output_file:
@@ -176,15 +183,6 @@ def append_to_config_file(input_config, dir_path, matching):
           output_file.write(header)
         output_file.write(line)
 
-def print_matching(matching):
-  """
-  Prints the matching dictionary.
-
-  Args:
-    matching (dict): The matching dictionary where keys are retry locations and values are matched tests.
-  """
-  for retry_location, test in matching.items():
-    print(f"{retry_location}: {test}")
 
 def main():
   parser = argparse.ArgumentParser(description='Matcher')
@@ -205,6 +203,7 @@ def main():
   
   # Step 3: Match the remaining tests randomly, avoiding duplicates.
   matching = add_unmatched(matching, graph)
+  
   print("================= Matchings =================")
   print(matching)
   print("=================    |||    =================")
@@ -219,6 +218,7 @@ def main():
 
   # Step 5: Split the larger config file based on the retry locations to tests matching.
   append_to_config_file(args.retry_locations_input, args.path_to_configs, matching)
+
 
 if __name__ == "__main__":
   main()
