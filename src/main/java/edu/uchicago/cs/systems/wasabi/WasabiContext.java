@@ -15,18 +15,18 @@ import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 
 class WasabiContext {
 
-  private static WasabiLogger LOG;
-  private static ConfigParser configParser;
+  private WasabiLogger LOG;
+  private ConfigParser configParser;
 
-  private static final HashingPrimitives hashingPrimitives = new HashingPrimitives();
+  private final HashingPrimitives hashingPrimitives = new HashingPrimitives();
 
-  private static Map<String, HashMap<String, String>> callersToExceptionsMap;
-  private static Map<Integer, String> reverseRetryLocationsMap;
-  private static Map<Integer, Double> injectionProbabilityMap;
-  private static InjectionPolicy injectionPolicy;
+  private Map<String, HashMap<String, String>> callersToExceptionsMap;
+  private Map<Integer, String> reverseRetryLocationsMap;
+  private Map<Integer, Double> injectionProbabilityMap;
+  private InjectionPolicy injectionPolicy;
 
-  private static ConcurrentHashMap<Integer, ExecutionTrace> executionTrace = new ConcurrentHashMap<>();
-  private static ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
+  private ConcurrentHashMap<Integer, ExecutionTrace> executionTrace = new ConcurrentHashMap<>();
+  private ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
 
   public WasabiContext(WasabiLogger logger, ConfigParser configParser) {
     this.LOG = logger;
