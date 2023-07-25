@@ -57,7 +57,8 @@ You need to download these `.jar` file for preparation.
 3. `aspectjweaver-1.9.19.jar`
 4. `hamcrest-core-1.3.jar`
 5. `junit-4.13.2.jar`
-They are available online. After you downloaded then, place them in a folder called `wasabi-files` under the root directory of the project.
+
+They are available online. After you downloaded then, place them (and `wasabi-x.x.x.jar`) in a folder called `wasabi-files` under the root directory of the project.
 
 You have 5 things to do:
 1. Add buildscript classpath
