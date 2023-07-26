@@ -23,7 +23,7 @@ _ADHOC_LOG_MESSAGES = [
 
 ]
 
-def getCallstackBoundry(lines: [], index: int):
+def getCallstackBoundry(lines: list(), index: int):
     top = index
     while (top < len(lines)) and ("at " not in lines[top]):
         top += 1
@@ -34,7 +34,7 @@ def getCallstackBoundry(lines: [], index: int):
 
     return top, bottom
 
-def parseCallstack(lines: [], top: int, bottom: int):
+def parseCallstack(lines: list(), top: int, bottom: int):
     lastUnitTestStackFrame = None
     lastUnitTestName = None
     topAppFrame = None
