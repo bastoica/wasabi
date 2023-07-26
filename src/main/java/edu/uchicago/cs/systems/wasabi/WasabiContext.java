@@ -82,10 +82,6 @@ class WasabiContext {
     executionTrace.putIfAbsent(uniqueId, trace);
 
     trace.addLast(new OpEntry(opType, currentTime, stackSnapshot));
-
-    this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++ <%d> op cache size= %d +++++++++", uniqueId, trace.getSize()));
-    trace.printExecTrace(this.LOG);
-    this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++++++++++++++++++++++++++++++"));
   }
 
   public synchronized void addToExecTrace(int uniqueId, int opType, StackSnapshot stackSnapshot, String retriedException) {
@@ -95,10 +91,6 @@ class WasabiContext {
     executionTrace.putIfAbsent(uniqueId, trace);
 
     trace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retriedException));
-
-    this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++ <%d> op cache size= %d +++++++++", uniqueId, trace.getSize()));
-    trace.printExecTrace(this.LOG);
-    this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++++++++++++++++++++++++++++++"));
   }
 
   public Boolean isRetryLogic(String retryCaller, String retriedCallee) {
@@ -177,10 +169,6 @@ class WasabiContext {
 
     if (executionTrace.containsKey(uniqueId)) {
       ExecutionTrace trace = executionTrace.get(uniqueId);
-
-      this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++ <%d> op cache size= %d +++++++++", uniqueId, trace.getSize()));
-      trace.printExecTrace(this.LOG);
-      this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++++++++++++++++++++++++++++++"));
 
       if (injectionCount >= 2) {
         int lastIndex = trace.getSize() - 1;
