@@ -20,7 +20,7 @@ public class TestWasabiContext {
   private final WasabiLogger LOG = new WasabiLogger();
   
   private final String testConfigFile = "./_test.conf";
-  private final String testRetryDataFile = "./_test_retry_locs.data";
+  private final String testCsvFile = "./_test_data.csv";
   private final String testRetryPolicy = "max-count";
   private final int testMaxCount = 42;
 
@@ -28,19 +28,19 @@ public class TestWasabiContext {
   
   private void generateConfigFile() {
     try (FileWriter writer = new FileWriter(this.testConfigFile)) {
-      writer.append("retry_data_file: " + this.testRetryDataFile + "\n");
+      writer.append("csv_file: " + this.testCsvFile + "\n");
       writer.append("injection_policy: " + this.testRetryPolicy + "\n");
       writer.append("max_injection_count: " + String.valueOf(this.testMaxCount) + "\n");
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] Error occurred while generating retrydata file: %s", e.getMessage())
+          String.format("[wasabi] Error occurred while generating CSV file: %s", e.getMessage())
         );
       e.printStackTrace();
     }
   }
 
-  private void generateretrydataFile() {
+  private void generateCsvFile() {
     StackSnapshot stackSnapshot = new StackSnapshot();
     String[][] records = {
         {
@@ -53,7 +53,7 @@ public class TestWasabiContext {
         }
       };
 
-    try (FileWriter writer = new FileWriter(this.testRetryDataFile)) {
+    try (FileWriter writer = new FileWriter(this.testCsvFile)) {
       writer.append("Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection Probablity!!!Test coverage\n");
 
       for (String[] record : records) {
@@ -64,7 +64,7 @@ public class TestWasabiContext {
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] Error occurred while generating retrydata file: %s", e.getMessage())
+          String.format("[wasabi] Error occurred while generating CSV file: %s", e.getMessage())
         );
       e.printStackTrace();
     }
@@ -73,7 +73,7 @@ public class TestWasabiContext {
   @Before
   public void startUp() {
     generateConfigFile();
-    generateretrydataFile();
+    generateCsvFile();
     this.configParser = new ConfigParser(LOG, testConfigFile);
   }
 
@@ -130,9 +130,10 @@ public class TestWasabiContext {
     assertEquals(initialCount + 1, ipt.injectionCount.intValue());
 
     StackSnapshot stackSnapshot = new StackSnapshot();
-    wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot); // some sleep operations in between
-    wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot);
-    wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot);
+    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(stackSnapshot.getFrame(1)));
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot); // some sleep operations in between
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
 
     ipt = wasabiCtx.getInjectionPoint(); // new injeciton point, same retry context
     assertTrue(wasabiCtx.shouldInject(ipt));
@@ -143,10 +144,11 @@ public class TestWasabiContext {
   public void testCheckMissingBackoffDuringRetry() {
     WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configParser);
     StackSnapshot stackSnapshot = new StackSnapshot();
+    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(stackSnapshot.getFrame(1)));
 
-    wasabiCtx.addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
-    wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot);
-    wasabiCtx.addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
+    wasabiCtx.addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
 
     // Retry backoff present
     assertFalse(
@@ -172,7 +174,7 @@ public class TestWasabiContext {
   @After
   public void tearDown() {
     try {
-      Path path = Paths.get(this.testRetryDataFile);
+      Path path = Paths.get(this.testCsvFile);
       Files.deleteIfExists(path);
 
       path = Paths.get(this.testConfigFile);
