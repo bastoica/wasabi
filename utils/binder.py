@@ -39,7 +39,7 @@ def retry_locations_graph(filename):
   Returns:
     list: A list of tuples representing the graph, where each tuple contains a retry location and a test.
   """
-  graph = []
+  graph = {}
   test_name = "Test" + re.search(r".Test(.*?)\-output", filename).group(1)
   retry_location_pattern = r"~~(.*?)~~"
 
@@ -49,7 +49,7 @@ def retry_locations_graph(filename):
       if retry_location:
         retry_location = retry_location[0]
         # Using set to ensure no duplicates in the list of tests associated with a retry location.
-        graph.append((retry_location, test_name))
+        graph.setdefault(retry_location, set()).add(test_name)
 
   return graph
 
@@ -109,24 +109,18 @@ def add_unmatched(matching, graph):
   Returns:
     list: A list of tuples representing the updated matching with all retry locations matched to tests.
   """
-  
-  unmatched_tests = set([test for _, test in graph]) - set([test for _, test in matching])
-  
-  # Sort the retry locations by the number of matched tests in ascending order
-  sorted_retry_locations = sorted(set([loc for loc, _ in graph]), key=lambda x: len([test for loc, test in matching if loc == x]))
 
-  
-  for retry_location in sorted_retry_locations:
-    # Skip the retry location if it is already matched to some tests
-    if any(loc == retry_location for loc, _ in matching):
-      continue
-    # Get the unmatched tests that are associated with this retry location
-    tests = unmatched_tests & set([test for loc, test in graph if loc == retry_location])
-    # If there are any such tests, match one of them randomly and remove it from the unmatched set
-    if tests:
-      test = random.choice(list(tests))
-      matching.append((retry_location, test))
-      unmatched_tests.remove(test)
+  # Reverse the retry locations graph  
+  unmatched_map = {}
+  for retry_location, tests in graph.items():
+    for test in tests:
+      if test not in matching:
+        unmatched_map[test] = unmatched_map.get(test, set()).union({retry_location})
+
+  # Iteratively add an unmatched test to the retry location that has least tests currently binded to it
+  for test, retry_locations in unmatched_map.items():
+    retry_location = min(retry_locations, key=lambda x: len(matching.get(x, set())))
+    matching.setdefault(retry_location, set()).add(test)
 
   return matching
 
@@ -175,13 +169,19 @@ def append_to_config_file(input_config, dir_path, matching):
   for line in lines:
     retry_location = line.strip().split("!!!")[0]
     # Get the tests that are matched to this retry location
-    tests = [test for loc, test in matching if loc == retry_location]
+    tests = [test for test, loc in matching.items() if loc == retry_location]
     for test in tests:
-      output_filename = os.path.join(partitions_dir, f"{os.path.splitext(os.path.basename(input_config))[0]}-{test}.csv")
+      output_filename = os.path.join(partitions_dir, f"{os.path.splitext(os.path.basename(input_config))[0]}-{test}.data")
       with open(output_filename, "a") as output_file:
         if output_file.tell() == 0:
           output_file.write(header)
         output_file.write(line)
+      # Create a motion file for each test
+      config_filename = os.path.join(partitions_dir, f"{os.path.splitext(os.path.basename(input_config))[0]}-{test}.conf")
+      with open(config_filename, "w") as config_file:
+        config_file.write(f"retry_data_file: {output_filename}\n")
+        config_file.write("injection_policy: forever\n")
+        config_file.write("max_injection_count: -1\n")
 
 
 def main():
