@@ -64,22 +64,6 @@ class StackSnapshot {
     return true;
   }
 
-  public ArrayList<String> getStackBelowFrame(String target) {
-    ArrayList<String> trimmedStacktrace = new ArrayList<String>();
-    Boolean targetFound = false;
-
-    for (String frame : stacktrace) {
-      if (frame.equals(target)) {
-        targetFound = true;
-      }
-      if (targetFound) {
-        trimmedStacktrace.add(frame);
-      }
-    }
-
-    return trimmedStacktrace;
-  }
-
   public static String getQualifiedName(String frame) {
     return frame != null ? frame.split("\\(")[0] : null;
   }

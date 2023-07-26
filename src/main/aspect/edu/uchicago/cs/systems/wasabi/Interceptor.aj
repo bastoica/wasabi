@@ -47,12 +47,7 @@ public aspect Interceptor {
     }
   };
   
-  private static class ActiveInjectionLocationsTracker {
-    public static final ConcurrentHashMap<String, Boolean> store = new ConcurrentHashMap<>();
-    public final Lock mutex = new ReentrantLock();
-  }
-  private static final ActiveInjectionLocationsTracker activeInjectionLocations = new ActiveInjectionLocationsTracker();
-
+  
   /* 
    * Callbacks before executing ThreadPoolExecutor's beforeExecute(...) and afterExecute(...)
    */
@@ -99,27 +94,10 @@ public aspect Interceptor {
   after() : recordThreadSleep() { 
     try {
       StackSnapshot stackSnapshot = new StackSnapshot();
+      WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
 
-      activeInjectionLocations.mutex.lock();
-      try {
-        for (String key : activeInjectionLocations.store.keySet()) {
-          if (stackSnapshot.hasFrame(key)) {
-            int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(key));
-            
-            WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
-            wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
-            
-            this.LOG.printMessage(
-              WasabiLogger.LOG_LEVEL_WARN, 
-              String.format("Thread sleep detected, callstack:\n%s", stackSnapshot.toString())
-            );
-            
-            break;
-          }
-        }
-      } finally {
-        activeInjectionLocations.mutex.unlock();
-      }      
+      wasabiCtx.addToExecTrace(OpEntry.THREAD_SLEEP_OP, stackSnapshot);
+
     } catch (Exception e) {
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_ERROR, 
@@ -187,13 +165,6 @@ public aspect Interceptor {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
-      activeInjectionLocations.mutex.lock();
-      try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
-      } finally {
-        activeInjectionLocations.mutex.unlock();
-      }
-
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
           String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", 
@@ -229,13 +200,6 @@ public aspect Interceptor {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
-      activeInjectionLocations.mutex.lock();
-      try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
-      } finally {
-        activeInjectionLocations.mutex.unlock();
-      }
-
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
           String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", 
@@ -274,13 +238,6 @@ public aspect Interceptor {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
-      activeInjectionLocations.mutex.lock();
-      try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
-      } finally {
-        activeInjectionLocations.mutex.unlock();
-      }
-
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
           String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", 
@@ -316,13 +273,6 @@ public aspect Interceptor {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
-      activeInjectionLocations.mutex.lock();
-      try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
-      } finally {
-        activeInjectionLocations.mutex.unlock();
-      }
-
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
           String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", 
@@ -358,13 +308,6 @@ public aspect Interceptor {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
-      activeInjectionLocations.mutex.lock();
-      try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
-      } finally {
-        activeInjectionLocations.mutex.unlock();
-      }
-
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
           String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", 
@@ -515,13 +458,6 @@ public aspect Interceptor {
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
     if (ipt != null) {
-      activeInjectionLocations.mutex.lock();
-      try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
-      } finally {
-        activeInjectionLocations.mutex.unlock();
-      }
-
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
           String.format("Pointcut inside retry logic at ~~%s~~ with callstack:\n %s", 

@@ -1,7 +1,6 @@
 package edu.uchicago.cs.systems.wasabi;
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
@@ -15,26 +14,26 @@ import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 
 class WasabiContext {
 
-  private WasabiLogger LOG;
-  private ConfigParser configParser;
+  private static final HashingPrimitives hashingPrimitives = new HashingPrimitives();
 
-  private final HashingPrimitives hashingPrimitives = new HashingPrimitives();
+  private static WasabiLogger LOG;
+  private static ConfigParser configParser;
+  
+  private static Map<String, HashMap<String, String>> callersToExceptionsMap;
+  private static Map<Integer, String> reverseRetryLocationsMap;
+  private static Map<Integer, Double> injectionProbabilityMap;
+  private static InjectionPolicy injectionPolicy;
 
-  private Map<String, HashMap<String, String>> callersToExceptionsMap;
-  private Map<Integer, String> reverseRetryLocationsMap;
-  private Map<Integer, Double> injectionProbabilityMap;
-  private InjectionPolicy injectionPolicy;
-
-  private ConcurrentHashMap<Integer, ExecutionTrace> executionTrace = new ConcurrentHashMap<>();
-  private ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
+  private static ExecutionTrace execTrace = new ExecutionTrace();
+  private static HashMap<Integer, Integer> injectionCounts = new HashMap<>();
 
   public WasabiContext(WasabiLogger logger, ConfigParser configParser) {
     this.LOG = logger;
     this.configParser = configParser;
     
     int maxInjectionCount = this.configParser.getMaxInjectionCount();
-
     String injectionPolicyString = this.configParser.getInjectionPolicy();
+
     switch (injectionPolicyString) {
       case "no-injection":
         injectionPolicy = new NoInjection();
@@ -61,47 +60,38 @@ class WasabiContext {
     injectionProbabilityMap = Collections.unmodifiableMap(this.configParser.getInjectionProbabilityMap());
   }
 
-  private Boolean isNullOrEmpty(String str) {
+  private static Boolean isNullOrEmpty(String str) {
     return str == null || str.isEmpty();
   }
 
-  private synchronized int getInjectionCount(ArrayList<String> stacktrace) {
+  private static int getInjectionCount(ArrayList<String> stacktrace) {
     int hval = hashingPrimitives.getHashValue(stacktrace);
     return injectionCounts.getOrDefault(hval, 0);
   }
 
-  private synchronized int updateInjectionCount(ArrayList<String> stacktrace) {   
+  private static int updateInjectionCount(ArrayList<String> stacktrace) {   
     int hval = hashingPrimitives.getHashValue(stacktrace);
-    return injectionCounts.compute(hval, (k, v) -> (v == null) ? 1 : v + 1);
+    
+    if (!injectionCounts.containsKey(hval)) {
+      injectionCounts.put(hval, 1);
+    } else {
+      injectionCounts.computeIfPresent(hval, (k, v) -> v + 1);
+    }
+
+    return injectionCounts.get(hval);
   }
 
-  public synchronized void addToExecTrace(int uniqueId, int opType, StackSnapshot stackSnapshot) {
+  public static void addToExecTrace(int opType, StackSnapshot stackSnapshot) {
     long currentTime = System.nanoTime();
-
-    ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace());
-    executionTrace.putIfAbsent(uniqueId, trace);
-
-    trace.addLast(new OpEntry(opType, currentTime, stackSnapshot));
-
-    this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++ <%d> op cache size= %d +++++++++", uniqueId, trace.getSize()));
-    trace.printExecTrace(this.LOG);
-    this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++++++++++++++++++++++++++++++"));
+    execTrace.addLast(new OpEntry(opType, currentTime, stackSnapshot));
   }
 
-  public synchronized void addToExecTrace(int uniqueId, int opType, StackSnapshot stackSnapshot, String retriedException) {
+  public static void addToExecTrace(int opType, StackSnapshot stackSnapshot, String retriedException) {
     long currentTime = System.nanoTime();
-
-    ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace());
-    executionTrace.putIfAbsent(uniqueId, trace);
-
-    trace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retriedException));
-
-    this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++ <%d> op cache size= %d +++++++++", uniqueId, trace.getSize()));
-    trace.printExecTrace(this.LOG);
-    this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++++++++++++++++++++++++++++++"));
+    execTrace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retriedException));
   }
 
-  public Boolean isRetryLogic(String retryCaller, String retriedCallee) {
+  public static Boolean isRetryLogic(String retryCaller, String retriedCallee) {
     return ( 
       !isNullOrEmpty(retryCaller) && 
       !isNullOrEmpty(retriedCallee) &&
@@ -110,7 +100,7 @@ class WasabiContext {
     );
   }
 
-  public synchronized InjectionPoint getInjectionPoint() {
+  public static InjectionPoint getInjectionPoint() {
     StackSnapshot stackSnapshot = new StackSnapshot();
 
     if (
@@ -127,10 +117,7 @@ class WasabiContext {
       String retryLocation = reverseRetryLocationsMap.get(hval);
       Double injectionProbability = injectionProbabilityMap.getOrDefault(hval, 0.0);
       
-      int uniqueId = HashingPrimitives.getHashValue(
-          stackSnapshot.getStackBelowFrame(stackSnapshot.getFrame(1))
-        );
-      addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, retriedException);
+      addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, retriedException);
 
       int injectionCount = getInjectionCount(stackSnapshot.getStacktrace());
       Boolean hasBackoff = checkMissingBackoffDuringRetry(
@@ -172,31 +159,21 @@ class WasabiContext {
    * needed, move all such checks to a separate BugOracles class.
    */
 
-  public synchronized Boolean checkMissingBackoffDuringRetry(int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {
-    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(retryCaller));
+  public static Boolean checkMissingBackoffDuringRetry(int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {           
+    if (injectionCount >= 2) {
+      int lastIndex = execTrace.getSize() - 1;
+      int secondToLastIndex = execTrace.getSize() - 2;
+      int thirdToLastIndex = execTrace.getSize() - 3;
 
-    if (executionTrace.containsKey(uniqueId)) {
-      ExecutionTrace trace = executionTrace.get(uniqueId);
-
-      this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++ <%d> op cache size= %d +++++++++", uniqueId, trace.getSize()));
-      trace.printExecTrace(this.LOG);
-      this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("+++++++++++++++++++++++++++++++++++++"));
-
-      if (injectionCount >= 2) {
-        int lastIndex = trace.getSize() - 1;
-        int secondToLastIndex = trace.getSize() - 2;
-        int thirdToLastIndex = trace.getSize() - 3;
-
-        if (!(trace.checkIfOpsAreEqual(lastIndex, thirdToLastIndex) &&
-              trace.checkIfOpIsOfType(secondToLastIndex, OpEntry.THREAD_SLEEP_OP) &&
-              trace.checkIfOpHasFrame(secondToLastIndex, retryCaller))) {
-          this.LOG.printMessage(
-              WasabiLogger.LOG_LEVEL_ERROR, 
-              String.format("No backoff between retry attempts at !!%s!! with callstack:\n%s", 
-                retryLocation, stackSnapshot.toString())
-            );
-          return true; // missing backoff
-        }
+      if (!(execTrace.checkIfOpsAreEqual(lastIndex, thirdToLastIndex) &&
+            execTrace.checkIfOpIsOfType(secondToLastIndex, OpEntry.THREAD_SLEEP_OP) &&
+            execTrace.checkIfOpHasFrame(secondToLastIndex, retryCaller))) {
+        LOG.printMessage(
+            LOG.LOG_LEVEL_INFO, 
+            String.format("[wasabi] No backoff between retry attempts at !!%s!! with callstack:\n%s", 
+              retryLocation, stackSnapshot.toString())
+          );
+        return true; // missing backoff
       }
     }
 

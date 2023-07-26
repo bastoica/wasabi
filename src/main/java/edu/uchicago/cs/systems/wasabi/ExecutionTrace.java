@@ -2,8 +2,6 @@ package edu.uchicago.cs.systems.wasabi;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -58,177 +56,114 @@ class OpEntry {
   public Boolean isSameOp(OpEntry target) {      
     return ( 
         this.opType == target.opType && 
-        (this.exception == null || this.exception.equals(target.exception)) &&
+        this.exception.equals(target.exception) &&
         this.stackSnapshot.isEqual(target.stackSnapshot)
       );
-  }
-
-  public void printOpEntry(WasabiLogger log) {
-
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("-------------------------------"));
-
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Op type: %d", this.opType));
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Timestamp: %d", this.timestamp));
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Callstack:\n%s", this.stackSnapshot.toString()));
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Exception: %s", this.exception));
-
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("-------------------------------\n"));
   }
 }
 
 class ExecutionTrace {
 
-  private final Lock mutex = new ReentrantLock();
   private final int INFINITE_CACHE = -1; 
 
   private ArrayDeque<OpEntry> opCache;
   private int maxOpCacheSize;
 
   public ExecutionTrace() {
-    this.opCache = new ArrayDeque<OpEntry>();
+    this.opCache = new ArrayDeque<OpEntry>(); 
     this.maxOpCacheSize = this.INFINITE_CACHE;
   }
 
   public ExecutionTrace(int maxOpCacheSize) {
-    this.opCache = new ArrayDeque<OpEntry>();
+    this.opCache = new ArrayDeque<OpEntry>(); 
     this.maxOpCacheSize = maxOpCacheSize;
   }
 
   public Boolean isNullOrEmpty() {
-    mutex.lock();
-    try {
-      return this.opCache == null || this.opCache.isEmpty();
-    } finally {
-      mutex.unlock();
-    }
+    return this.opCache == null || this.opCache.isEmpty();
   }
 
   public int getMaxOpCacheSize() {
-    mutex.lock();
-    try {
-      return this.maxOpCacheSize;
-    } finally {
-      mutex.unlock();
-    }
+    return this.maxOpCacheSize;
   }
 
   public int getSize() {
-    mutex.lock();
-    try {
-      return this.opCache.size();
-    } finally {
-      mutex.unlock();
-    }
+    return this.opCache.size();
   }
 
   public void addLast(OpEntry opEntry) {
-    mutex.lock();
-    try {
-      if (this.maxOpCacheSize != this.INFINITE_CACHE && this.opCache.size() >= this.maxOpCacheSize) {
-        this.opCache.removeFirst();
-      }
-      this.opCache.addLast(opEntry);
-    } finally {
-      mutex.unlock();
+    if (this.maxOpCacheSize != this.INFINITE_CACHE && this.opCache.size() >= this.maxOpCacheSize) {
+      this.opCache.removeFirst();
     }
+    this.opCache.addLast(opEntry);
   }
 
   public Boolean checkIfOpsAreEqual(int leftIndex, int rightIndex) {
-    mutex.lock();
-    try {
-      if (this.opCache.size() < Math.max(leftIndex, rightIndex)) {
-        return false;
-      }
-
-      OpEntry leftOp = null;
-      OpEntry rightOp = null;
-
-      int index = this.opCache.size() - 1; 
-      Iterator<OpEntry> itr = this.opCache.descendingIterator();
-      while (itr.hasNext() && index >= Math.min(leftIndex, rightIndex)) {
-        OpEntry current = itr.next();
-
-        if (index == leftIndex) {
-          leftOp = current;
-        } else if (index == rightIndex) {
-          rightOp = current;
-        }
-
-        --index;
-      }
-  
-      return leftOp != null && rightOp != null && leftOp.isSameOp(rightOp);
-
-    } finally {
-      mutex.unlock();
+    if (this.opCache.size() < Math.max(leftIndex, rightIndex)) {
+      return false;
     }
+
+    OpEntry leftOp = null;
+    OpEntry rightOp = null;
+
+    int index = this.opCache.size() - 1; 
+    Iterator<OpEntry> itr = this.opCache.descendingIterator();
+    while (itr.hasNext() && index >= Math.min(leftIndex, rightIndex)) {
+      OpEntry current = itr.next();
+
+      if (index == leftIndex) {
+        leftOp = current;
+      } else if (index == rightIndex) {
+        rightOp = current;
+      }
+
+      --index;
+    }
+
+    return leftOp != null && rightOp != null && leftOp.isSameOp(rightOp);
   }
 
   public Boolean checkIfOpIsOfType(int targetIndex, int targetOpType) {
-    mutex.lock();
-    try {
-      if (this.opCache.size() < targetIndex) {
-        return false;
-      }
-
-      OpEntry targetOp = null;
-
-      int index = this.opCache.size() - 1; 
-      Iterator<OpEntry> itr = this.opCache.descendingIterator();
-      while (itr.hasNext() && index >= targetIndex) {
-        OpEntry current = itr.next();
-
-        if (index == targetIndex) {
-          targetOp = current;
-        }
-
-        --index;
-      }
-
-      return targetOp != null && targetOp.isOfType(targetOpType);
-
-    } finally {
-      mutex.unlock();
+    if (this.opCache.size() < targetIndex) {
+      return false;
     }
+
+    OpEntry targetOp = null;
+
+    int index = this.opCache.size() - 1; 
+    Iterator<OpEntry> itr = this.opCache.descendingIterator();
+    while (itr.hasNext() && index >= targetIndex) {
+      OpEntry current = itr.next();
+
+      if (index == targetIndex) {
+        targetOp = current;
+      }
+
+      --index;
+    }
+
+    return targetOp != null && targetOp.isOfType(targetOpType);
   }
   
   public Boolean checkIfOpHasFrame(int targetIndex, String targetFrame) {
-    mutex.lock();
-    try {
-      if (this.opCache.size() < targetIndex) {
-        return false;
-      }
-
-      OpEntry targetOp = null;
-
-      int index = this.opCache.size() - 1; 
-      Iterator<OpEntry> itr = this.opCache.descendingIterator();
-      while (itr.hasNext() && index >= targetIndex) {
-        OpEntry current = itr.next();
-
-        if (index == targetIndex) {
-          targetOp = current;
-        }
-
-        --index;
-      }
-
-      return targetOp != null && targetOp.hasFrame(targetFrame);
-
-    } finally {
-      mutex.unlock();
+    if (this.opCache.size() < targetIndex) {
+      return false;
     }
-  }
 
-  public void printExecTrace(WasabiLogger log) {
-    mutex.lock();
-    try {
-      for (OpEntry op : this.opCache) {
-        op.printOpEntry(log);
+    OpEntry targetOp = null;
+
+    int index = this.opCache.size() - 1; 
+    Iterator<OpEntry> itr = this.opCache.descendingIterator();
+    while (itr.hasNext() && index >= targetIndex) {
+      OpEntry current = itr.next();
+
+      if (index == targetIndex) {
+        targetOp = current;
       }
 
-    } finally {
-      mutex.unlock();
+      --index;
     }
+
+    return targetOp != null && targetOp.hasFrame(targetFrame);
   }
 }
