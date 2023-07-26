@@ -20,7 +20,7 @@ public class TestWasabiContext {
   private final WasabiLogger LOG = new WasabiLogger();
   
   private final String testConfigFile = "./_test.conf";
-  private final String testCsvFile = "./_test_data.csv";
+  private final String testRetryDataFile = "./_test_retry_locations.data";
   private final String testRetryPolicy = "max-count";
   private final int testMaxCount = 42;
 
@@ -28,19 +28,19 @@ public class TestWasabiContext {
   
   private void generateConfigFile() {
     try (FileWriter writer = new FileWriter(this.testConfigFile)) {
-      writer.append("csv_file: " + this.testCsvFile + "\n");
+      writer.append("retry_data_file: " + this.testRetryDataFile + "\n");
       writer.append("injection_policy: " + this.testRetryPolicy + "\n");
       writer.append("max_injection_count: " + String.valueOf(this.testMaxCount) + "\n");
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] Error occurred while generating CSV file: %s", e.getMessage())
+          String.format("[wasabi] Error occurred while generating the retry data file: %s", e.getMessage())
         );
       e.printStackTrace();
     }
   }
 
-  private void generateCsvFile() {
+  private void generateDataRetryFile() {
     StackSnapshot stackSnapshot = new StackSnapshot();
     String[][] records = {
         {
@@ -53,7 +53,7 @@ public class TestWasabiContext {
         }
       };
 
-    try (FileWriter writer = new FileWriter(this.testCsvFile)) {
+    try (FileWriter writer = new FileWriter(this.testRetryDataFile)) {
       writer.append("Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection Probablity!!!Test coverage\n");
 
       for (String[] record : records) {
@@ -64,7 +64,7 @@ public class TestWasabiContext {
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] Error occurred while generating CSV file: %s", e.getMessage())
+          String.format("[wasabi] Error occurred while generating the retry data file: %s", e.getMessage())
         );
       e.printStackTrace();
     }
@@ -73,7 +73,7 @@ public class TestWasabiContext {
   @Before
   public void startUp() {
     generateConfigFile();
-    generateCsvFile();
+    generateDataRetryFile();
     this.configParser = new ConfigParser(LOG, testConfigFile);
   }
 
@@ -174,7 +174,7 @@ public class TestWasabiContext {
   @After
   public void tearDown() {
     try {
-      Path path = Paths.get(this.testCsvFile);
+      Path path = Paths.get(this.testRetryDataFile);
       Files.deleteIfExists(path);
 
       path = Paths.get(this.testConfigFile);

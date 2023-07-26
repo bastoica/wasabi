@@ -20,7 +20,7 @@ class ConfigParser {
   private static WasabiLogger LOG;
   private static String configFile;
 
-  private static String csvFile;
+  private static String retryDataFile;
   private static String injectionPolicy;
   private static int maxInjectionCount;
   
@@ -30,7 +30,7 @@ class ConfigParser {
   private static final Map<Integer, Double> injectionProbabilityMap = new HashMap<>();
   
   private static final HashingPrimitives hashingPrimitives = new HashingPrimitives();
-  private static final String[] CSV_COLUMN_NAMES = {"Retry location", "Enclosing method", "Retried method", "Exception", "Injection Probablity", "Test coverage"};
+  private static final String[] RETRY_DATA_COLUMN_NAMES = {"Retry location", "Enclosing method", "Retried method", "Exception", "Injection Probablity", "Test coverage"};
   
   public ConfigParser(WasabiLogger logger, String configFile) {
     this.LOG = logger;
@@ -50,8 +50,8 @@ class ConfigParser {
         String parameter = parts[0].trim();
         String value = parts[1].replaceAll("\\s+", "").trim();
         switch (parameter) {
-          case "csv_file":
-            this.csvFile = value;
+          case "retry_data_file":
+            this.retryDataFile = value;
             break;
           case "injection_policy":
             this.injectionPolicy = value;
@@ -81,13 +81,13 @@ class ConfigParser {
   }
 
   private void parseCodeQLOutput() {
-    try (BufferedReader br = new BufferedReader(new FileReader(this.csvFile))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(this.retryDataFile))) {
       boolean foundHeader = false;
       String line;
       while ((line = br.readLine()) != null) {
         String[] values = line.split("!!!");
 
-        if (!foundHeader && Arrays.equals(CSV_COLUMN_NAMES, values)) {
+        if (!foundHeader && Arrays.equals(RETRY_DATA_COLUMN_NAMES, values)) {
           foundHeader = true;
           continue;
         }
@@ -99,7 +99,7 @@ class ConfigParser {
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] An exception occurred when parsing the CSV data: %s\n", e.getMessage())
+          String.format("[wasabi] An exception occurred when parsing the retry data file: %s\n", e.getMessage())
         );
       e.printStackTrace();
     }
