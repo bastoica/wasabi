@@ -15,19 +15,6 @@ LOG_FILE_NAME = "build.log"
 TIMEOUT = 3600 # in seconds
 
 
-def find_conf_files(config_dir):
-    """
-    Find all the files with a ".conf" extension in a given directory.
-
-    Parameters:
-    config_dir (str): The path of the config directory.
-
-    Returns:
-    list: A list of strings containing the paths of the ".conf" files.
-    """
-    return glob.glob(os.path.join(config_dir, "*.conf"))
-
-
 def strip_ansi_escape_codes(str):
     """
     Strips ANSI escape codes from the given stdout string.
@@ -43,22 +30,49 @@ def strip_ansi_escape_codes(str):
     return utf8_str
 
 
-def get_log_file_name(target_root_dir, config_file):
+def get_conf_files(config_dir):
     """
-    Get the log file name for each config file.
+    Find all config files (extension ".conf").
 
     Parameters:
-    target_root_dir (str): The path of the config directory.
-    config_file (str): The path of the config file.
+        config_dir (str): The path of the config directory.
 
     Returns:
-    str: The path of the log file for the config file.
+        list: A list of strings containing the paths of the ".conf" files.
     """
-    # Use regex to extract the name of the test from the config file
+    return glob.glob(os.path.join(config_dir, "*.conf"))
+
+
+def get_test_file_name(config_file):
+    """
+    Extracts the test name from its corresponding config file.
+
+    Parameters:
+        target_root_dir (str): The path of the config directory.
+        config_file (str): The path of the config file.
+
+    Returns:
+        str: The path of the log file for the config file.
+    """
     test_name = re.search(r"(\w+)-(Test\w+)\.conf", config_file).group(2)
-    # Format the log file name with the test name between build and .log
+
+    return test_name
+
+
+def get_log_file_name(target_root_dir, config_file):
+    """
+    Constructs the log file name from the config file.
+
+    Parameters:
+        target_root_dir (str): The path of the config directory.
+        config_file (str): The path of the config file.
+
+    Returns:
+        str: The path of the log file for the config file.
+    """
+    test_name = get_test_file_name(config_file)
     log_file_name = f"build_{test_name}.log"
-    # Return the full path of the log file in the target_root_dir
+    
     return os.path.join(target_root_dir, log_file_name)
 
 
@@ -67,20 +81,20 @@ def run_mvn_compile_command_once(target_root_dir):
     Execute the first command from a given target_root_dir.
 
     Parameters:
-    target_root_dir (str): The path of the target root directory.
-    log_file (str): The path of the log file.
-
-    Returns:
-    None
+        target_root_dir (str): The path of the target root directory.
+        log_file (str): The path of the log file.
     """
-    # Define the command for the first step as a list of arguments
     cmd = ["mvn", "-fn", "-DskipTests", "clean", "compile"]
-    # Print command
-    print("---------------------------\nExecuting command: " + " ".join(cmd) + "\n---------------------------\n")
-    # Execute the command from the target_root_dir using subprocess.run with shell=False and capture_output=True
+    
+    # Print info about the current job
+    print("---------------------------" + 
+          "\nExecuting command: " + ' '.join(cmd) + 
+          "\n---------------------------\n")
+    
+    # Execute cmd from target_root_dir directory
     os.chdir(target_root_dir)
     result = subprocess.run(cmd, shell=False, capture_output=True)
-    # Append the output to the log file using open and write
+    
     log_file_path = os.path.join(target_root_dir, LOG_FILE_NAME)
     with open(log_file_path, "a", encoding="utf-8") as outfile:
       outfile.write(strip_ansi_escape_codes(result.stdout.decode()))
@@ -103,7 +117,7 @@ def run_with_timeout(cmd, timeout):
     return result
 
 
-def run_mvn_test_commands_in_parallel(target_root_dir, config_dir, conf_files):
+def run_mvn_test_commands_in_parallel(target_root_dir, mvn_parameters):
     """
     Create and run threads for the second command in parallel using a pool.
 
@@ -113,74 +127,62 @@ def run_mvn_test_commands_in_parallel(target_root_dir, config_dir, conf_files):
     Returns:
         list: A list of tuples containing the outcome and duration of each thread.
     """
-    # Define the command for the second step as a list of arguments
-    cmd = ["mvn", "-DconfigFile={config_file}", "-Dparallel-tests", "-DtestsThreadCount=1", "-fn", "test"]
-    # Get the number of hyperthreads on the machine
+    cmd = ["mvn", "-DconfigFile={config_file}", "-Dtest={test_file}", "-Dparallel-tests", "-DtestsThreadCount=1", "-fn", "test"]
     num_threads = os.cpu_count()
-    # Create a queue to store the config files
+    
     q = queue.Queue()
-    # Put all the config files in the queue
-    for config_file in conf_files:
-        q.put(config_file)
-    # Create a pool to manage the threads
+    for test_file, config_file in mvn_parameters:
+        q.put((config_file, test_file))
+    
     pool = multiprocessing.Pool(num_threads - 1)
-    # Create a list of results to store the outcome and duration of each thread
+    
     results = []
-    # Initialize the job counter variable
     jobCount = 0
-    # Loop until the queue is empty
     while not q.empty():
-        # Increment job counter
         jobCount = jobCount + 1
-        # Get a config file from the queue
-        config_file = q.get()
-        # Get log file name
+
+        config_file, test_file = q.get()
         log_file = get_log_file_name(target_root_dir, config_file)
-        # Replace the placeholder in the second command with the config file
         cmd = [arg.replace("{config_file}", config_file) for arg in cmd]
-        # Print info about the run
+        cmd = [arg.replace("{test_file}", test_file) for arg in cmd]
+    
+        # Print info about the current job
         print("---------------------------" +
               "\njob count: " + jobCount +
-              "\nExecuting command: " + " ".join(cmd) + 
+              "\nExecuting command: " + ' '.join(cmd) + 
               "\nConfig file: " + config_file + 
               "\nLog file: " + log_file + 
               "\n---------------------------\n")
-        # Execute the command from the target_root_dir using subprocess.run with shell=False and capture_output=True
+    
+        # Execute cmd from target_root_dir directory
         os.chdir(target_root_dir)
-        # Apply the run_with_timeout function to the pool with the cmd and timeout as arguments
         proc = pool.apply_async(run_with_timeout, (cmd, TIMEOUT))
-        # Append the process object to the results list
         results.append(proc)
-    # Close the pool and wait for all tasks to complete
+    
     pool.close()
     pool.join()
-    # Retrieve the output of each process and write to log files
+    
     for proc in results:
         result = proc.get()
         with open(log_file, "w") as outfile:
             outfile.write(result.stdout)
             outfile.write(result.stderr)
-    # Return the results list
+    
     return results
 
 
-def print_report(conf_files, results):
+def print_report(results, conf_files):
     """
     Print a comprehensive report at the end for each config file.
 
     Parameters:
-    conf_files (list): A list of strings containing the paths of the ".conf" files.
-    results (list): A list of tuples containing the outcome and duration of each thread.
-
-    Returns:
-    None
+        conf_files (list): A list of strings containing the paths of the ".conf" files.
+        results (list): A list of tuples containing the outcome and duration of each thread.
     """
     print("Report:")
     for i in range(len(conf_files)):
-      # Get the config file name and result for this iteration
       config_file = conf_files[i]
       success, duration, stdout, stderr = results[i].get()
-      # Print a line with the config file name, duration and success status
       print(f"{config_file}: {duration:.2f} seconds, {'success' if success else 'timeout'}")
 
 
@@ -189,24 +191,16 @@ def append_log_files(target_root_dir):
     Append all the log files into one large build.log file at the end using os.system.
 
     Parameters:
-    target_root_dir (str): The path of the target root directory.
-
-    Returns:
-    None
+        target_root_dir (str): The path of the target root directory.
     """
-    # Find all the log files with a "build_" prefix in the target_root_dir using glob
     log_files = glob.glob(os.path.join(target_root_dir, "build_*.log"))
-    # Loop through each log file in log_files
+    
     for log_file in log_files:
-      # Define a command to remove any non UTF-8 characters from the log file using perl
       cmd = f"perl -p -i -e 's/\x1B\[[0-9;]*[a-zA-Z]//g' {log_file}"
-      # Execute the command using os.system
       os.system(cmd)
-    # Join all the log files with a space separator
+    
     log_files_str = " ".join(log_files)
-    # Define a command to append all the log files into one large build.log file using cat and >
     cmd = f"cat {log_files_str} > {os.path.join(target_root_dir, LOG_FILE_NAME)}"
-    # Execute the command using os.system
     os.system(cmd)
 
 
@@ -216,53 +210,44 @@ def move_log_files(target_root_dir):
     Move the log files to a separate directory.
 
     Parameters:
-    target_root_dir (str): The path of the target root directory.
-
-    Returns:
-    None
+        target_root_dir (str): The path of the target root directory.
     """
-    # Define the wasabi directory name
+    
     wasabi_dir = "wasabi.data"
-    # Get the current date and time in the format YYYYMMDDHHMM
     date = datetime.datetime.now().strftime("%Y%m%d%H%M")
-    # Create the test reports directory path using os.path.join
+    
     test_reports_dir = os.path.join(target_root_dir, wasabi_dir, date, "test_reports")
-    # Create the test reports directory using os.makedirs with exist_ok=True
     os.makedirs(test_reports_dir, exist_ok=True)
-    # Move the build.log file to the wasabi directory using shutil.move
+    
     shutil.move(os.path.join(target_root_dir, LOG_FILE_NAME), os.path.join(target_root_dir, wasabi_dir, date))
-    # Find all the files with a "-output.txt" suffix in the target_root_dir using glob
+    
     output_files = glob.glob(os.path.join(target_root_dir, "*-output.txt"))
-    # Loop through each output file in output_files
     for output_file in output_files:
-      # Get the file name using os.path.basename
       file_name = os.path.basename(output_file)
-      # Move the output file to the test reports directory using shutil.move
       shutil.move(output_file, os.path.join(test_reports_dir, file_name))
      
 
 def main():
-    # Create an argument parser
     parser = argparse.ArgumentParser()
-    # Add arguments for the code paths
     parser.add_argument("target_root_dir", help="The target root directory")
     parser.add_argument("config_dir", help="The config directory")
-    # Parse the arguments
     args = parser.parse_args()
-    # Get the code paths as arguments
+    
     target_root_dir = args.target_root_dir
     config_dir = args.config_dir
-    # Find all the files with a ".conf" extension in the config_dir
-    conf_files = find_conf_files(config_dir)
-    # Execute the first command from the target_root_dir
+    
+    conf_files = get_conf_files(config_dir)
+    test_files = [get_test_file_name(config_file) for config_file in conf_files]
+    mvn_parameters = [(conf_file, test_file) for conf_file, test_file in zip(conf_files, test_files)]
+
+    # Execute 'mvn ... compile'
     run_mvn_compile_command_once(target_root_dir)
-    # Create and run threads for the second command in parallel
-    results = run_mvn_test_commands_in_parallel(target_root_dir, config_dir, conf_files)
-    # Print a comprehensive report at the end
+    # Create and run threads to execute multiple 'mvn ... test' commands in parallel
+    results = run_mvn_test_commands_in_parallel(target_root_dir, mvn_parameters)
+    
+    # Save and move logs
     print_report(conf_files, results)
-    # Append all the log files into one large build.log file at the end
     append_log_files(target_root_dir)
-    # Move all log files to a separate directory
     move_log_files(target_root_dir)
 
 if __name__ == "__main__":

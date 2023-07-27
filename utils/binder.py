@@ -84,11 +84,8 @@ def find_matching(graph):
   random.shuffle(retry_locations)
     
   for retry_location in retry_locations:
-    # Get the list of tests for this retry location
     tests = [test for loc, test in graph if loc == retry_location]
-    # Check if the list is not empty
     if tests:
-      # Shuffle the list of tests
       tests = random.sample(tests, len(tests))
       for test in tests:
         if is_valid_matching(matching, retry_location, test):
@@ -117,7 +114,7 @@ def add_unmatched(matching, graph):
       if test not in matching:
         unmatched_map[test] = unmatched_map.get(test, set()).union({retry_location})
 
-  # Iteratively add an unmatched test to the retry location that has least tests currently binded to it
+  # Incrementally match unmatched tests to retry locations
   for test, retry_locations in unmatched_map.items():
     retry_location = min(retry_locations, key=lambda x: len(matching.get(x, set())))
     matching.setdefault(retry_location, set()).add(test)
@@ -168,6 +165,7 @@ def append_to_config_file(input_config, dir_path, matching):
 
   for line in lines:
     retry_location = line.strip().split("!!!")[0]
+
     # Get the tests that are matched to this retry location
     tests = [test for test, loc in matching.items() if loc == retry_location]
     for test in tests:
@@ -176,7 +174,8 @@ def append_to_config_file(input_config, dir_path, matching):
         if output_file.tell() == 0:
           output_file.write(header)
         output_file.write(line)
-      # Create a motion file for each test
+
+      # Create a config file for each test
       config_filename = os.path.join(partitions_dir, f"{os.path.splitext(os.path.basename(input_config))[0]}-{test}.conf")
       with open(config_filename, "w") as config_file:
         config_file.write(f"retry_data_file: {output_filename}\n")
@@ -190,7 +189,6 @@ def main():
   parser.add_argument('--path_to_test_reports', help='Path to test reports')
   parser.add_argument('--path_to_configs', help='Path to configuration files')
   args = parser.parse_args()
-
   if not (args.retry_locations_input and args.path_to_test_reports and args.path_to_configs):
     print("[wasabi] matcher.py takes three arguments")
     sys.exit(1)
@@ -204,10 +202,6 @@ def main():
   # Step 3: Match the remaining tests randomly, avoiding duplicates.
   matching = add_unmatched(matching, graph)
   
-  print("================= Matchings =================")
-  print(matching)
-  print("=================    |||    =================")
-
   # Step 4: Check if matching is complete
   unmatched_tests, unmatched_retry_locations, multi_matched_tests = find_unmatched(matching, graph)
   print("================= Validation ================")
