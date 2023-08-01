@@ -54,7 +54,7 @@ public class TestWasabiContext {
       };
 
     try (FileWriter writer = new FileWriter(this.testRetryDataFile)) {
-      writer.append("Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection Probablity!!!Test coverage\n");
+      writer.append("Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection probability!!!Test coverage\n");
 
       for (String[] record : records) {
         writer.append(
