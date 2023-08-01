@@ -30,7 +30,7 @@ class ConfigParser {
   private static final Map<Integer, Double> injectionProbabilityMap = new HashMap<>();
   
   private static final HashingPrimitives hashingPrimitives = new HashingPrimitives();
-  private static final String[] RETRY_DATA_COLUMN_NAMES = {"Retry location", "Enclosing method", "Retried method", "Exception", "Injection Probablity", "Test coverage"};
+  private static final String[] RETRY_DATA_COLUMN_NAMES = {"Retry location", "Enclosing method", "Retried method", "Exception", "Injection probability", "Test coverage"};
   
   public ConfigParser(WasabiLogger logger, String configFile) {
     this.LOG = logger;
@@ -59,22 +59,21 @@ class ConfigParser {
           case "max_injection_count":
             try {
               this.maxInjectionCount = Integer.parseInt(value);
-              break;
             } catch (Exception e) {
               this.LOG.printMessage(
                   LOG.LOG_LEVEL_ERROR, 
-                  String.format("[wasabi] An exception occurred when parsing line <%s>: %s\n", 
+                  String.format("An exception occurred when parsing line <%s>: %s\n", 
                     line, e.getMessage())
                 );
               e.printStackTrace();
-            } 
+            }
+            break;
         }
-          
       }
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] An exception occurred when parsing the config file: %s\n", e.getMessage())
+          String.format("An exception occurred when parsing the config file: %s\n", e.getMessage())
         );
       e.printStackTrace();
     }
@@ -99,7 +98,7 @@ class ConfigParser {
     } catch (IOException e) {
       this.LOG.printMessage(
           LOG.LOG_LEVEL_ERROR, 
-          String.format("[wasabi] An exception occurred when parsing the retry data file: %s\n", e.getMessage())
+          String.format("An exception occurred when parsing the retry data file: %s\n", e.getMessage())
         );
       e.printStackTrace();
     }
@@ -123,7 +122,7 @@ class ConfigParser {
       } catch (Exception e) {
         this.LOG.printMessage(
             LOG.LOG_LEVEL_ERROR, 
-            String.format("[wasabi] An exception occurred when parsing entry ( %s , %s , %s , %s ): %s\n", 
+            String.format("An exception occurred when parsing entry ( %s , %s , %s , %s ): %s\n", 
               record[0], record[1], record[2], record[3], e.getMessage())
           );
         e.printStackTrace();

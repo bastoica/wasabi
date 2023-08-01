@@ -135,7 +135,7 @@ def append_to_config_file(input_config, dir_path, matching):
   with open(input_config, "r") as file:
     lines = file.readlines()
 
-  header = "Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection Probability!!!Test coverage\n"
+  header = "Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection probability!!!Test coverage"
 
   partitions_dir = os.path.join(dir_path, "partitions")
   os.makedirs(partitions_dir, exist_ok=True)
