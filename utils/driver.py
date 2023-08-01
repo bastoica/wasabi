@@ -1,13 +1,12 @@
 import argparse
 import datetime
 import glob
+import logging
 import queue
-import multiprocessing
 import os
 import re
 import shutil
 import subprocess
-import time
 
 
 # Define the constants
@@ -59,7 +58,7 @@ def get_test_file_name(config_file):
     return test_name
 
 
-def get_log_file_name(target_root_dir, config_file):
+def get_log_file_name(target_root_dir, test_path):
     """
     Constructs the log file name from the config file.
 
@@ -70,26 +69,26 @@ def get_log_file_name(target_root_dir, config_file):
     Returns:
         str: The path of the log file for the config file.
     """
-    test_name = get_test_file_name(config_file)
+    test_name = get_test_file_name(test_path)
     log_file_name = f"build_{test_name}.log"
-    
     return os.path.join(target_root_dir, log_file_name)
 
 
-def run_mvn_compile_command_once(target_root_dir):
+def run_mvn_install_command(target_root_dir):
     """
-    Execute the first command from a given target_root_dir.
+    Execute a 'mvn ... install' command from a given target_root_dir.
 
     Parameters:
         target_root_dir (str): The path of the target root directory.
         log_file (str): The path of the log file.
     """
-    cmd = ["mvn", "-fn", "-DskipTests", "clean", "compile"]
+    max_threads = os.cpu_count() -1
+    cmd = ["mvn", "-fn", "-DskipTests", "clean", "install", "-T {max_threads}"]
     
-    # Print info about the current job
-    print("---------------------------" + 
-          "\nExecuting command: " + ' '.join(cmd) + 
-          "\n---------------------------\n")
+    # Log info about the current job
+    logging.info(f"// -------------------------------------------------------------------------- //")
+    logging.info(f"Executing command: {' '.join(cmd)}")
+    logging.info(f"// -------------------------------------------------------------------------- //")
     
     # Execute cmd from target_root_dir directory
     os.chdir(target_root_dir)
@@ -117,9 +116,9 @@ def run_with_timeout(cmd, timeout):
     return result
 
 
-def run_mvn_test_commands_in_parallel(target_root_dir, mvn_parameters):
+def run_mvn_test_commands(target_root_dir, mvn_parameters):
     """
-    Create and run threads for the second command in parallel using a pool.
+    Execute multiple 'mvn ... test' commands with different compiler flags from a given target_root_dir.
 
     Parameters:
         conf_files (list): A list of strings containing the paths of the ".conf" files.
@@ -127,63 +126,40 @@ def run_mvn_test_commands_in_parallel(target_root_dir, mvn_parameters):
     Returns:
         list: A list of tuples containing the outcome and duration of each thread.
     """
-    cmd = ["mvn", "-DconfigFile={config_file}", "-Dtest={test_file}", "-Dparallel-tests", "-DtestsThreadCount=1", "-fn", "test"]
-    num_threads = os.cpu_count()
+    max_threads = os.cpu_count() -1
+    cmd = ["mvn", "-DconfigFile={config_file}", "-Dtest={test_name}", f"-T {max_threads}", "-fn", "surefire:test"]
     
-    q = queue.Queue()
-    for test_file, config_file in mvn_parameters:
-        q.put((config_file, test_file))
-    
-    pool = multiprocessing.Pool(num_threads - 1)
-    
-    results = []
-    jobCount = 0
-    while not q.empty():
-        jobCount = jobCount + 1
+    # Create a queue to store the commands
+    cmd_queue = queue.Queue()
+    for config_file, test_name in mvn_parameters:
+        cmd_queue.put((config_file, test_name))
+       
+    counter = 0
+    while cmd_queue.empty():
+        config_file, test_name = cmd_queue.get()
+        counter += 1
 
-        config_file, test_file = q.get()
         log_file = get_log_file_name(target_root_dir, config_file)
         cmd = [arg.replace("{config_file}", config_file) for arg in cmd]
-        cmd = [arg.replace("{test_file}", test_file) for arg in cmd]
-    
-        # Print info about the current job
-        print("---------------------------" +
-              "\njob count: " + jobCount +
-              "\nExecuting command: " + ' '.join(cmd) + 
-              "\nConfig file: " + config_file + 
-              "\nLog file: " + log_file + 
-              "\n---------------------------\n")
-    
+        cmd = [arg.replace("{test_name}", test_name) for arg in cmd]
+
+        # Log info about the current job
+        logging.info(f"// -------------------------------------------------------------------------- //")
+        logging.info(f"job count: {counter}")
+        logging.info(f"Executing command: {' '.join(cmd)}")
+        logging.info(f"Config file: {config_file}")
+        logging.info(f"Log file: {log_file}")
+
         # Execute cmd from target_root_dir directory
         os.chdir(target_root_dir)
-        proc = pool.apply_async(run_with_timeout, (cmd, TIMEOUT))
-        results.append(proc)
-    
-    pool.close()
-    pool.join()
-    
-    for proc in results:
-        result = proc.get()
+        result = run_with_timeout(cmd, TIMEOUT)
+
+        # Log result to file and screen
+        logging.info(f"Status: {result.returncode}")
+        logging.info(f"// -------------------------------------------------------------------------- //")
         with open(log_file, "w") as outfile:
             outfile.write(result.stdout)
             outfile.write(result.stderr)
-    
-    return results
-
-
-def print_report(results, conf_files):
-    """
-    Print a comprehensive report at the end for each config file.
-
-    Parameters:
-        conf_files (list): A list of strings containing the paths of the ".conf" files.
-        results (list): A list of tuples containing the outcome and duration of each thread.
-    """
-    print("Report:")
-    for i in range(len(conf_files)):
-      config_file = conf_files[i]
-      success, duration, stdout, stderr = results[i].get()
-      print(f"{config_file}: {duration:.2f} seconds, {'success' if success else 'timeout'}")
 
 
 def append_log_files(target_root_dir):
@@ -202,7 +178,6 @@ def append_log_files(target_root_dir):
     log_files_str = " ".join(log_files)
     cmd = f"cat {log_files_str} > {os.path.join(target_root_dir, LOG_FILE_NAME)}"
     os.system(cmd)
-
 
 
 def move_log_files(target_root_dir):
@@ -233,20 +208,21 @@ def main():
     parser.add_argument("config_dir", help="The config directory")
     args = parser.parse_args()
     
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
     target_root_dir = args.target_root_dir
     config_dir = args.config_dir
     
     conf_files = get_conf_files(config_dir)
-    test_files = [get_test_file_name(config_file) for config_file in conf_files]
-    mvn_parameters = [(conf_file, test_file) for conf_file, test_file in zip(conf_files, test_files)]
+    test_names = [get_test_file_name(config_file) for config_file in conf_files]
+    mvn_parameters = [(conf_file, test_name) for conf_file, test_name in zip(conf_files, test_names)]
 
     # Execute 'mvn ... compile'
-    run_mvn_compile_command_once(target_root_dir)
+    #run_mvn_install_command(target_root_dir)
     # Create and run threads to execute multiple 'mvn ... test' commands in parallel
-    results = run_mvn_test_commands_in_parallel(target_root_dir, mvn_parameters)
+    run_mvn_test_commands(target_root_dir, mvn_parameters)
     
     # Save and move logs
-    print_report(conf_files, results)
     append_log_files(target_root_dir)
     move_log_files(target_root_dir)
 
