@@ -82,8 +82,7 @@ def run_mvn_install_command(target_root_dir):
         target_root_dir (str): The path of the target root directory.
         log_file (str): The path of the log file.
     """
-    max_threads = os.cpu_count() -1
-    cmd = ["mvn", "-fn", "-DskipTests", "clean", "install", "-T {max_threads}"]
+    cmd = ["mvn", "-fn", "-DskipTests", "clean", "install"]
     
     # Log info about the current job
     logging.info(f"// -------------------------------------------------------------------------- //")
