@@ -85,9 +85,9 @@ def run_mvn_install_command(target_root_dir):
     cmd = ["mvn", "-fn", "-DskipTests", "clean", "install"]
     
     # Log info about the current job
-    logging.info(f"// -------------------------------------------------------------------------- //")
-    logging.info(f"Executing command: {' '.join(cmd)}")
-    logging.info(f"// -------------------------------------------------------------------------- //")
+    print(f"// -------------------------------------------------------------------------- //")
+    print(f"Executing command: {' '.join(cmd)}")
+    print(f"// -------------------------------------------------------------------------- //")
     
     # Execute cmd from target_root_dir directory
     os.chdir(target_root_dir)
@@ -142,20 +142,20 @@ def run_mvn_test_commands(target_root_dir, mvn_parameters):
         cmd = [arg.replace("{config_file}", config_file) for arg in cmd]
         cmd = [arg.replace("{test_name}", test_name) for arg in cmd]
 
-        # Log info about the current job
-        logging.info(f"// -------------------------------------------------------------------------- //")
-        logging.info(f"job count: {counter}")
-        logging.info(f"Executing command: {' '.join(cmd)}")
-        logging.info(f"Config file: {config_file}")
-        logging.info(f"Log file: {log_file}")
+        # Print info about the current job
+        print(f"// -------------------------------------------------------------------------- //")
+        print(f"job count: {counter}")
+        print(f"Executing command: {' '.join(cmd)}")
+        print(f"Config file: {config_file}")
+        print(f"Log file: {log_file}")
 
         # Execute cmd from target_root_dir directory
         os.chdir(target_root_dir)
         result = run_with_timeout(cmd, TIMEOUT)
 
         # Log result to file and screen
-        logging.info(f"Status: {result.returncode}")
-        logging.info(f"// -------------------------------------------------------------------------- //")
+        print(f"Status: {result.returncode}")
+        print(f"// -------------------------------------------------------------------------- //")
         with open(log_file, "w") as outfile:
             outfile.write(result.stdout)
             outfile.write(result.stderr)
@@ -207,8 +207,6 @@ def main():
     parser.add_argument("config_dir", help="The config directory")
     args = parser.parse_args()
     
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-
     target_root_dir = args.target_root_dir
     config_dir = args.config_dir
     
@@ -217,7 +215,7 @@ def main():
     mvn_parameters = [(conf_file, test_name) for conf_file, test_name in zip(conf_files, test_names)]
 
     # Execute 'mvn ... compile'
-    #run_mvn_install_command(target_root_dir)
+    run_mvn_install_command(target_root_dir)
     # Create and run threads to execute multiple 'mvn ... test' commands in parallel
     run_mvn_test_commands(target_root_dir, mvn_parameters)
     
