@@ -133,7 +133,7 @@ def run_mvn_test_commands(target_root_dir, mvn_parameters):
         cmd_queue.put((config_file, test_name))
        
     counter = 0
-    while cmd_queue.empty():
+    while not cmd_queue.empty():
         counter += 1
 
         config_file, test_name = cmd_queue.get()
