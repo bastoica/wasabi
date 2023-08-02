@@ -126,7 +126,6 @@ def run_mvn_test_commands(target_root_dir, mvn_parameters):
         list: A list of tuples containing the outcome and duration of each thread.
     """
     max_threads = os.cpu_count() -1
-    cmd = ["mvn", "-DconfigFile={config_file}", "-Dtest={test_name}", f"-T {max_threads}", "-fn", "surefire:test"]
     
     # Create a queue to store the commands
     cmd_queue = queue.Queue()
@@ -135,13 +134,13 @@ def run_mvn_test_commands(target_root_dir, mvn_parameters):
        
     counter = 0
     while cmd_queue.empty():
-        config_file, test_name = cmd_queue.get()
         counter += 1
 
+        config_file, test_name = cmd_queue.get()
         log_file = get_log_file_name(target_root_dir, config_file)
-        cmd = [arg.replace("{config_file}", config_file) for arg in cmd]
-        cmd = [arg.replace("{test_name}", test_name) for arg in cmd]
-
+        
+        cmd = ["mvn", f"-DconfigFile={config_file}", f"-Dtest={test_name}", f"-T {max_threads}", "-fn", "surefire:test"]
+    
         # Print info about the current job
         print(f"// -------------------------------------------------------------------------- //")
         print(f"job count: {counter}")
