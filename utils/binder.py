@@ -156,8 +156,8 @@ def append_to_config_file(input_config, dir_path, matching):
         config_filename = os.path.join(partitions_dir, f"{os.path.splitext(os.path.basename(input_config))[0]}-{test}.conf")
         with open(config_filename, "w") as config_file:
           config_file.write(f"retry_data_file: {output_filename}\n")
-          config_file.write("injection_policy: unlimited\n")
-          config_file.write("max_injection_count: -1\n")
+          config_file.write("injection_policy: max-count\n")
+          config_file.write("max_injection_count: 97\n")
 
 
 def main():
