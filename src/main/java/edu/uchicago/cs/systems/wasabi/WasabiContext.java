@@ -150,7 +150,6 @@ class WasabiContext {
   public Boolean shouldInject(InjectionPoint ipt) {
     if (injectionPolicy.shouldInject(ipt.injectionCount, ipt.injectionProbability)) {
       ipt.injectionCount = updateInjectionCount(ipt.stackSnapshot.getStacktrace());
-
       return true;
     }
 
