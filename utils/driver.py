@@ -82,7 +82,7 @@ def run_mvn_install_command(target_root_dir):
         target_root_dir (str): The path of the target root directory.
         log_file (str): The path of the log file.
     """
-    cmd = ["mvn", "-fn", "-DskipTests", "clean", "install"]
+    cmd = ["mvn", "-fn", "-DskipTests", "clean", "compile", "&&", "mvn", "-fn", "-DskipTests", "install"]
     
     # Log info about the current job
     print(f"// -------------------------------------------------------------------------- //")
