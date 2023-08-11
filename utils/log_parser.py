@@ -35,7 +35,7 @@ def log_compaction(log):
   Returns:
     compact_log: Compacted log.
   """
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
   
   compact_log = []
 
@@ -65,7 +65,7 @@ def get_test_name(line, test_name_pattern_regex):
 
   match = test_name_pattern_regex.search(line)
   if match:
-    test_name = match.group(0)
+    test_name = match.group(0).split(' ')[1]
   
   return test_name
 
@@ -147,7 +147,7 @@ def get_non_wasabi_test_failures(log, exclude):
   Returns:
     list: Test names that are non-wasabi test failures.
   """
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
   test_name_pattern_regex = re.compile(test_name_pattern)
 
   wasabi_exception_pattern = "[wasabi]"
@@ -181,11 +181,11 @@ def get_all_failing_tests(log, exclude):
     Tuple: test_names (list), retry_locations (list)
   """
 
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
   test_name_pattern_regex = re.compile(test_name_pattern)
 
-  retry_location_pattern = r"\[wasabi\].*thrown from https:\/\/.*Retry attempt"
-  retry_location_pattern_regex = re.compile(retry_location_pattern)
+  fault_injection_pattern = r"\[wasabi\].*thrown from https:\/\/.*Retry attempt"
+  fault_injection_pattern_regex = re.compile(fault_injection_pattern)
 
   test_names = []
   retry_locations = []
@@ -193,7 +193,7 @@ def get_all_failing_tests(log, exclude):
     if (not matches_excluded_test(log[i], exclude.tests) and
         not matches_excluded_pattern(log[i+1], exclude.patterns) and
         test_name_pattern_regex.search(log[i]) and 
-        retry_location_pattern_regex.search(log[i+1])):
+        fault_injection_pattern_regex.search(log[i+1])):
       
       test_name = get_test_name(log[i], test_name_pattern_regex)
 
@@ -219,10 +219,10 @@ def get_tests_failing_with_different_exceptions(log, exclude):
   Returns:
     Tuple: test_names (list), exception_names (list)
   """
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
   test_name_pattern_regex = re.compile(test_name_pattern)
 
-  fault_injection_pattern = r"\[wasabi\] [a-zA-Z]*Exception thrown from"
+  fault_injection_pattern = r"\[wasabi\].*thrown from https:\/\/.*Retry attempt"
   fault_injection_pattern_regex = re.compile(fault_injection_pattern)
 
   exception_pattern = r"[a-zA-Z]*Exception"
@@ -265,7 +265,7 @@ def get_tests_with_few_retry_attempts(log, max_attempts, exclude):
   Returns:
     test_names: List of tests with a low number retry attempts.
   """
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
   test_name_pattern_regex = re.compile(test_name_pattern)
 
   retry_attempts_pattern = r"\| Retry attempt (\d+)$"
@@ -307,7 +307,7 @@ def get_tests_with_no_backoff(log, exclude):
   Returns:
     test_names: List of tests with a no backoff between retry attempts.
   """
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
   test_name_pattern_regex = re.compile(test_name_pattern)
 
   backoff_pattern = r"No backoff between retry attempts"
@@ -347,7 +347,7 @@ def get_tests_failing_with_assertions(log, exclude):
   Returns:exclude.tests
     list: Test names with "java.lang.AssertionError" pattern
   """
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
   test_name_pattern_regex = re.compile(test_name_pattern)
 
   test_names = []
@@ -377,7 +377,7 @@ def get_tests_timing_out(log, exclude):
   Returns:
     list: Test names with "org.junit.runners.model.TestTimedOutException" pattern
   """
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
   test_name_pattern_regex = re.compile(test_name_pattern)
 
   test_names = []
@@ -418,11 +418,11 @@ def main():
   args = parser.parse_args()
 
   excluded_tests = read_line_by_line(args.excluded_tests)
-  excluded_patterns = read_line_by_line(args.excluded_patterns)
+  excluded_failure_patterns = read_line_by_line(args.excluded_failure_patterns)
   Exclude = namedtuple('Exclude', ['tests', 'patterns'])
-  exclude = Exclude(tests=excluded_tests, patterns=excluded_patterns)
+  exclude = Exclude(tests=excluded_tests, patterns=excluded_failure_patterns)
 
-  contents = read_line_by_line(args.file)
+  contents = read_line_by_line(args.log_file)
   log = log_compaction(contents)
 
   test_names, retry_locations = get_all_failing_tests(log, exclude)
