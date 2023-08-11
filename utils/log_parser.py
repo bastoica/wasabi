@@ -50,6 +50,26 @@ def log_compaction(log):
   return compact_log
 
 
+def get_test_name(line, test_name_pattern_regex):
+  """
+  Extracts the name of a test from a line in the log.
+
+  Args:
+    line (str): The log line.
+
+  Returns:
+    str: The name of the test or None.
+  """
+  
+  test_name = None
+
+  match = test_name_pattern_regex.search(line)
+  if match:
+    test_name = match.group(0)
+  
+  return test_name
+
+
 def matches_excluded_test(line, test_names):
   """
   Check if the line contains a test name from the list of test names.
@@ -141,8 +161,7 @@ def get_non_wasabi_test_failures(log, exclude):
         not is_assertion_failure(log[i+1]) and
         not is_timeout_failure(log[i+1])):
       
-      tokens = log[i].split()
-      test_name = next((token for token in tokens if token.startswith("test") and token not in exclude.tests), None)
+      test_name = get_test_name(log[i], test_name_pattern_regex)
 
       if test_name:
         test_names.append(test_name)
@@ -176,11 +195,7 @@ def get_all_failing_tests(log, exclude):
         test_name_pattern_regex.search(log[i]) and 
         retry_location_pattern_regex.search(log[i+1])):
       
-      tokens = log[i].split()
-      test_name = None
-      for token in tokens:
-        if token.startswith("test") and token not in exclude.tests:
-          test_name = token
+      test_name = get_test_name(log[i], test_name_pattern_regex)
 
       if test_name is not None:
         tokens = log[i+1].split()
@@ -218,67 +233,11 @@ def get_tests_failing_with_different_exceptions(log, exclude):
   for i in range(len(log)-1):
     if (not matches_excluded_test(log[i], exclude.tests) and
         not matches_excluded_pattern(log[i+1], exclude.patterns) and
-        test_name_pattern_regex.search(log[i]) and 
-        fault_injection_pattern_regex.search(log[i+1])):
-      
-      tokens = log[i].split()
-      for token in tokens:
-        if token.startswith("test") and token not in exclude.tests:
-          test_name = token
-          break
-
-        if (not is_assertion_failure(log[i+1]) and 
-          not is_timeout_failure(log[i+1])):
-          tokens = re.findall(exception_pattern, log[i+1].strip())
-          if len(tokens) >= 2:
-            if tokens[0].endswith(":"):
-              tokens[0] = tokens[0][:-1]
-            if tokens[1].endswith(":"):
-              tokens[1] = tokens[1][:-1]
-
-            if tokens[0] != tokens[1]:
-              test_names.append(test_name)
-              exception_names.append((tokens[0], tokens[1]))
-
-  return test_names, exception_names
-
-
-def get_tests_with_few_retry_attempts(log, max_attempts, exclude):
-  """
-  Extracts tests with a low number of retry attempts (less than a limit) 
-  from a log file.
-
-  Args:
-    log (List): Log file as a list of lines.
-    max_attempts (int): The max number of retry attempts.
-    exclude.tests (list): List of excluded tests.
-
-  Returns:
-    test_names: List of tests with a low number retry attempts.
-  """
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
-  test_name_pattern_regex = re.compile(test_name_pattern)
-
-  retry_attempts_pattern = r"\| Retry attempt (\d+)$"
-  retry_attempts_pattern_regex = re.compile(retry_attempts_pattern)
-  
-  exception_pattern = r"[a-zA-Z]*Exception"
-  
-  test_names = []
-  exception_names = []
-
-  for i in range(len(log)-1):
-    if (not matches_excluded_test(log[i], exclude.tests) and
-        not matches_excluded_pattern(log[i+1], exclude.patterns) and
         not is_assertion_failure(log[i+1]) and
         test_name_pattern_regex.search(log[i]) and 
-        retry_attempts_pattern_regex.search(log[i+1])):
+        fault_injection_pattern_regex.search(log[i+1])):
 
-      tokens = log[i].split()
-      for token in tokens:
-        if token.startswith("test") and token not in exclude.tests:
-          test_name = token
-          break
+      test_name = get_test_name(log[i], test_name_pattern_regex)
 
       if (is_assertion_failure(log[i+1]) == False and is_timeout_failure(log[i+1]) == False):
         tokens = re.findall(exception_pattern, log[i+1].strip())
@@ -293,6 +252,47 @@ def get_tests_with_few_retry_attempts(log, max_attempts, exclude):
             exception_names.append((tokens[0], tokens[1]))
 
   return test_names, exception_names
+
+
+def get_tests_with_few_retry_attempts(log, max_attempts, exclude):
+  """
+  Extracts tests with a low number of retry attempts (less than a limit) 
+  from a log file.
+  Args:
+    log (List): Log file as a list of lines.
+    max_attempts (int): The max number of retry attempts.
+    exclude.tests (list): List of excluded tests.
+  Returns:
+    test_names: List of tests with a low number retry attempts.
+  """
+  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*"
+  test_name_pattern_regex = re.compile(test_name_pattern)
+
+  retry_attempts_pattern = r"\| Retry attempt (\d+)$"
+  retry_attempts_pattern_regex = re.compile(retry_attempts_pattern)
+
+  test_names = []
+  retry_attempts = []
+
+  for i in range(len(log)-1):
+    if (not matches_excluded_test(log[i], exclude.tests) and
+        not matches_excluded_pattern(log[i+1], exclude.patterns) and
+        test_name_pattern_regex.search(log[i]) and 
+        retry_attempts_pattern_regex.search(log[i+1])):
+
+      test_name = get_test_name(log[i], test_name_pattern_regex)
+
+      if (is_assertion_failure(log[i+1]) == False and is_timeout_failure(log[i+1]) == False):
+        match = retry_attempts_pattern_regex.search(log[i+1])
+        if match:
+          attempts = int(match.group(1))
+        if attempts <= max_attempts:
+          test_names.append(test_name)
+          retry_attempts.append(attempts)
+
+  return test_names, retry_attempts
+
+
 
 
 def get_tests_with_no_backoff(log, exclude):
@@ -325,17 +325,13 @@ def get_tests_with_no_backoff(log, exclude):
         test_name_pattern_regex.search(log[i]) and 
         backoff_pattern_regex.search(log[i+1])):
 
-      tokens = log[i].split()
-      for token in tokens:
-        if token.startswith("test") and token not in exclude.tests:
-          test_name = token
-          break
+      test_name = get_test_name(log[i], test_name_pattern_regex)
 
-        if test_name is not None:
-          retry_loc_match = re.search(retry_location_pattern, log[i+1])
-          if retry_loc_match:
-            retry_locations.append(retry_loc_match.group(1))
-            test_names.append(test_name)
+      if test_name is not None:
+        retry_loc_match = re.search(retry_location_pattern, log[i+1])
+        if retry_loc_match:
+          retry_locations.append(retry_loc_match.group(1))
+          test_names.append(test_name)
 
   return test_names, retry_locations
 
@@ -359,14 +355,13 @@ def get_tests_failing_with_assertions(log, exclude):
   for i in range(len(log)-1):
     if (not matches_excluded_test(log[i], exclude.tests) and
         not matches_excluded_pattern(log[i+1], exclude.patterns) and
-        is_assertion_failure(log[i+1]) and
-        test_name_pattern_regex.search(log[i])):
+        test_name_pattern_regex.search(log[i]) and
+        is_assertion_failure(log[i+1])):
       
-      tokens = log[i].split()
-      for token in tokens:
-        if token.startswith("test") and token not in exclude.tests:
-          test_names.append(token)
-          break
+      test_name = get_test_name(log[i], test_name_pattern_regex)
+      
+      if test_name is not None:
+        test_names.append(test_name)
 
   return test_names
 
@@ -390,14 +385,13 @@ def get_tests_timing_out(log, exclude):
   for i in range(len(log)-1):
     if (not matches_excluded_test(log[i], exclude.tests) and
         not matches_excluded_pattern(log[i+1], exclude.patterns) and
-        is_timeout_failure(log[i+1]) and
-        test_name_pattern_regex.search(log[i])):
+        test_name_pattern_regex.search(log[i]) and
+        is_timeout_failure(log[i+1])):
       
-      tokens = log[i].split()
-      for token in tokens:
-        if token.startswith("test") and token not in exclude.tests:
-          test_names.append(token)
-          break
+      test_name = get_test_name(log[i], test_name_pattern_regex)
+      
+      if test_name is not None:
+        test_names.append(test_name)
 
   return test_names
 
