@@ -13,7 +13,7 @@ LOG_FILE_NAME = "build.log" # log file
 TIMEOUT = 3600              # command timeout value in seconds
 
 
-def strip_ansi_escape_codes(line):
+def remove_ansi_escape_codes(output):
   """
   Strips ANSI escape codes from the given stdout string.
 
@@ -23,8 +23,7 @@ def strip_ansi_escape_codes(line):
   Returns:
     str: The stripped stdout string without ANSI escape codes.
   """
-  utf8_line = re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", line)
-  return utf8_line
+  return re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", output)
 
 
 def get_conf_files(config_dir):
@@ -94,8 +93,8 @@ def run_mvn_install_command(target_root_dir):
   
   log_file_path = os.path.join(target_root_dir, LOG_FILE_NAME)
   with open(log_file_path, "a", encoding="utf-8") as outfile:
-    outfile.write(strip_ansi_escape_codes(result.stdout.decode('utf-8')))
-    outfile.write(strip_ansi_escape_codes((result.stderr.decode('utf-8'))))
+    outfile.write(remove_ansi_escape_codes(result.stdout.decode('utf-8')))
+    outfile.write(remove_ansi_escape_codes((result.stderr.decode('utf-8'))))
 
   #### mvn install
   cmd = ["mvn", "-fn", "-DskipTests", "install"]
@@ -110,8 +109,8 @@ def run_mvn_install_command(target_root_dir):
   
   log_file_path = os.path.join(target_root_dir, LOG_FILE_NAME)
   with open(log_file_path, "a", encoding="utf-8") as outfile:
-    outfile.write(strip_ansi_escape_codes(result.stdout.decode('utf-8')))
-    outfile.write(strip_ansi_escape_codes((result.stderr.decode('utf-8'))))
+    outfile.write(remove_ansi_escape_codes(result.stdout.decode('utf-8')))
+    outfile.write(remove_ansi_escape_codes((result.stderr.decode('utf-8'))))
 
 
 def run_command_with_timeout(cmd, dir_path):
@@ -165,8 +164,8 @@ def run_mvn_test_command(target_root_dir, mvn_parameters):
     print(f"Status: {result.returncode}", flush=True)
     print(f"// -------------------------------------------------------------------------- //")
     with open(log_file, "w") as outfile:
-      outfile.write(result.stdout.decode('utf-8'))
-      outfile.write(result.stderr.decode('utf-8'))
+      outfile.write(remove_ansi_escape_codes(result.stdout.decode('utf-8')))
+      outfile.write(remove_ansi_escape_codes(result.stderr.decode('utf-8')))
 
 
 def append_log_files(target_root_dir):
