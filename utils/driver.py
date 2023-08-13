@@ -80,13 +80,33 @@ def run_mvn_install_command(target_root_dir):
     target_root_dir (str): The path of the target root directory.
     log_file (str): The path of the log file.
   """
-  cmd = ["mvn", "-fn", "-DskipTests", "clean", "compile", "&&", "mvn", "-fn", "-DskipTests", "install"]
-  
+  ### mvn compile
+
+  cmd = ["mvn", "-fn", "-DskipTests", "clean", "compile"]
+
   print(f"// -------------------------------------------------------------------------- //")
-  print(f"Executing command: {' '.join(cmd)}")
-  print(f"// -------------------------------------------------------------------------- //")
-  
+  print(f"Executing command: {' '.join(cmd)}", flush=True)
+
   result = subprocess.run(cmd, cwd=target_root_dir, shell=False, capture_output=True)
+  
+  print(f"Status: {result.returncode}", flush=True)
+  print(f"// -------------------------------------------------------------------------- //")
+  
+  log_file_path = os.path.join(target_root_dir, LOG_FILE_NAME)
+  with open(log_file_path, "a", encoding="utf-8") as outfile:
+    outfile.write(strip_ansi_escape_codes(result.stdout.decode()))
+    outfile.write(strip_ansi_escape_codes((result.stderr.decode())))
+
+  #### mvn install
+  cmd = ["mvn", "-fn", "-DskipTests", "install"]
+  
+  print(f"// -------------------------------------------------------------------------- //")
+  print(f"Executing command: {' '.join(cmd)}", flush=True)
+
+  result = subprocess.run(cmd, cwd=target_root_dir, shell=False, capture_output=True)
+  
+  print(f"Status: {result.returncode}", flush=True)
+  print(f"// -------------------------------------------------------------------------- //")
   
   log_file_path = os.path.join(target_root_dir, LOG_FILE_NAME)
   with open(log_file_path, "a", encoding="utf-8") as outfile:
@@ -135,14 +155,14 @@ def run_mvn_test_command(target_root_dir, mvn_parameters):
     cmd = ["mvn", f"-DconfigFile={config_file}", f"-Dtest={test_name}", f"-T {max_threads}", "-fn", "surefire:test"]
   
     print(f"// -------------------------------------------------------------------------- //")
-    print(f"Job count: {counter}")
+    print(f"Job count: {counter}", flush=True)
     print(f"Executing command: {' '.join(cmd)}")
     print(f"Config file: {config_file}")
     print(f"Log file: {log_file}")
 
     result = run_command_with_timeout(cmd, target_root_dir)
 
-    print(f"Status: {result.returncode}")
+    print(f"Status: {result.returncode}", flush=True)
     print(f"// -------------------------------------------------------------------------- //")
     with open(log_file, "w") as outfile:
       outfile.write(result.stdout)
