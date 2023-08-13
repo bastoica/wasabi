@@ -151,7 +151,7 @@ def run_mvn_test_command(target_root_dir, mvn_parameters):
     config_file, test_name = cmd_queue.get()
     log_file = get_log_file_name(target_root_dir, config_file)
     
-    cmd = ["mvn", f"-DconfigFile={config_file}", f"-Dtest={test_name}", f"-T {max_threads}", "-fn", "surefire:test"]
+    cmd = ["mvn", f"-DconfigFile={config_file}", f"-Dtest={test_name}", f"-T{max_threads}", "-fn", "surefire:test"]
   
     print(f"// -------------------------------------------------------------------------- //")
     print(f"Job count: {counter}", flush=True)
