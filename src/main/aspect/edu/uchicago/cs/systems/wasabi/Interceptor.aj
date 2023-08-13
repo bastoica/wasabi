@@ -48,7 +48,7 @@ public aspect Interceptor {
   };
   
   private static class ActiveInjectionLocationsTracker {
-    public static final ConcurrentHashMap<String, Boolean> store = new ConcurrentHashMap<>();
+    public static final ConcurrentHashMap<String, String> store = new ConcurrentHashMap<>();
     public final Lock mutex = new ReentrantLock();
   }
   private static final ActiveInjectionLocationsTracker activeInjectionLocations = new ActiveInjectionLocationsTracker();
@@ -99,12 +99,12 @@ public aspect Interceptor {
   after() : recordThreadSleep() { 
     try {
       StackSnapshot stackSnapshot = new StackSnapshot();
-
+      
       activeInjectionLocations.mutex.lock();
       try {
-        for (String key : activeInjectionLocations.store.keySet()) {
-          if (stackSnapshot.hasFrame(key)) {
-            int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(key));
+        for (String retryCaller : activeInjectionLocations.store.values()) {
+          if (stackSnapshot.hasFrame(retryCaller)) {
+            int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.normalizeStackBelowFrame(retryCaller));
             
             WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
             wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
@@ -184,7 +184,7 @@ public aspect Interceptor {
     if (ipt != null) {
       activeInjectionLocations.mutex.lock();
       try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
+        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation, ipt.retryCaller);
       } finally {
         activeInjectionLocations.mutex.unlock();
       }
@@ -225,7 +225,7 @@ public aspect Interceptor {
     if (ipt != null) {
       activeInjectionLocations.mutex.lock();
       try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
+        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation, ipt.retryCaller);
       } finally {
         activeInjectionLocations.mutex.unlock();
       }
@@ -269,7 +269,7 @@ public aspect Interceptor {
     if (ipt != null) {
       activeInjectionLocations.mutex.lock();
       try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
+        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation, ipt.retryCaller);
       } finally {
         activeInjectionLocations.mutex.unlock();
       }
@@ -310,7 +310,7 @@ public aspect Interceptor {
     if (ipt != null) {
       activeInjectionLocations.mutex.lock();
       try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
+        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation, ipt.retryCaller);
       } finally {
         activeInjectionLocations.mutex.unlock();
       }
@@ -357,7 +357,7 @@ public aspect Interceptor {
     if (ipt != null) {
       activeInjectionLocations.mutex.lock();
       try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
+        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation, ipt.retryCaller);
       } finally {
         activeInjectionLocations.mutex.unlock();
       }
@@ -513,7 +513,7 @@ public aspect Interceptor {
     if (ipt != null) {
       activeInjectionLocations.mutex.lock();
       try {
-        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation.toString(), true);
+        activeInjectionLocations.store.putIfAbsent(ipt.retryLocation, ipt.retryCaller);
       } finally {
         activeInjectionLocations.mutex.unlock();
       }

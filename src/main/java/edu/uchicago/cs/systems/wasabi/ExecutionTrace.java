@@ -65,14 +65,14 @@ class OpEntry {
 
   public void printOpEntry(WasabiLogger log) {
 
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("-------------------------------"));
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("--------------------------------"));
 
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Op type: %d", this.opType));
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Timestamp: %d", this.timestamp));
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Callstack:\n%s", this.stackSnapshot.toString()));
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Exception: %s", this.exception));
 
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("-------------------------------\n"));
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("--------------------------------\n"));
   }
 }
 
@@ -220,12 +220,14 @@ class ExecutionTrace {
     }
   }
 
-  public void printExecTrace(WasabiLogger log) {
+  public void printExecutionTrace(WasabiLogger log, String msg) {
     mutex.lock();
     try {
+      log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("================================ %s", msg));
       for (OpEntry op : this.opCache) {
         op.printOpEntry(log);
       }
+      log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("================================================================\n\n"));
 
     } finally {
       mutex.unlock();

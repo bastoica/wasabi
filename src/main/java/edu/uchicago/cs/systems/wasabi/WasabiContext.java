@@ -118,9 +118,9 @@ class WasabiContext {
       int hval = hashingPrimitives.getHashValue(retryCaller, retriedCallee, retriedException);
       String retryLocation = reverseRetryLocationsMap.get(hval);
       Double injectionProbability = injectionProbabilityMap.getOrDefault(hval, 0.0);
-      
+
       int uniqueId = HashingPrimitives.getHashValue(
-          stackSnapshot.getStackBelowFrame(stackSnapshot.getFrame(1))
+          stackSnapshot.normalizeStackBelowFrame(retryCaller)
         );
       addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, retriedException);
 
@@ -164,7 +164,7 @@ class WasabiContext {
    */
 
   public synchronized Boolean checkMissingBackoffDuringRetry(int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {
-    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(retryCaller));
+    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.normalizeStackBelowFrame(retryCaller));
 
     if (executionTrace.containsKey(uniqueId)) {
       ExecutionTrace trace = executionTrace.get(uniqueId);

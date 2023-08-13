@@ -27,12 +27,35 @@ public class TestStackSnapshot {
         } 
       };
 
-    StackSnapshot stackSnap = new StackSnapshot(testStack);
+    StackSnapshot stackSnapshot = new StackSnapshot(testStack);
     for (String frame : testStack) {
-      assertTrue(stackSnap.hasFrame(frame));
+      assertTrue(stackSnapshot.hasFrame(frame));
     }
 
-    assertFalse(stackSnap.hasFrame("not-a-frame"));
+    assertFalse(stackSnapshot.hasFrame("not-a-frame"));
+  }
+
+  @Test
+  public void testNormalizeStackBelowFrame() {
+    ArrayList<String> testStack = new ArrayList() { 
+        {
+          add("baz(Baz.java:42)");
+          add("bar(Bar.java:42)"); 
+          add("foo(Foo.java:42)"); 
+        } 
+      };
+
+    StackSnapshot stackSnapshot = new StackSnapshot(testStack);
+
+    assertEquals(
+      String.join(" ! ", stackSnapshot.normalizeStackBelowFrame("bar")),
+      String.join(" ! ", new ArrayList() { 
+          {
+            add("bar"); 
+            add("foo(Foo.java:42)"); 
+          }
+        })
+    );
   }
 
   @Test

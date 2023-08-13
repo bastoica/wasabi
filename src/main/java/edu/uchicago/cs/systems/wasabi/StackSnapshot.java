@@ -64,20 +64,23 @@ class StackSnapshot {
     return true;
   }
 
-  public ArrayList<String> getStackBelowFrame(String target) {
-    ArrayList<String> trimmedStacktrace = new ArrayList<String>();
+  public ArrayList<String> normalizeStackBelowFrame(String target) {
+    ArrayList<String> normalizedStack = new ArrayList<String>();
     Boolean targetFound = false;
 
     for (String frame : stacktrace) {
-      if (frame.equals(target)) {
+      if (frame.contains(target)) {
         targetFound = true;
-      }
+        normalizedStack.add(target);
+        continue;
+      } 
+      
       if (targetFound) {
-        trimmedStacktrace.add(frame);
+        normalizedStack.add(frame);
       }
     }
 
-    return trimmedStacktrace;
+    return normalizedStack;
   }
 
   public static String getQualifiedName(String frame) {

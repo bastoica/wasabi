@@ -130,7 +130,7 @@ public class TestWasabiContext {
     assertEquals(initialCount + 1, ipt.injectionCount.intValue());
 
     StackSnapshot stackSnapshot = new StackSnapshot();
-    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(stackSnapshot.getFrame(1)));
+    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.normalizeStackBelowFrame(stackSnapshot.getFrame(1)));
     wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot); // some sleep operations in between
     wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
     wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
@@ -144,7 +144,7 @@ public class TestWasabiContext {
   public void testCheckMissingBackoffDuringRetry() {
     WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configParser);
     StackSnapshot stackSnapshot = new StackSnapshot();
-    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.getStackBelowFrame(stackSnapshot.getFrame(1)));
+    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.normalizeStackBelowFrame(stackSnapshot.getFrame(1)));
 
     wasabiCtx.addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
     wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
