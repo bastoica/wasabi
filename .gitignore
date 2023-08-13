@@ -1,15 +1,6 @@
-# Compiled class file and paths
+# Compiled Java class files and paths
 *.class
 **/target/**
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile tools for Java (J2ME)
-.mtj.tmp/
 
 # Package files
 *.jar
@@ -20,8 +11,8 @@
 *.tar.gz
 *.rar
 
-# Virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# VSCode artifacts
+.vscode/*
 
 # Misc
 benchmarks/
