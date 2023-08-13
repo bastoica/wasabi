@@ -1,8 +1,7 @@
 import argparse
+from collections import deque
 import datetime
 import glob
-import logging
-import queue
 import os
 import re
 import shutil
@@ -140,21 +139,21 @@ def run_mvn_test_command(target_root_dir, mvn_parameters):
   """
   max_threads = os.cpu_count() -1
 
-  cmd_queue = queue.Queue()
+  cmd_queue = deque()
   for config_file, test_name in mvn_parameters:
-    cmd_queue.put((config_file, test_name))
+    cmd_queue.append((config_file, test_name))
      
   counter = 0
-  while not cmd_queue.empty():
+  while not cmd_queue:
     counter += 1
 
-    config_file, test_name = cmd_queue.get()
+    config_file, test_name = cmd_queue.popleft()
     log_file = get_log_file_name(target_root_dir, config_file)
     
     cmd = ["mvn", f"-DconfigFile={config_file}", f"-Dtest={test_name}", f"-T{max_threads}", "-fn", "surefire:test"]
   
     print(f"// -------------------------------------------------------------------------- //")
-    print(f"Job count: {counter}", flush=True)
+    print(f"Job count: {counter} / {len(cmd_queue)}", flush=True)
     print(f"Executing command: {' '.join(cmd)}")
     print(f"Config file: {config_file}")
     print(f"Log file: {log_file}")
@@ -199,14 +198,15 @@ def move_log_files(target_root_dir):
   
   test_reports_dir = os.path.join(target_root_dir, wasabi_dir, date, "test_reports")
   os.makedirs(test_reports_dir, exist_ok=True)
-  
   shutil.move(os.path.join(target_root_dir, LOG_FILE_NAME), os.path.join(target_root_dir, wasabi_dir, date))
   
-  output_files = glob.glob(os.path.join(target_root_dir, "*-output.txt"))
-  for output_file in output_files:
-    file_name = os.path.basename(output_file)
-    shutil.move(output_file, os.path.join(test_reports_dir, file_name))
-   
+  for dirpath, dirnames, files in os.walk(target_root_dir):
+    if wasabi_dir in dirnames:
+      dirnames.remove(wasabi_dir)
+    for file in files:
+      if re.match(r'.*-output\.txt$', file):
+        output_file = os.path.join(dirpath, file)
+        shutil.move(output_file, os.path.join(test_reports_dir, f"{date}.{file}"))   
 
 def main():
   parser = argparse.ArgumentParser()
