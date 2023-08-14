@@ -142,9 +142,10 @@ def run_mvn_test_command(target_root_dir, mvn_parameters):
   cmd_queue = deque()
   for config_file, test_name in mvn_parameters:
     cmd_queue.append((config_file, test_name))
-     
+  
+  total_cmds = len(cmd_queue)
   counter = 0
-  while not cmd_queue:
+  while cmd_queue:
     counter += 1
 
     config_file, test_name = cmd_queue.popleft()
@@ -153,7 +154,7 @@ def run_mvn_test_command(target_root_dir, mvn_parameters):
     cmd = ["mvn", f"-DconfigFile={config_file}", f"-Dtest={test_name}", f"-T{max_threads}", "-fn", "surefire:test"]
   
     print(f"// -------------------------------------------------------------------------- //")
-    print(f"Job count: {counter} / {len(cmd_queue)}", flush=True)
+    print(f"Job count: {counter} / {total_cmds}", flush=True)
     print(f"Executing command: {' '.join(cmd)}")
     print(f"Config file: {config_file}")
     print(f"Log file: {log_file}")
