@@ -96,7 +96,7 @@ public aspect Interceptor {
     !within(is(EnumType)) &&
     !within(is(AnnotationType)));
 
-  after() : recordThreadSleep() { 
+  before() : recordThreadSleep() { 
     try {
       StackSnapshot stackSnapshot = new StackSnapshot();
       
