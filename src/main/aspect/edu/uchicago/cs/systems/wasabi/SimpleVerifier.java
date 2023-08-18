@@ -11,10 +11,12 @@ import org.apache.kafka.common.errors.TimeoutException;
 
 public aspect SimpleVerifier {
     private static final WasabiLogger LOG = new WasabiLogger();
-    private static final int NUM_FAILURES_TO_INJECT=1;
+    private static final int NUM_FAILURES_TO_INJECT=2;
 
     private static int requestAttempts=0;
     private static int failuresInjected=0;
+
+    private static String currentTestMethod = "";
 
     pointcut testMethod():
         (execution(* *(..)) && @annotation(org.junit.Test));
@@ -23,10 +25,16 @@ public aspect SimpleVerifier {
         LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "TestMethod [before]::" + thisJoinPoint);
         requestAttempts=0; 
         failuresInjected=0;
+
+        if (!currentTestMethod.equals("")) {
+          LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "Entering " + thisJoinPoint.toString() + "BUT currentTestMethod already set: " + currentTestMethod);
+        }
+        currentTestMethod=thisJoinPoint.toString();
     }
 
     after(): testMethod() {
-        LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "TestMethod [after]::" + thisJoinPoint + "::failuresInjected-"+String.valueOf(failuresInjected)+"::requestAttempts-"+String.valueOf(requestAttempts)); 
+        LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "TestMethod [after]::SUMMARY::" + thisJoinPoint + "::failuresInjected-"+String.valueOf(failuresInjected)+"::requestAttempts-"+String.valueOf(requestAttempts)); 
+        currentTestMethod="";
     }
 
     pointcut requestMethod():
@@ -36,11 +44,11 @@ public aspect SimpleVerifier {
         requestAttempts++;
         if (requestAttempts <= NUM_FAILURES_TO_INJECT) {
             failuresInjected++;
-            LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "RequestMethod [after]::failureInject::"+thisJoinPoint+"::failuresInjected-"+String.valueOf(failuresInjected)+"::requestAttempts-"+String.valueOf(requestAttempts));
+            LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "RequestMethod [after]::inject::"+thisJoinPoint+"::failuresInjected-"+String.valueOf(failuresInjected)+"::requestAttempts-"+String.valueOf(requestAttempts));
             throw new TimeoutException("[wasabi] TimeoutException from " + thisJoinPoint); 
         } else {
             LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "RequestMethod [after]::proceed::"+thisJoinPoint+"::failuresInjected-"+String.valueOf(failuresInjected)+"::requestAttempts-"+String.valueOf(requestAttempts));
         }
-        //LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "enclosing join point: " + thisEnclosingJoinPointStaticPart); 
+        //LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "RequestMethod [after]::enclosing join point::" + thisEnclosingJoinPointStaticPart); 
     }
 }
