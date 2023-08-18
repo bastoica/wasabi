@@ -128,7 +128,7 @@ Note to add WASABI as a dependency under the `<dependencies>` tag, not the `<dep
 **Step 4:** Finally, to weave WASABI into the target application, first build the target application: 
 ```
 cd /path/to/target_application
-mvn clean compile -T [NUMBER_OF_THREADS] -fn -DskipTests && mvn install -DskipTests 2>&1 | tee build.log
+mvn clean compile -T [NUMBER_OF_THREADS] -fn -DskipTests && mvn install -fn -DskipTests 2>&1 | tee build.log
 ```
 
 If weaving is successful, message similar to those below should apear in the build logs:
