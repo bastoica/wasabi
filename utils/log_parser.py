@@ -2,7 +2,9 @@ import argparse
 from collections import namedtuple
 import os
 import re
-import sys
+
+
+COMPACTION_OFFSET = 5
 
 
 def read_line_by_line(filename):
@@ -20,7 +22,7 @@ def read_line_by_line(filename):
   if filename is not None and os.path.isfile(filename):
     with open(filename, 'r') as file:
       for line in file:
-        content.append(line.strip())
+        content.append(line.strip(" \t\n\r"))
 
   return content
 
@@ -40,13 +42,11 @@ def log_compaction(log):
   compact_log = []
 
   test_name_regex = re.compile(test_name_pattern)
-  for i in range(3, len(log)):
-    if test_name_regex.search(log[i-3]):
-      compact_log.append(log[i-3])
-      compact_log.append(log[i-2])
-      compact_log.append(log[i-1])
-      compact_log.append(log[i])
-
+  for i in range(0, len(log) - COMPACTION_OFFSET):
+    if test_name_regex.search(log[i]):
+      for j in range(0, COMPACTION_OFFSET + 1):
+        compact_log.append(log[i+j])
+        
   return compact_log
 
 
@@ -70,7 +70,7 @@ def get_test_name(line, test_name_pattern_regex):
   return test_name
 
 
-def matches_excluded_test(line, test_names):
+def is_excluded_test(line, test_names):
   """
   Check if the line contains a test name from the list of test names.
 
@@ -84,7 +84,7 @@ def matches_excluded_test(line, test_names):
   return any(test_name.strip() in line for test_name in test_names)
 
 
-def matches_excluded_pattern(line, patterns):
+def is_excluded_pattern(line, patterns):
   """
   Check if the line matches any pattern from the list of patterns.
 
@@ -147,22 +147,21 @@ def get_non_wasabi_test_failures(log, exclude):
   Returns:
     list: Test names that are non-wasabi test failures.
   """
+  wasabi_exception_pattern = "Exception: [wasabi]"
   test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
   test_name_pattern_regex = re.compile(test_name_pattern)
-
-  wasabi_exception_pattern = "[wasabi]"
 
   test_names = []
   for i in range(len(log)-1):
     if (test_name_pattern_regex.search(log[i]) and 
+        wasabi_exception_pattern not in log[i] and
         wasabi_exception_pattern not in log[i+1] and
-        not matches_excluded_test(log[i], exclude.tests) and
-        not matches_excluded_pattern(log[i+1], exclude.patterns) and
+        not is_excluded_test(log[i], exclude.tests) and
+        not is_excluded_pattern(log[i+1], exclude.patterns) and
         not is_assertion_failure(log[i+1]) and
         not is_timeout_failure(log[i+1])):
       
       test_name = get_test_name(log[i], test_name_pattern_regex)
-
       if test_name:
         test_names.append(test_name)
 
@@ -190,8 +189,8 @@ def get_all_failing_tests(log, exclude):
   test_names = []
   retry_locations = []
   for i in range(len(log)-1):
-    if (not matches_excluded_test(log[i], exclude.tests) and
-        not matches_excluded_pattern(log[i+1], exclude.patterns) and
+    if (not is_excluded_test(log[i], exclude.tests) and
+        not is_excluded_pattern(log[i+1], exclude.patterns) and
         test_name_pattern_regex.search(log[i]) and 
         fault_injection_pattern_regex.search(log[i+1])):
       
@@ -231,10 +230,10 @@ def get_tests_failing_with_different_exceptions(log, exclude):
   exception_names = []
 
   for i in range(len(log)-1):
-    if (not matches_excluded_test(log[i], exclude.tests) and
-        not matches_excluded_pattern(log[i+1], exclude.patterns) and
+    if (not is_excluded_test(log[i], exclude.tests) and
+        not is_excluded_pattern(log[i+1], exclude.patterns) and
         not is_assertion_failure(log[i+1]) and
-        test_name_pattern_regex.search(log[i]) and 
+        test_name_pattern_regex.search(log[i]) and
         fault_injection_pattern_regex.search(log[i+1])):
 
       test_name = get_test_name(log[i], test_name_pattern_regex)
@@ -275,9 +274,9 @@ def get_tests_with_few_retry_attempts(log, max_attempts, exclude):
   retry_attempts = []
 
   for i in range(len(log)-1):
-    if (not matches_excluded_test(log[i], exclude.tests) and
-        not matches_excluded_pattern(log[i+1], exclude.patterns) and
-        test_name_pattern_regex.search(log[i]) and 
+    if (not is_excluded_test(log[i], exclude.tests) and
+        not is_excluded_pattern(log[i+1], exclude.patterns) and
+        test_name_pattern_regex.search(log[i]) and
         retry_attempts_pattern_regex.search(log[i+1])):
 
       test_name = get_test_name(log[i], test_name_pattern_regex)
@@ -291,8 +290,6 @@ def get_tests_with_few_retry_attempts(log, max_attempts, exclude):
           retry_attempts.append(attempts)
 
   return test_names, retry_attempts
-
-
 
 
 def get_tests_with_no_backoff(log, exclude):
@@ -319,8 +316,8 @@ def get_tests_with_no_backoff(log, exclude):
   retry_locations = []
 
   for i in range(len(log)-1):
-    if (not matches_excluded_test(log[i], exclude.tests) and
-        not matches_excluded_pattern(log[i+1], exclude.patterns) and
+    if (not is_excluded_test(log[i], exclude.tests) and
+        not is_excluded_pattern(log[i+1], exclude.patterns) and
         not is_assertion_failure(log[i+1]) and
         test_name_pattern_regex.search(log[i]) and 
         backoff_pattern_regex.search(log[i+1])):
@@ -353,8 +350,8 @@ def get_tests_failing_with_assertions(log, exclude):
   test_names = []
 
   for i in range(len(log)-1):
-    if (not matches_excluded_test(log[i], exclude.tests) and
-        not matches_excluded_pattern(log[i+1], exclude.patterns) and
+    if (not is_excluded_test(log[i], exclude.tests) and
+        not is_excluded_pattern(log[i+1], exclude.patterns) and
         test_name_pattern_regex.search(log[i]) and
         is_assertion_failure(log[i+1])):
       
@@ -383,8 +380,8 @@ def get_tests_timing_out(log, exclude):
   test_names = []
 
   for i in range(len(log)-1):
-    if (not matches_excluded_test(log[i], exclude.tests) and
-        not matches_excluded_pattern(log[i+1], exclude.patterns) and
+    if (not is_excluded_test(log[i], exclude.tests) and
+        not is_excluded_pattern(log[i+1], exclude.patterns) and
         test_name_pattern_regex.search(log[i]) and
         is_timeout_failure(log[i+1])):
       
