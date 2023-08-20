@@ -136,6 +136,29 @@ def is_timeout_failure(line):
   return False
 
 
+def fails_in_test_code(lines):
+  """
+  Checks if a failure happens inside test code.
+
+  Args:
+    line (List): Log lines indicating a test failure.
+
+  Returns:
+    bool: True if any pattern matches, False otherwise.
+  """
+  stacktrace_pattern = "at ([a-zA-Z]*[0-9]*(\.|\())+java:[0-9]+\)"
+  stacktrace_pattern_regex = re.compile(stacktrace_pattern)
+
+  for line in lines:
+    if stacktrace_pattern_regex.search(line):
+      if "at java." in line or "at org.junit." in line: # ignore Java library frames
+        continue
+      if "test" in line or "Test" in line:
+        return True
+  
+  return False
+
+
 def get_non_wasabi_test_failures(log, exclude):
   """
   Extracts test names from the build log that are non-wasabi test failures.
@@ -159,7 +182,8 @@ def get_non_wasabi_test_failures(log, exclude):
         not is_excluded_test(log[i], exclude.tests) and
         not is_excluded_pattern(log[i+1], exclude.patterns) and
         not is_assertion_failure(log[i+1]) and
-        not is_timeout_failure(log[i+1])):
+        not is_timeout_failure(log[i+1]) and
+        not fails_in_test_code(log[i : (i + COMPACTION_OFFSET + 1)])):
       
       test_name = get_test_name(log[i], test_name_pattern_regex)
       if test_name:
@@ -233,6 +257,7 @@ def get_tests_failing_with_different_exceptions(log, exclude):
     if (not is_excluded_test(log[i], exclude.tests) and
         not is_excluded_pattern(log[i+1], exclude.patterns) and
         not is_assertion_failure(log[i+1]) and
+        not fails_in_test_code(log[i : (i + COMPACTION_OFFSET + 1)]) and
         test_name_pattern_regex.search(log[i]) and
         fault_injection_pattern_regex.search(log[i+1])):
 
@@ -276,6 +301,7 @@ def get_tests_with_few_retry_attempts(log, max_attempts, exclude):
   for i in range(len(log)-1):
     if (not is_excluded_test(log[i], exclude.tests) and
         not is_excluded_pattern(log[i+1], exclude.patterns) and
+        not fails_in_test_code(log[i : (i + COMPACTION_OFFSET + 1)]) and
         test_name_pattern_regex.search(log[i]) and
         retry_attempts_pattern_regex.search(log[i+1])):
 
@@ -319,6 +345,7 @@ def get_tests_with_no_backoff(log, exclude):
     if (not is_excluded_test(log[i], exclude.tests) and
         not is_excluded_pattern(log[i+1], exclude.patterns) and
         not is_assertion_failure(log[i+1]) and
+        not fails_in_test_code(log[i : (i + COMPACTION_OFFSET + 1)]) and
         test_name_pattern_regex.search(log[i]) and 
         backoff_pattern_regex.search(log[i+1])):
 
