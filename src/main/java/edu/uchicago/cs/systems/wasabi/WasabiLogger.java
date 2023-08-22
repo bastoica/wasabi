@@ -3,7 +3,7 @@ package edu.uchicago.cs.systems.wasabi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class WasabiLogger {
+public class WasabiLogger {
   private final Logger LOG = LoggerFactory.getLogger(WasabiLogger.class);
 
   public static final int LOG_LEVEL_INFO = 1;

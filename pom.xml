@@ -79,6 +79,21 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
         <artifactId>kafka-clients</artifactId>
         <version>3.5.0</version> 
       </dependency>
+      <dependency>
+        <groupId>org.apache.kafka</groupId>
+        <artifactId>kafka-streams</artifactId>
+        <version>3.5.0</version> 
+      </dependency>
+      <dependency>
+        <groupId>org.bitbucket.b_c</groupId>
+        <artifactId>jose4j</artifactId>
+        <version>0.7.9</version> 
+      </dependency>
+      <dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+        <version>3.6.3</version> 
+      </dependency>
     </dependencies>
 
   <repositories>
