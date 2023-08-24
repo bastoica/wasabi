@@ -61,7 +61,6 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
         <version>5.8.2</version>
-        <scope>test</scope>
 	  </dependency>
       <dependency>
         <groupId>commons-codec</groupId>
@@ -161,6 +160,27 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           <execution>
             <id>default-testCompile</id>
             <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+          <id>generate-aspects</id>
+          <phase>clean</phase>
+          <goals>
+          <goal>exec</goal>
+          </goals>
+          <configuration>
+          <executable>python</executable>
+          <arguments>
+          <argument>./generate_aspects.py</argument>
+          <argument>-f</argument>
+          </arguments>
+          </configuration>
           </execution>
         </executions>
       </plugin>

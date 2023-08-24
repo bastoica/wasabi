@@ -15,7 +15,12 @@ public aspect %%ASPECT_NAME%% {
     private static String testMethodName = "";
 
     pointcut testMethod():
-        (execution(* *(..)) && @annotation(org.junit.Test));
+        (execution(* *(..)) && 
+          ( @annotation(org.junit.Test) 
+            || @annotation(org.junit.jupiter.api.Test) 
+          //  || @annotation(org.junit.jupiter.params.ParameterizedTest)
+          ));
+
 
     before() : testMethod() {
         log("Test-Before", thisJoinPoint.toString());
@@ -24,16 +29,26 @@ public aspect %%ASPECT_NAME%% {
         testMethodName=thisJoinPoint.toString();
     }
 
-    after(): testMethod() {
-        if (requestAttempts > 0) {
-          log("Test-After", thisJoinPoint.toString(), String.valueOf(failuresInjected), String.valueOf(requestAttempts), requestMethodNames);
+    after() returning: testMethod() {
+        if (requestAttempts > 0 || enclMethodExecCnt > 0) {
+          log("Test-After", "SUCCESS", thisJoinPoint.toString(), String.valueOf(failuresInjected), String.valueOf(requestAttempts), requestMethodNames);
         }
     }
+
+    after() throwing: testMethod() {
+        if (requestAttempts > 0 || enclMethodExecCnt > 0) {
+          log("Test-After", "FAILURE", thisJoinPoint.toString(), String.valueOf(failuresInjected), String.valueOf(requestAttempts), requestMethodNames);
+        }
+    }
+
+    pointcut requestMethodOnly():
+        (execution(%%REQUEST_METHOD%%));
 
     pointcut requestMethod():
         (cflow(execution(%%ENCLOSING_METHOD%%)) && execution(%%REQUEST_METHOD%%));
     
-    after() throws %%EXCEPTION%% : requestMethod() {
+    //after() throws %%EXCEPTION%% : requestMethod() {
+    after() throws %%EXCEPTION%% : requestMethodOnly() {
         if(testMethodName.isEmpty()) {
           log("Request executed without test tracking. Ignored", thisJoinPoint.toString());
           return;
@@ -55,6 +70,8 @@ public aspect %%ASPECT_NAME%% {
 
     private void log(String... params) {
       String message = String.join("::", params)+"::";
-      logger.printMessage(WasabiLogger.LOG_LEVEL_ERROR, message);
+      // Logger not working for kafka client tests, use println instead
+      // logger.printMessage(WasabiLogger.LOG_LEVEL_INFO, message);
+      System.out.println("[wasabi] " + message);
     }
 }
