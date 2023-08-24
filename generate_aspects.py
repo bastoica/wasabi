@@ -2,27 +2,28 @@
 
 import os
 import sys
+import shlex
 
 RETRY_LOCATIONS = [
-    ("org.apache.kafka.clients.admin.internals.AdminApiDriver.retryLookup", "org.apache.kafka.clients.admin.internals.AdminApiDriver.onFailure", "org.apache.kafka.common.errors.DisconnectException"),
-    ("org.apache.kafka.clients.admin.internals.FenceProducersHandler.handleError", "org.apache.kafka.clients.admin.internals.FenceProducersHandler.buildSingleRequest", "org.apache.kafka.common.errors.ClusterAuthorizationException"),
-    ("org.apache.kafka.clients.admin.internals.DescribeProducersHandler.handleResponse", "org.apache.kafka.clients.admin.internals.DescribeProducersHandler.buildBatchedRequest", "org.apache.kafka.common.errors.UnknownTopicOrPartitionException"),
-    ("org.apache.kafka.clients.admin.internals.DescribeTransactionsHandler.handleError", "org.apache.kafka.clients.admin.internals.DescribeTransactionsHandler.buildBatchedRequest", "org.apache.kafka.common.errors.TransactionalIdAuthorizationException"),
-    ("org.apache.kafka.common.security.kerberos.KerberosLogin.login()", "org.apache.kafka.common.security.kerberos.KerberosLogin.reLogin()", "javax.security.auth.login.LoginException"),
-    ("org.apache.kafka.common.security.oauthbearer.internals.expiring.ExpiringCredentialRefreshingLogin.Refrsher.run", "org.apache.kafka.common.security.oauthbearer.internals.expiring.ExpiringCredentialRefreshingLogin.ReLogin", "javax.security.auth.login.LoginException"),
-    ("org.apache.kafka.common.security.oauthbearer.internals.secured.RefreshingHttpsJwks.refresh()", "org.jose4j.jwk.HttpsJwks.refresh()", "java.util.concurrent.ExecutionException"), # required mods. to exception constructor (ExecutionException requires another exception as cause)
-    ("org.apache.kafka.common.security.oauthbearer.internals.secured.HttpAccessTokenRetriever.retrieve", "org.apache.kafka.common.security.oauthbearer.internals.secured.HttpAccessTokenRetriever.post", "java.io.IOException"),
-    ("org.apache.kafka.streams.processor.internals.StreamsProducer.initTransaction()", "org.apache.kafka.clients.producer.Producer.initTransactions()", "org.apache.kafka.common.errors.TimeoutException"),
-    ("org.apache.kafka.streams.processor.internals.RecordCollectorImpl.send", "org.apache.kafka.clients.producer.Producer.partitionsFor", "org.apache.kafka.common.errors.TimeoutException"),
-    ("org.apache.kafka.streams.processor.internals.TaskExecutor.processTask", "org.apache.kafka.streams.processor.Task.process", "org.apache.kafka.common.errors.TimeoutException"),
-    ("org.apache.kafka.streams.processor.internals.namedtopology.KafkaStreamsNamedTopologyWrapper.resetOffsets", "org.apache.kafka.clients.admin.Admin.deleteConsumerGroupOffsets", "org.apache.kafka.streams.errors.StreamsException"), # kafka compilation error: deleteConsumerGroupOffsets cannot throw (checked) StreamsException
-    ("org.apache.kafka.connect.storage.KafkaStatusBackingStore.send", "org.apache.kafka.connect.util.KafkaBasedLog.send", "org.apache.kafka.common.errors.RetriableException"), # required mods. to exception constructor (RetriableException is abstract)
-    ("kafka.tools.JmxTool.main", "javax.management.remote.JMXConnectorFactory.connect", "java.lang.Exception"),
-    ("kafka.tools.MirrorMaker.commitOffsets", "kafka.tools.MirrorMaker.ConsumerWrapper.commit", "org.apache.kafka.clients.consumer.TimeoutException"), # required mods. to exception constructor (package name is slightly off) 
-    ("kafka.zk.ZkMigrationClient.readAllMetadata", "kafka.zk.KafkaZkClient.retryMigrationRequestsUntilConnected", "org.apache.zookeeper.KeeperException"), # required mods. to exception constructor (Keeper exception requires special initialization)
-    ("org.apache.kafka.tools.VerifiableConsumer.commitSync", "org.apache.kafka.clients.consumer.KafkaConsumer.commitSync", "org.apache.kafka.common.errors.WakeupException"), # required mods to exception constructor (WakeupException does not accept str in constructor)
-    ("kafka.examples.KafkaExactlyOnceDemo.recreateTopics", "org.apache.kafka.clients.admin.Admin.createTopics", "org.apache.kafka.common.errors.TopicExistsException"),
-    ("org.apache.kafka.trogdor.rest.JsonRestServer.httpRequest", "org.apache.kafka.trogdor.rest.JsonRestServer.httpRequest", "java.io.IOException")
+        {"encl_method":"org.apache.kafka.clients.admin.internals.AdminApiDriver.retryLookup", "req_method":"org.apache.kafka.clients.admin.internals.AdminApiDriver.onFailure", "exception":"org.apache.kafka.common.errors.DisconnectException"},
+        {"encl_method":"org.apache.kafka.clients.admin.internals.FenceProducersHandler.handleError", "req_method":"org.apache.kafka.clients.admin.internals.FenceProducersHandler.buildSingleRequest", "exception":"org.apache.kafka.common.errors.ClusterAuthorizationException"},
+        {"encl_method":"org.apache.kafka.clients.admin.internals.DescribeProducersHandler.handleResponse", "req_method":"org.apache.kafka.clients.admin.internals.DescribeProducersHandler.buildBatchedRequest", "exception":"org.apache.kafka.common.errors.UnknownTopicOrPartitionException"},
+        {"encl_method":"org.apache.kafka.clients.admin.internals.DescribeTransactionsHandler.handleError", "req_method":"org.apache.kafka.clients.admin.internals.DescribeTransactionsHandler.buildBatchedRequest", "exception":"org.apache.kafka.common.errors.TransactionalIdAuthorizationException"},
+        {"encl_method":"org.apache.kafka.common.security.kerberos.KerberosLogin.login", "req_method":"org.apache.kafka.common.security.kerberos.KerberosLogin.reLogin", "exception":"javax.security.auth.login.LoginException"},
+        {"encl_method":"org.apache.kafka.common.security.oauthbearer.internals.expiring.ExpiringCredentialRefreshingLogin.Refrsher.run", "req_method":"org.apache.kafka.common.security.oauthbearer.internals.expiring.ExpiringCredentialRefreshingLogin.ReLogin", "exception":"javax.security.auth.login.LoginException"},
+        {"encl_method":"org.apache.kafka.common.security.oauthbearer.internals.secured.RefreshingHttpsJwks.refresh", "req_method":"org.jose4j.jwk.HttpsJwks.refresh", "exception":"java.util.concurrent.ExecutionException", "throw_stmt":'throw new java.util.concurrent.ExecutionException("[wasabi] Exception from " + thisJoinPoint, new Exception())'}, # required mods. to exception constructor (ExecutionException requires another exception as cause)
+        {"encl_method":"org.apache.kafka.common.security.oauthbearer.internals.secured.HttpAccessTokenRetriever.retrieve", "req_method":"org.apache.kafka.common.security.oauthbearer.internals.secured.HttpAccessTokenRetriever.post", "exception":"java.io.IOException"},
+        # {"encl_method":"org.apache.kafka.streams.processor.internals.StreamsProducer.initTransaction", "req_method":"org.apache.kafka.clients.producer.Producer.initTransactions", "exception":"org.apache.kafka.common.errors.TimeoutException"}, # manually completed
+        {"encl_method":"org.apache.kafka.streams.processor.internals.RecordCollectorImpl.send", "req_method":"org.apache.kafka.clients.producer.Producer.partitionsFor", "exception":"org.apache.kafka.common.errors.TimeoutException"},
+        {"encl_method":"org.apache.kafka.streams.processor.internals.TaskExecutor.processTask", "req_method":"org.apache.kafka.streams.processor.Task.process", "exception":"org.apache.kafka.common.errors.TimeoutException"},
+        #{"encl_method":"org.apache.kafka.streams.processor.internals.namedtopology.KafkaStreamsNamedTopologyWrapper.resetOffsets", "req_method":"org.apache.kafka.clients.admin.Admin.deleteConsumerGroupOffsets", "exception":"org.apache.kafka.streams.errors.StreamsException"}, # kafka compilation error: deleteConsumerGroupOffsets cannot throw (checked) StreamsException
+        {"encl_method":"org.apache.kafka.connect.storage.KafkaStatusBackingStore.send", "req_method":"org.apache.kafka.connect.util.KafkaBasedLog.send", "exception":"org.apache.kafka.common.errors.RetriableException", "throw_stmt":'throw new org.apache.kafka.common.errors.DisconnectException("[wasabi] Exception from " + thisJoinPoint)'}, # required mods. to exception constructor (RetriableException is abstract)
+        {"encl_method":"kafka.tools.JmxTool.main", "req_method":"javax.management.remote.JMXConnectorFactory.connect", "exception":"java.lang.Exception"},
+        {"encl_method":"kafka.tools.MirrorMaker.commitOffsets", "req_method":"kafka.tools.MirrorMaker.ConsumerWrapper.commit", "exception":"org.apache.kafka.common.errors.TimeoutException"}, # required mods. to exception constructor (package name is slightly off) 
+        #{"encl_method":"kafka.zk.ZkMigrationClient.readAllMetadata", "req_method":"kafka.zk.KafkaZkClient.retryMigrationRequestsUntilConnected", "exception":"org.apache.zookeeper.KeeperException", "throw_stmt":'throw org.apache.zookeeper.KeeperException.create(org.apache.zookeeper.KeeperException.Code.SESSIONEXPIRED)'}, # required mods. to exception constructor (Keeper exception requires special initialization). Disabled because kafka scala compile not working with aspectj 
+        {"encl_method":"org.apache.kafka.tools.VerifiableConsumer.commitSync", "req_method":"org.apache.kafka.clients.consumer.KafkaConsumer.commitSync", "exception":"org.apache.kafka.common.errors.WakeupException", "throw_stmt":'throw new org.apache.kafka.common.errors.WakeupException()'}, # required mods to exception constructor (WakeupException does not accept str in constructor)
+        {"encl_method":"kafka.examples.KafkaExactlyOnceDemo.recreateTopics", "req_method":"org.apache.kafka.clients.admin.Admin.createTopics", "exception":"org.apache.kafka.common.errors.TopicExistsException"},
+        {"encl_method":"org.apache.kafka.trogdor.rest.JsonRestServer.httpRequest", "req_method":"org.apache.kafka.trogdor.rest.JsonRestServer.httpRequest", "exception":"java.io.IOException"}
 ]
 
 TEMPLATE_FILE="./VerifierTemplate.aj.template"
@@ -35,15 +36,20 @@ if len(os.listdir(OUTPUT_PATH)) > 0:
 
 for i, location in enumerate(RETRY_LOCATIONS):
 
-    encl_method="* "+location[0].replace("()","")+"(..)"
-    req_method="* "+location[1].replace("()","")+"(..)"
-    exception=location[2]
-    aspect_name = "Aspect_"+str(i)
+    aspect_name = "Aspect_"+str(i)+"_"+location["encl_method"].replace(".","_")
 
-    os.system(f'sed -e "s/%%ASPECT_NAME%%/{aspect_name}/g"      \
-                    -e "s/%%ENCLOSING_METHOD%%/{encl_method}/g"  \
-                    -e "s/%%REQUEST_METHOD%%/{req_method}/g"     \
-                    -e "s/%%EXCEPTION%%/{exception}/g" {TEMPLATE_FILE} > {OUTPUT_PATH}/{aspect_name}.aj')
+    encl_method="* "+location["encl_method"]+"(..)"
+    req_method="* "+location["req_method"]+"(..)"
+    exception=location["exception"]
+    throw_stmt = location["throw_stmt"] if ("throw_stmt" in location) else 'throw new '+exception+'("wasabi exception from " + thisJoinPoint)' 
+    throw_stmt_escaped=throw_stmt.replace('(', '\(').replace('+','\+').replace('"', '\\"')
+
+
+    os.system(f'sed -e "s/%%ASPECT_NAME%%/{aspect_name}/g" \
+                    -e "s/%%ENCLOSING_METHOD%%/{encl_method}/g" \
+                    -e "s/%%REQUEST_METHOD%%/{req_method}/g" \
+                    -e "s/%%EXCEPTION%%/{exception}/g" \
+                    -e "s/%%THROW_STMT%%/{throw_stmt_escaped}/g" {TEMPLATE_FILE} > {OUTPUT_PATH}/{aspect_name}.aj')
 
 
 

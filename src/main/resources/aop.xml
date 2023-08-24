@@ -1,0 +1,21 @@
+<aspectj>
+<aspects>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_17"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_18"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_15"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_5"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_4"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_16"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_13"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_3"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_14"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_2"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_9"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_12"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_7"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_6"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_10" scope="org.apache.kafka.streams..*"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_1"/>
+<aspect name="edu.uchicago.cs.systems.wasabi.verify.Aspect_0"/>
+</aspects>
+</aspectj>

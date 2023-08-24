@@ -136,6 +136,15 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
       <resource>
         <directory>config</directory>
       </resource>
+      <!--
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>aop.xml</include> 
+        </includes>
+        <targetPath>META-INF</targetPath>
+      </resource>
+      -->
     </resources>
     
     <plugins>

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import edu.uchicago.cs.systems.wasabi.WasabiLogger;
 
-public aspect %%ASPECT_NAME%% {
+public aspect Aspect_13_org_apache_kafka_tools_VerifiableConsumer_commitSync {
     private static final WasabiLogger logger = new WasabiLogger();
     private static final int NUM_FAILURES_TO_INJECT=0;
     private static int requestAttempts=0;
@@ -31,11 +31,11 @@ public aspect %%ASPECT_NAME%% {
     }
 
     pointcut requestMethod():
-        (cflow(execution(%%ENCLOSING_METHOD%%)) && execution(%%REQUEST_METHOD%%));
+        (cflow(execution(* org.apache.kafka.tools.VerifiableConsumer.commitSync(..))) && execution(* org.apache.kafka.clients.consumer.KafkaConsumer.commitSync(..)));
     
-    after() throws %%EXCEPTION%% : requestMethod() {
+    after() throws org.apache.kafka.common.errors.WakeupException : requestMethod() {
         if(testMethodName.isEmpty()) {
-          log("Request executed without test tracking. Ignored", thisJoinPoint.toString());
+          log("Error: request executed without test tracking. Ignoring..", thisJoinPoint.toString());
           return;
         }
 
@@ -47,7 +47,7 @@ public aspect %%ASPECT_NAME%% {
         if (requestAttempts <= NUM_FAILURES_TO_INJECT) {
             failuresInjected++;
             log("Request-Inject", thisJoinPoint.toString(), String.valueOf(failuresInjected), String.valueOf(requestAttempts));
-            %%THROW_STMT%%;
+            throw new org.apache.kafka.common.errors.WakeupException();
         } else {
             log("Request-Proceed", thisJoinPoint.toString(), String.valueOf(failuresInjected), String.valueOf(requestAttempts));
         }

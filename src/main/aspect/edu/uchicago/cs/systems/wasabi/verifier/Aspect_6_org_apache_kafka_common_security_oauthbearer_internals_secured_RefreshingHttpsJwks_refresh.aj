@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import edu.uchicago.cs.systems.wasabi.WasabiLogger;
 
-public aspect %%ASPECT_NAME%% {
+public aspect Aspect_6_org_apache_kafka_common_security_oauthbearer_internals_secured_RefreshingHttpsJwks_refresh {
     private static final WasabiLogger logger = new WasabiLogger();
     private static final int NUM_FAILURES_TO_INJECT=0;
     private static int requestAttempts=0;
@@ -31,11 +31,11 @@ public aspect %%ASPECT_NAME%% {
     }
 
     pointcut requestMethod():
-        (cflow(execution(%%ENCLOSING_METHOD%%)) && execution(%%REQUEST_METHOD%%));
+        (cflow(execution(* org.apache.kafka.common.security.oauthbearer.internals.secured.RefreshingHttpsJwks.refresh(..))) && execution(* org.jose4j.jwk.HttpsJwks.refresh(..)));
     
-    after() throws %%EXCEPTION%% : requestMethod() {
+    after() throws java.util.concurrent.ExecutionException : requestMethod() {
         if(testMethodName.isEmpty()) {
-          log("Request executed without test tracking. Ignored", thisJoinPoint.toString());
+          log("Error: request executed without test tracking. Ignoring..", thisJoinPoint.toString());
           return;
         }
 
@@ -47,7 +47,7 @@ public aspect %%ASPECT_NAME%% {
         if (requestAttempts <= NUM_FAILURES_TO_INJECT) {
             failuresInjected++;
             log("Request-Inject", thisJoinPoint.toString(), String.valueOf(failuresInjected), String.valueOf(requestAttempts));
-            %%THROW_STMT%%;
+            throw new java.util.concurrent.ExecutionException("[wasabi] Exception from " + thisJoinPoint, new Exception());
         } else {
             log("Request-Proceed", thisJoinPoint.toString(), String.valueOf(failuresInjected), String.valueOf(requestAttempts));
         }
