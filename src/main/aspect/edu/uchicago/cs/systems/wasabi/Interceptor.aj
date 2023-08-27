@@ -130,6 +130,9 @@ public aspect Interceptor {
    */
 
   pointcut forceIOException():
+   
+  /* Hadoop */
+  
    (execution(* org.apache.hadoop.fs.azure.StorageInterface*.commitBlockList(..)) ||
     execution(* org.apache.hadoop.fs.azure.StorageInterface*.uploadBlock(..)) ||
     execution(* org.apache.hadoop.fs.FSInputChecker.readChunk(..)) ||
@@ -171,7 +174,147 @@ public aspect Interceptor {
     execution(* org.apache.hadoop.thirdparty.protobuf.CodedInputStream.readTag(..)) ||
     execution(* org.apache.hadoop.thirdparty.protobuf.CodedInputStream.readUInt32(..)) ||
     execution(* org.apache.hadoop.thirdparty.protobuf.CodedInputStream.readUInt32(..)) || 
-    execution(* org.apache.hadoop.tools.SimpleCopyListing.writeToFileListing(..))) &&
+    execution(* org.apache.hadoop.tools.SimpleCopyListing.writeToFileListing(..)) ||
+    
+    /* HBase */
+
+    execution(* java.io.FilterOutputStream.write(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.create(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.delete(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.exists(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.mkdirs(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.rename(..)) ||
+    execution(* java.io.FilterOutputStream.write(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.create(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.delete(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.exists(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.mkdirs(..)) ||
+    execution(* org.apache.hadoop.fs.FileSystem.rename(..)) ||
+    execution(* org.apache.hadoop.fs.FSDataOutputStream.close(..)) ||
+    execution(* org.apache.hadoop.fs.Path.getFileSystem(..)) ||
+    execution(* org.apache.hadoop.hbase.backup.HFileArchiver.*.moveAndClose(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.actions.Action.killRs(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.actions.Action.resumeRs(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.actions.Action.startRs(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.actions.Action.suspendRs(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.ChaosAgent.exec(..)) ||
+    execution(* org.apache.hadoop.hbase.client.Admin.getClusterMetrics(..)) ||
+    execution(* org.apache.hadoop.hbase.client.Connection.getTable(..)) ||
+    execution(* org.apache.hadoop.hbase.client.Table.put(..)) ||
+    execution(* org.apache.hadoop.hbase.HBaseClusterManager.exec(..)) ||
+    execution(* org.apache.hadoop.hbase.HBaseClusterManager.execSudo(..)) ||
+    execution(* org.apache.hadoop.hbase.master.LoadBalancer.randomAssignment(..)) ||
+    execution(* org.apache.hadoop.hbase.procedure2.store.wal.WALProcedureStore.initOldLogs(..)) ||
+    execution(* org.apache.hadoop.hbase.procedure2.store.wal.WALProcedureStore.syncSlots(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.HRegion.flush(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.HRegionFileSystem.mkdirs(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.HRegionServer.reportProcedureDone(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.StoreFlusher.flushSnapshot(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.wal.AbstractFSWAL.archiveLogFile(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.wal.AsyncFSWAL.createAsyncWriter(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.HBaseInterClusterReplicationEndpoint.parallelReplicate(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.RecoveredReplicationSource.locateRecoveredPaths(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSource.createReplicationEndpoint(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSource.initAndStartReplicationEndpoint(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager.refreshSources(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager.removeRemoteWALs(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceShipper.cleanUpHFileRefs(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader.readWALEntries(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader.tryAdvanceStreamAndCreateWALBatch(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.WALEntryStream.reset(..)) ||
+    execution(* org.apache.hadoop.hbase.security.HBaseSaslRpcClient.getInputStream(..)) ||
+    execution(* org.apache.hadoop.hbase.security.HBaseSaslRpcClient.getOutputStream(..)) ||
+    execution(* org.apache.hadoop.hbase.security.UserProvider.getCurrent(..)) ||
+    execution(* org.apache.hadoop.hbase.tool.BulkLoadHFilesTool.bulkLoadPhase(..)) ||
+    execution(* org.apache.hadoop.hbase.tool.BulkLoadHFilesTool.groupOrSplitPhase(..)) ||
+    execution(* org.apache.hadoop.hbase.tool.BulkLoadHFilesTool.loadHFileQueue(..)) ||
+    execution(* org.apache.hadoop.hbase.util.CommonFSUtils.create(..)) ||
+    execution(* org.apache.hadoop.hbase.util.CommonFSUtils.delete(..)) ||
+    execution(* org.apache.hadoop.hbase.util.CommonFSUtils.getCurrentFileSystem(..)) ||
+    execution(* org.apache.hadoop.hbase.util.CommonFSUtils.listStatus(..)) ||
+    execution(* org.apache.hadoop.hbase.util.FSTableDescriptors.deleteTableDescriptorFiles(..)) ||
+    execution(* org.apache.hadoop.hbase.util.FutureUtils.get(..)) ||
+    execution(* org.apache.hadoop.hbase.util.RetryCounter.sleepUntilNextRetry(..)) ||
+    execution(* org.apache.hadoop.hbase.wal.AbstractFSWALProvider.*.init(..)) ||
+    execution(* org.apache.hadoop.hbase.wal.AbstractWALRoller.*.rollWal(..)) ||
+    execution(* org.apache.hadoop.hbase.wal.WALFactory.createReader(..)) ||
+    execution(* org.apache.hadoop.hdfs.protocol.ClientProtocol.addBlock(..)) ||
+    execution(* org.apache.hadoop.hdfs.protocol.ClientProtocol.complete(..)) ||
+    execution(* org.apache.hadoop.io.compress.CompressionCodec.createOutputStream(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.common.io.Closeables.close(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readBool(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readBytes(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readInt32(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readTag(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.GeneratedMessageV3.*.parseUnknownField(..)) ||
+    execution(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.init(..)) ||
+    execution(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..)) ||
+    execution(* org.apache.hadoop.fs.FSDataOutputStream.close(..)) ||
+    execution(* org.apache.hadoop.fs.Path.getFileSystem(..)) ||
+    execution(* org.apache.hadoop.hbase.backup.HFileArchiver.*.moveAndClose(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.actions.Action.killRs(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.actions.Action.resumeRs(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.actions.Action.startRs(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.actions.Action.suspendRs(..)) ||
+    execution(* org.apache.hadoop.hbase.chaos.ChaosAgent.exec(..)) ||
+    execution(* org.apache.hadoop.hbase.client.Admin.getClusterMetrics(..)) ||
+    execution(* org.apache.hadoop.hbase.client.Connection.getTable(..)) ||
+    execution(* org.apache.hadoop.hbase.client.Table.put(..)) ||
+    execution(* org.apache.hadoop.hbase.HBaseClusterManager.exec(..)) ||
+    execution(* org.apache.hadoop.hbase.HBaseClusterManager.execSudo(..)) ||
+    execution(* org.apache.hadoop.hbase.master.LoadBalancer.randomAssignment(..)) ||
+    execution(* org.apache.hadoop.hbase.procedure2.store.wal.ProcedureWALFile.removeFile(..)) ||
+    execution(* org.apache.hadoop.hbase.procedure2.store.wal.WALProcedureStore.getLogFiles(..)) ||
+    execution(* org.apache.hadoop.hbase.procedure2.store.wal.WALProcedureStore.initOldLogs(..)) ||
+    execution(* org.apache.hadoop.hbase.procedure2.store.wal.WALProcedureStore.rollWriter(..)) ||
+    execution(* org.apache.hadoop.hbase.procedure2.store.wal.WALProcedureStore.syncSlots(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.HRegion.flush(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.HRegionFileSystem.mkdirs(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.HRegionServer.reportProcedureDone(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.StoreFlusher.flushSnapshot(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.wal.AbstractFSWAL.archiveLogFile(..)) ||
+    execution(* org.apache.hadoop.hbase.regionserver.wal.AsyncFSWAL.createAsyncWriter(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.HBaseInterClusterReplicationEndpoint.parallelReplicate(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.RecoveredReplicationSource.locateRecoveredPaths(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSource.createReplicationEndpoint(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSource.initAndStartReplicationEndpoint(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager.refreshSources(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceManager.removeRemoteWALs(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceShipper.cleanUpHFileRefs(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader.readWALEntries(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.ReplicationSourceWALReader.tryAdvanceStreamAndCreateWALBatch(..)) ||
+    execution(* org.apache.hadoop.hbase.replication.regionserver.WALEntryStream.reset(..)) ||
+    execution(* org.apache.hadoop.hbase.security.HBaseSaslRpcClient.getInputStream(..)) ||
+    execution(* org.apache.hadoop.hbase.security.HBaseSaslRpcClient.getOutputStream(..)) ||
+    execution(* org.apache.hadoop.hbase.security.UserProvider.getCurrent(..)) ||
+    execution(* org.apache.hadoop.hbase.shaded.protobuf.generated.RegionServerStatusProtos$ReportProcedureDoneRequest$Builder.addResult(..)) ||
+    execution(* org.apache.hadoop.hbase.tool.BulkLoadHFilesTool.bulkLoadPhase(..)) ||
+    execution(* org.apache.hadoop.hbase.tool.BulkLoadHFilesTool.groupOrSplitPhase(..)) ||
+    execution(* org.apache.hadoop.hbase.tool.BulkLoadHFilesTool.loadHFileQueue(..)) ||
+    execution(* org.apache.hadoop.hbase.util.CommonFSUtils.create(..)) ||
+    execution(* org.apache.hadoop.hbase.util.CommonFSUtils.delete(..)) ||
+    execution(* org.apache.hadoop.hbase.util.CommonFSUtils.getCurrentFileSystem(..)) ||
+    execution(* org.apache.hadoop.hbase.util.CommonFSUtils.listStatus(..)) ||
+    execution(* org.apache.hadoop.hbase.util.FSTableDescriptors.deleteTableDescriptorFiles(..)) ||
+    execution(* org.apache.hadoop.hbase.util.FutureUtils.get(..)) ||
+    execution(* org.apache.hadoop.hbase.util.RetryCounter.sleepUntilNextRetry(..)) ||
+    execution(* org.apache.hadoop.hbase.wal.AbstractFSWALProvider.*.init(..)) ||
+    execution(* org.apache.hadoop.hbase.wal.AbstractWALRoller.*.rollWal(..)) ||
+    execution(* org.apache.hadoop.hbase.wal.WALFactory.createReader(..)) ||
+    execution(* org.apache.hadoop.hdfs.protocol.ClientProtocol.addBlock(..)) ||
+    execution(* org.apache.hadoop.hdfs.protocol.ClientProtocol.complete(..)) ||
+    execution(* org.apache.hadoop.io.compress.CompressionCodec.createOutputStream(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.common.io.Closeables.close(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readBool(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readBytes(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readInt32(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readTag(..)) ||
+    execution(* org.apache.hbase.thirdparty.com.google.protobuf.GeneratedMessageV3.*.parseUnknownField(..)) ||
+    execution(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.init(..)) ||
+    execution(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..))) &&
+    
+    /* Ignore Wasabi Code */
+    
     !within(edu.uchicago.cs.systems.wasabi.*) &&
     !within(is(FinalType)) &&
     !within(is(EnumType)) &&
@@ -385,6 +528,9 @@ public aspect Interceptor {
    */
 
   pointcut forceSocketException():
+    
+    /* Hadoop */
+
    (execution(* *.net.SocketFactory.createSocket(..)) ||
     execution(* java.net.Socket.bind(..)) ||
     execution(* java.net.SocketFactory.createSocket(..)) ||
@@ -500,7 +646,28 @@ public aspect Interceptor {
     execution(* org.apache.hadoop.yarn.server.uam.UnmanagedApplicationManager.getApplicationReport(..)) ||
     execution(* org.apache.hadoop.yarn.server.utils.BuilderUtils.newContainerTokenIdentifier(..)) ||
     execution(* org.apache.http.client.HttpClient.execute(..)) ||
-    execution(* org.apache.http.HttpEntity.getContent(..))) &&
+    execution(* org.apache.http.HttpEntity.getContent(..)) ||
+    
+    /* HBase */
+    
+    execution(* *.net.SocketFactory.createSocket(..)) ||
+    execution(* java.net.InetAddress.getByName(..)) ||
+    execution(* java.net.Socket.bind(..)) ||
+    execution(* java.net.Socket.close(..)) ||
+    execution(* java.net.Socket.setKeepAlive(..)) ||
+    execution(* java.net.Socket.setSoTimeout(..)) ||
+    execution(* java.net.Socket.setTcpNoDelay(..)) ||
+    execution(* org.apache.hadoop.hbase.HBaseTestingUtil.getConnection(..)) ||
+    execution(* org.apache.hadoop.hbase.ipc.BlockingRpcConnection.processResponseForConnectionHeader(..)) ||
+    execution(* org.apache.hadoop.hbase.ipc.BlockingRpcConnection.setupConnection(..)) ||
+    execution(* org.apache.hadoop.hbase.ipc.BlockingRpcConnection.writeConnectionHeader(..)) ||
+    execution(* org.apache.hadoop.hbase.ipc.BlockingRpcConnection.writeConnectionHeaderPreamble(..)) ||
+    execution(* org.apache.hadoop.hbase.ipc.RpcConnection.getRemoteInetAddress(..)) ||
+    execution(* org.apache.hadoop.net.NetUtils.getInputStream(..)) ||
+    execution(* org.apache.hadoop.net.NetUtils.getOutputStream(..))) &&
+
+    /* Ignore Wasabi Code */
+
     !within(edu.uchicago.cs.systems.wasabi.*) &&
     !within(is(FinalType)) &&
     !within(is(EnumType)) &&
