@@ -29,7 +29,7 @@ RETRY_LOCATIONS = [
 TEMPLATE_FILE="./VerifierTemplate.aj.template"
 OUTPUT_PATH="./src/main/aspect/edu/uchicago/cs/systems/wasabi/verifier"
 
-run_with_force = len(sys.argv) > 1 and sys.argv[1] == "-f"
+run_with_force = "-f" in sys.argv
 
 if len(os.listdir(OUTPUT_PATH)) > 0:
     if run_with_force:
