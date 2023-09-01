@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public aspect %%ASPECT_NAME%% {
     private static final Logger logger = LoggerFactory.getLogger("AspectVerify");
-    private static final int NUM_FAILURES_TO_INJECT=0;
+    private static final int NUM_FAILURES_TO_INJECT=1;
     private static int requestAttempts=0;
     private static int failuresInjected=0;
 
@@ -38,9 +38,6 @@ public aspect %%ASPECT_NAME%% {
           log("Test-After", "FAILURE", "%%REQUEST_METHOD%%", thisJoinPoint.toString(), String.valueOf(failuresInjected), String.valueOf(requestAttempts), executedRequestMethods, t.toString());
         }
     }
-
-    pointcut requestMethodOnly():
-        (execution(%%REQUEST_METHOD%%));
 
     pointcut requestMethod():
         (execution(%%REQUEST_METHOD%%) && if(%%REQ_METHOD_ONLY%%)) ||

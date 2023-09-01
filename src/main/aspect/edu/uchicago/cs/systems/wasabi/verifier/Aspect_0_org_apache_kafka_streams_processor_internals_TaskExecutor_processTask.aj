@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public aspect Aspect_0_org_apache_kafka_streams_processor_internals_TaskExecutor_processTask {
     private static final Logger logger = LoggerFactory.getLogger("AspectVerify");
-    private static final int NUM_FAILURES_TO_INJECT=0;
+    private static final int NUM_FAILURES_TO_INJECT=1;
     private static int requestAttempts=0;
     private static int failuresInjected=0;
 
@@ -38,9 +38,6 @@ public aspect Aspect_0_org_apache_kafka_streams_processor_internals_TaskExecutor
           log("Test-After", "FAILURE", "* org.apache.kafka.streams.processor.internals.Task.process(..)", thisJoinPoint.toString(), String.valueOf(failuresInjected), String.valueOf(requestAttempts), executedRequestMethods, t.toString());
         }
     }
-
-    pointcut requestMethodOnly():
-        (execution(* org.apache.kafka.streams.processor.internals.Task.process(..)));
 
     pointcut requestMethod():
         (execution(* org.apache.kafka.streams.processor.internals.Task.process(..)) && if(false)) ||
