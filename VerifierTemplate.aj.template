@@ -51,6 +51,7 @@ public aspect %%ASPECT_NAME%% {
 
         if(thisJoinPoint.toString().toLowerCase().contains("mock") || thisJoinPoint.toString().toLowerCase().contains("test")) {
           log("Request executed on mock/test object. Ignoring.", thisJoinPoint.toString());
+          return;
         }
 
         if (!executedRequestMethods.contains(thisJoinPoint.toString())) {
