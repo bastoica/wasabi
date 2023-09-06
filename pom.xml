@@ -93,6 +93,11 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
         <artifactId>zookeeper</artifactId>
         <version>3.6.3</version> 
       </dependency>
+      <dependency>
+        <groupId>org.apache.hbase</groupId>
+        <artifactId>hbase-server</artifactId>
+        <version>3.0.0-alpha-4</version> 
+      </dependency>
     </dependencies>
 
   <repositories>
@@ -163,7 +168,7 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           </execution>
         </executions>
       </plugin>
-      <plugin>
+      <!--<plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
@@ -183,7 +188,7 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
       <plugin>
         <groupId>dev.aspectj</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
