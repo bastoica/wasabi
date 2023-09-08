@@ -43,26 +43,26 @@ public aspect SimpleVerifier {
     }
 
     pointcut requestMethod():
-        // (cflow(execution(* org.apache.hadoop.hbase.wal.AbstractWALRoller+.run(..))) && 
-        // call(* org.apache.hadoop.hbase.wal.WAL.rollWriter(..)) &&
+        // ((withincode(* org.apache.hadoop.hbase.wal.AbstractWALRoller+.run(..))) && 
+        // call(* org.apache.hadoop.hbase.wal.WAL.rollWriter(..))) &&
         // // DisabledWal throws "can't throw checked exception" error
-        // !withincode(* org.apache.hadoop.hbase.wal.DisabledWALProvider..*(..)));
+        // !withincode(* org.apache.hadoop.hbase.wal.DisabledWALProvider..*(..));
 
+        // Custom Exception
         // (cflow(execution(* org.apache.hadoop.hbase.MetaRegionLocationCache.loadMetaLocationsFromZk(..))) && 
         // execution(* org.apache.hadoop.hbase.zookeeper.getMetaReplicaNodesAndWatchChildren(..))) ||
 
-        // cflow(execution(* *.call(..)) && within(org.apache.hadoop.hbase.util.MoveWithAck)) &&
-        //     execution(* org.apache.hadoop.hbase.client.Admin.move(..));
+        // Retry?
+        // (withincode(* org.apache.hadoop.hbase.master.procedure.ProcedureSyncWait.call(..))) &&
+        // call(* org.apache.hadoop.hbase.master.procedure.ProcedureSyncWait.predicate+.evaluate(..));
 
-        // (cflow(execution(* org.apache.hadoop.hbase.namequeues.WALEventTrackerTableAccessor.doPut(..))) &&
-        // execution(* org.apache.hadoop.hbase.client.Table.put(..))) ||
+        // Wrong info from GPT-4
+        // (cflow(execution(* org.apache.hadoop.hbase.wal.WALFactory.createStreamReader(..))) &&
+        // execution(* org.apache.hadoop.hbase.regionserver.HRegionServer.reportProcedureDone(..))) ||
 
-        // This might not work
-        // (cflow(execution(* org.apache.hadoop.hbase.master.procedure.ProcedureSyncWait.call+(..))) &&
-        // execution(* org.apache.hadoop.hbase.master.procedure.ProcedureSyncWait.predicate+.evaluate(..))) ||
-
-        // (cflow(execution(* org.apache.hadoop.hbase.regionserver.handler.RegionReplicaFlushHandler.triggerFlushInPrimaryRegion(..))) &&
-        // execution(* org.apache.hadoop.hbase.client.AsyncClusterConnection.flush(..)));
+        // Worked, test: TestWALEventTracker
+        // (withincode(* org.apache.hadoop.hbase.namequeues.WALEventTrackerTableAccessor.doPut(..))) &&
+        // call(* org.apache.hadoop.hbase.client.Table.put(..));
 
         // Worked, Test: TestIOFencing
         // (withincode(* org.apache.hadoop.hbase.regionserver.RemoteProcedureResultReporter.run(..)) && 
@@ -77,8 +77,42 @@ public aspect SimpleVerifier {
         // (withincode(* org.apache.hadoop.hbase.regionserver.handler.RegionReplicaFlushHandler.triggerFlushInPrimaryRegion(..)) && 
         // call(* org.apache.hadoop.hbase.util.FutureUtils.get(..)));
 
-        // (cflow(execution(* org.apache.hadoop.hbase.wal.WALFactory.createStreamReader(..))) &&
-        // execution(* org.apache.hadoop.hbase.regionserver.HRegionServer.reportProcedureDone(..))) ||
+        // Worked, Test: TestBootstrapNodeManager
+        // (withincode(* org.apache.hadoop.hbase.regionserver.BootstrapNodeManager.getFromMaster(..)) && 
+        // call(* org.apache.hadoop.hbase.util.FutureUtils.get(..))) ||
+
+        // Worked, Test: TestMasterOperationsForRegionReplicas
+        (withincode(* org.apache.hadoop.hbase.master.AlwaysStandByHMaster.AlwaysStandByMasterManager.blockUntilBecomingActiveMaster(..)) && 
+        call(* org.apache.hadoop.hbase.zookeeper.MasterAddressTracker.getMasterAddress(..))) ||
+
+        // Worked, Test: TestSplitRegionWhileRSCrash
+        (withincode(* org.apache.hadoop.hbase.master.procedure.SplitWALProcedure.executeFromState(..)) && 
+        call(* org.apache.hadoop.hbase.master.SplitWALManager.isSplitWALFinished(..))) ||
+
+        (cflow(execution(* org.apache.hadoop.hbase.master.procedure.SnapshotVerifyProcedure.execute(..))) && 
+        call(* org.apache.hadoop.hbase.procedure2.RemoteProcedureDispatcher+.execute(..))) ||
+
+        (withincode(* org.apache.hadoop.hbase.master.procedure.SwitchRpcThrottleProcedure.executeFromState(..)) && 
+        call(* org.apache.hadoop.hbase.master.procedure.SwitchRpcThrottleProcedure.switchThrottleState(..))) ||
+
+        (withincode(* org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALProcedure.truncateWALs(..)) && 
+        call(* org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALProcedure.finishReplayWAL(..))) ||
+
+        (cflow(execution(* org.apache.hadoop.hbase.util.MultiThreadedUpdater.mutate(..))) && 
+        call(* org.apache.hadoop.hbase.client.Table.execheckAndMutatecute(..)));
+
+        
+        // Pending:
+        // (withincode(* org.apache.hadoop.hbase.io.hfile.bucket.FileIOEngine.accessFile(..)) && 
+        // call(* org.apache.hadoop.hbase.io.hfile.bucket.FileIOEngine.FileAccessor.access(..))) ||
+
+        // (withincode(* org.apache.hadoop.hbase.master.procedure.ServerCrashProcedure.executeFromState(..)) && 
+        // call(* org.apache.hadoop.hbase.master.procedure.ServerCrashProcedure.executeFromState(..))) ||
+
+
+
+
+        
 
 
         
