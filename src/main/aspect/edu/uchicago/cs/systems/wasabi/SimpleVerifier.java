@@ -4,9 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.uchicago.cs.systems.wasabi.WasabiLogger;
+
 import java.util.concurrent.ExecutionException;
 import java.io.IOException;
 import java.lang.InterruptedException;
+import java.io.FileNotFoundException;
 
 // import org.apache.zookeeper.KeeperException;
 
@@ -82,24 +84,31 @@ public aspect SimpleVerifier {
         // call(* org.apache.hadoop.hbase.util.FutureUtils.get(..))) ||
 
         // Worked, Test: TestMasterOperationsForRegionReplicas
-        (withincode(* org.apache.hadoop.hbase.master.AlwaysStandByHMaster.AlwaysStandByMasterManager.blockUntilBecomingActiveMaster(..)) && 
-        call(* org.apache.hadoop.hbase.zookeeper.MasterAddressTracker.getMasterAddress(..))) ||
+        // (withincode(* org.apache.hadoop.hbase.master.AlwaysStandByHMaster.AlwaysStandByMasterManager.blockUntilBecomingActiveMaster(..)) && 
+        // call(* org.apache.hadoop.hbase.zookeeper.MasterAddressTracker.getMasterAddress(..))) ||
 
         // Worked, Test: TestSplitRegionWhileRSCrash
-        (withincode(* org.apache.hadoop.hbase.master.procedure.SplitWALProcedure.executeFromState(..)) && 
-        call(* org.apache.hadoop.hbase.master.SplitWALManager.isSplitWALFinished(..))) ||
+        // (withincode(* org.apache.hadoop.hbase.master.procedure.SplitWALProcedure.executeFromState(..)) && 
+        // call(* org.apache.hadoop.hbase.master.SplitWALManager.isSplitWALFinished(..))) ||
 
-        (cflow(execution(* org.apache.hadoop.hbase.master.procedure.SnapshotVerifyProcedure.execute(..))) && 
-        call(* org.apache.hadoop.hbase.procedure2.RemoteProcedureDispatcher+.execute(..))) ||
+        // Worked, Test: TestCatalogJanitor
+        // (withincode(* org.apache.hadoop.hbase.master.MasterFileSystem.checkRootDir(..)) && 
+        // call(* org.apache.hadoop.hbase.util.FSUtils.setVersion(..)));
 
-        (withincode(* org.apache.hadoop.hbase.master.procedure.SwitchRpcThrottleProcedure.executeFromState(..)) && 
-        call(* org.apache.hadoop.hbase.master.procedure.SwitchRpcThrottleProcedure.switchThrottleState(..))) ||
+        // (cflow(execution(* org.apache.hadoop.hbase.master.procedure.SnapshotVerifyProcedure.execute(..))) && 
+        // call(* org.apache.hadoop.hbase.procedure2.RemoteProcedureDispatcher+.execute(..))) ||
 
-        (withincode(* org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALProcedure.truncateWALs(..)) && 
-        call(* org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALProcedure.finishReplayWAL(..))) ||
+        // (withincode(* org.apache.hadoop.hbase.master.procedure.SwitchRpcThrottleProcedure.executeFromState(..)) && 
+        // call(* org.apache.hadoop.hbase.master.procedure.SwitchRpcThrottleProcedure.switchThrottleState(..))) ||
 
-        (cflow(execution(* org.apache.hadoop.hbase.util.MultiThreadedUpdater.mutate(..))) && 
-        call(* org.apache.hadoop.hbase.client.Table.execheckAndMutatecute(..)));
+        // (withincode(* org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALProcedure.truncateWALs(..)) && 
+        // call(* org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALProcedure.finishReplayWAL(..))) ||
+
+        // (cflow(execution(* org.apache.hadoop.hbase.util.MultiThreadedUpdater.mutate(..))) && 
+        // call(* org.apache.hadoop.hbase.client.Table.execheckAndMutatecute(..)));
+
+        (cflow(execution(* org.apache.hadoop.hbase.io.FileLink.FileLinkInputStream.read(..))) && 
+        call(* org.apache.hadoop.fs.FSDataInputStream.read(..)));
 
         
         // Pending:
@@ -109,11 +118,11 @@ public aspect SimpleVerifier {
         // (withincode(* org.apache.hadoop.hbase.master.procedure.ServerCrashProcedure.executeFromState(..)) && 
         // call(* org.apache.hadoop.hbase.master.procedure.ServerCrashProcedure.executeFromState(..))) ||
 
+        // (withincode(* org.apache.hadoop.hbase.master.replication.AbstractPeerProcedure+.needSetLastPushedSequenceId(..)) && 
+        // call(* org.apache.hadoop.hbase.master.TableStateManager.getTableState(..)));
 
-
-
-        
-
+        // (withincode(* org.apache.hadoop.hbase.mob.MobStressToolRunner.run(..)) && 
+        // call(* org.apache.hadoop.hbase.client.Table.put(..)));
 
         
 
@@ -123,13 +132,13 @@ public aspect SimpleVerifier {
         currentRequestMethod=thisJoinPoint.toString();
     }
     
-    after() throws IOException: requestMethod() {
+    after() throws FileNotFoundException: requestMethod() {
         LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "[wasabi-SimpleVerifier] RequestMethods [after]"  + thisJoinPoint);
         requestAttempts++;
         if (requestAttempts <= NUM_FAILURES_TO_INJECT) {
             failuresInjected++;
             LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "[wasabi-SimpleVerifier] RequestMethod [after]::failureInject::"+thisJoinPoint+"::failuresInjected-"+String.valueOf(failuresInjected)+"::requestAttempts-"+String.valueOf(requestAttempts));
-            throw new IOException("[wasabi] IOException from " + thisJoinPoint);
+            throw new FileNotFoundException("[wasabi] FileNotFoundException from " + thisJoinPoint);
             // throw new KeeperException(KeeperException.Code.SESSIONEXPIRED);
         } else {
             LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, "[wasabi-SimpleVerifier] RequestMethod [after]::proceed::"+thisJoinPoint+"::failuresInjected-"+String.valueOf(failuresInjected)+"::requestAttempts-"+String.valueOf(requestAttempts));
