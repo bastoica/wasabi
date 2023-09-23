@@ -37,7 +37,7 @@ def log_compaction(log):
   Returns:
     compact_log: Compacted log.
   """
-  test_name_pattern = r"\[ERROR\] test[a-zA-Z]*(.*)"
+  test_name_pattern = r"\[ERROR\].*test[a-zA-Z]*(.*)"
   
   compact_log = []
 
@@ -448,6 +448,7 @@ def main():
 
   contents = read_line_by_line(args.log_file)
   log = log_compaction(contents)
+  print(log)
 
   test_names, retry_locations = get_all_failing_tests(log, exclude)
   print("==== Retry locations ====\n")

@@ -1,0 +1,3 @@
+Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection probability!!!Test coverage
+https://github.com/apache/hadoop/tree//ee7d178//hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-core/src/main/java/org/apache/hadoop/mapred/JobClient.java#L633!!!org.apache.hadoop.mapred.JobClient.getJob!!!org.apache.hadoop.mapred.JobClient.getJobInner!!!java.io.IOException!!!0.500000!!!2
+https://github.com/apache/hadoop/tree//ee7d178//hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-core/src/main/java/org/apache/hadoop/mapred/JobClient.java#L633!!!org.apache.hadoop.mapred.JobClient.getJob!!!java.lang.Thread.sleep!!!java.lang.InterruptedException!!!0.500000!!!2
