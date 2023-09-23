@@ -448,7 +448,6 @@ def main():
 
   contents = read_line_by_line(args.log_file)
   log = log_compaction(contents)
-  print(log)
 
   test_names, retry_locations = get_all_failing_tests(log, exclude)
   print("==== Retry locations ====\n")
@@ -489,3 +488,4 @@ def main():
 
 if __name__ == '__main__':
   main()
+
