@@ -42,7 +42,7 @@ class InjectUpToMaxCount extends InjectionPolicy {
 
   @Override
   public boolean shouldInject(int injectionCount, double injectionProbability) {
-    if (injectionCount <= this.maxInjectionCount) {
+    if (injectionCount < this.maxInjectionCount) {
       return true;
     }
     return false;
@@ -59,7 +59,7 @@ class InjectUpToMaxCountWithProbability extends InjectionPolicy {
  
   @Override
   public boolean shouldInject(int injectionCount, double injectionProbability) {
-    if (randomGenerator.nextDouble() < injectionProbability && injectionCount <= this.maxInjectionCount) {
+    if (randomGenerator.nextDouble() < injectionProbability && injectionCount < this.maxInjectionCount) {
       return true;
     }
     return false;
