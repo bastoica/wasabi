@@ -1,0 +1,2 @@
+Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection probability!!!Test coverage
+https://github.com/apache/hadoop/tree//ee7d178//hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-core/src/main/java/org/apache/hadoop/mapreduce/task/reduce/Fetcher.java#L343!!!org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyFromHost!!!org.apache.hadoop.mapreduce.task.reduce.Fetcher.copyMapOutput!!!java.io.IOException!!!1.000000!!!1
