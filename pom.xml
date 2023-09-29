@@ -24,7 +24,16 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<name>Wasabi Library</name>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    
+
+	<licenses>
+      <license>
+        <name>Apache License, Version 2.0</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		<distribution>repo</distribution>
+      </license>
+	</licenses>
+
+
   	<properties>
       <aspectj.version>1.9.8.M1</aspectj.version>
       <aspectj-maven.version>1.13</aspectj-maven.version>
