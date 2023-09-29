@@ -180,7 +180,7 @@ public aspect Interceptor {
     
     /* HBase */
 
-    call(* java.io.FilterOutputStream.write(..)) ||
+    call(* java.io.FilterOutputStream.write(..) throws *IOException*) ||
     call(* org.apache.hadoop.fs.FileSystem.create(..)) ||
     call(* org.apache.hadoop.fs.FileSystem.delete(..)) ||
     call(* org.apache.hadoop.fs.FileSystem.exists(..)) ||
@@ -255,9 +255,9 @@ public aspect Interceptor {
     call(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readInt32(..)) ||
     call(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readTag(..)) ||
     call(* org.apache.hbase.thirdparty.com.google.protobuf.GeneratedMessageV3.*.parseUnknownField(..)) ||
-    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.init(..)) ||
-    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..)) ||
-    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..)) ||
+    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.init(..) throws *IOException*) ||
+    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..) throws *IOException*) ||
+    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..) throws *IOException*) ||
     
     /* Hive */
 
@@ -850,4 +850,3 @@ public aspect Interceptor {
     }
   }
 }
-
