@@ -181,13 +181,13 @@ public aspect Interceptor {
     /* HBase */
 
     call(* java.io.FilterOutputStream.write(..) throws *IOException*) ||
-    call(* org.apache.hadoop.fs.FileSystem.create(..)) ||
-    call(* org.apache.hadoop.fs.FileSystem.delete(..)) ||
-    call(* org.apache.hadoop.fs.FileSystem.exists(..)) ||
-    call(* org.apache.hadoop.fs.FileSystem.mkdirs(..)) ||
-    call(* org.apache.hadoop.fs.FileSystem.rename(..)) ||
-    call(* org.apache.hadoop.fs.FSDataOutputStream.close(..)) ||
-    call(* org.apache.hadoop.fs.Path.getFileSystem(..)) ||
+    call(* org.apache.hadoop.fs.FileSystem.create(..) throws *IOException*) ||
+    call(* org.apache.hadoop.fs.FileSystem.delete(..) throws *IOException*) ||
+    call(* org.apache.hadoop.fs.FileSystem.exists(..) throws *IOException*) ||
+    call(* org.apache.hadoop.fs.FileSystem.mkdirs(..) throws *IOException*) ||
+    call(* org.apache.hadoop.fs.FileSystem.rename(..) throws *IOException*) ||
+    call(* org.apache.hadoop.fs.FSDataOutputStream.close(..) throws *IOException*) ||
+    call(* org.apache.hadoop.fs.Path.getFileSystem(..) throws *IOException*) ||
     call(* org.apache.hadoop.hbase.backup.HFileArchiver.*.moveAndClose(..)) ||
     call(* org.apache.hadoop.hbase.chaos.actions.Action.killRs(..)) ||
     call(* org.apache.hadoop.hbase.chaos.actions.Action.resumeRs(..)) ||
@@ -261,9 +261,6 @@ public aspect Interceptor {
     
     /* Hive */
 
-    call(* org.apache.hadoop.fs.FileSystem.mkdirs(..)) ||
-    call(* org.apache.hadoop.fs.FileSystem.exists(..)) ||
-    call(* org.apache.hadoop.fs.FileSystem.rename(..)) ||
     call(* org.apache.hive.hcatalog.templeton.LauncherDelegator.killJob(..)) ||
     call(* org.apache.tez.dag.api.client.DAGClient.getDAGStatus(..)) ||
     call(* org.apache.hadoop.security.UserGroupInformation.getLoginUser(..)) ||
