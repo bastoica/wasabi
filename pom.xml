@@ -37,27 +37,20 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
   	<properties>
       <aspectj.version>1.9.8.RC2</aspectj.version>
       <aspectj-maven.version>1.13.1</aspectj-maven.version>
-    </properties>
+      <configFile>default.conf</configFile>
+  	</properties>
     
 	<dependencies>
       <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjrt</artifactId>
 	    <version>${aspectj.version}</version>
-		
-		<exclusions>
-          <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
-        </exclusions>
-	
-     </dependency>
-    	<dependency>
+	  </dependency>
+    	<!--dependency>
     	  <groupId>org.aspectj</groupId>
     	  <artifactId>aspectjweaver</artifactId>
     	  <version>${aspectj.version}</version>
-	    </dependency>
+	    </dependency-->
   	  <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
