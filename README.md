@@ -70,7 +70,7 @@ perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" build.log
   
   ...
 
-  <!-- Wasabi Fault Injection Library -->                                                                                                      
+  <!-- Wasabi Fault Injection Library -->
   <aspectj.version>1.9.8.RC1</aspectj.version>
   <aspectj-maven.version>1.13.1</aspectj-maven.version>
   <wasabi.version>1.0.0</wasabi.version>
