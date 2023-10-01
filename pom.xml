@@ -17,73 +17,73 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion> 
-    <groupId>edu.uchicago.cs.systems</groupId>
+  <modelVersion>4.0.0</modelVersion> 
+  <groupId>edu.uchicago.cs.systems</groupId>
 	<artifactId>wasabi</artifactId>
 	<description>Wasabi Fault Injection Instrumentation Library</description>
 	<name>Wasabi Library</name>
-    <version>1.0.0</version>
-    <packaging>jar</packaging>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
 
 	<licenses>
-      <license>
-        <name>Apache License, Version 2.0</name>
-        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    <license>
+	    <name>Apache License, Version 2.0</name>
+		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		<distribution>repo</distribution>
-      </license>
+    </license>
 	</licenses>
 
 
-  	<properties>
-      <aspectj.version>1.9.8.M1</aspectj.version>
-      <aspectj-maven.version>1.13</aspectj-maven.version>
-      <csvFileName>./config/codeql_data.csv</csvFileName>
-  	</properties>
+	<properties>
+		<aspectj.version>1.9.8.RC2</aspectj.version>
+		<aspectj-maven.version>1.13.1</aspectj-maven.version>
+		<csvFileName>./config/codeql_data.csv</csvFileName>
+	</properties>
     
 	<dependencies>
-      <dependency>
-        <groupId>org.aspectj</groupId>
-        <artifactId>aspectjrt</artifactId>
-	    <version>${aspectj.version}</version>
-	  </dependency>
+  	    <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+	        <version>${aspectj.version}</version>
+	    </dependency>
     	<!--dependency>
     	  <groupId>org.aspectj</groupId>
     	  <artifactId>aspectjweaver</artifactId>
     	  <version>${aspectj.version}</version>
 	    </dependency-->
-  	  <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>2.0.6</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <version>2.0.6</version>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.13.2</version>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>2.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
 	  </dependency>
 	  <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-api</artifactId>
-        <version>5.8.2</version>
-        <scope>test</scope>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.8.2</version>
+			<scope>test</scope>
 	  </dependency>
-      <dependency>
-        <groupId>commons-codec</groupId>
-        <artifactId>commons-codec</artifactId>
-        <version>1.16.0</version> <!-- Replace with the latest version available -->
-      </dependency>
-      <dependency>
-        <groupId>org.assertj</groupId>
-      	<artifactId>assertj-core</artifactId>
-	    <version>3.20.2</version>
-    	<scope>test</scope>
-      </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.16.0</version> <!-- Replace with the latest version available -->
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.20.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
   <repositories>
     <!--
