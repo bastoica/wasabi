@@ -20,15 +20,14 @@ class WasabiContext {
 
   private final HashingPrimitives hashingPrimitives = new HashingPrimitives();
 
-  private Map<String, HashMap<String, String>> callersToExceptionsMap;
-  private Map<Integer, String> reverseRetryLocationsMap;
-  private Map<Integer, Double> injectionProbabilityMap;
+  private Map<String, InjectionPoint> injectionPlan;
   private InjectionPolicy injectionPolicy;
 
   private ConcurrentHashMap<Integer, ExecutionTrace> executionTrace = new ConcurrentHashMap<>();
   private ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
 
-  public WasabiContext(WasabiLogger logger, ConfigParser configParser) {
+  public WasabiContext(WasabiLogger logger, 
+                       ConfigParser configParser) {
     this.LOG = logger;
     this.configParser = configParser;
     
@@ -42,23 +41,15 @@ class WasabiContext {
       case "forever":
         injectionPolicy = new InjectForever();
         break;
-      case "forever-with-probability":
-        injectionPolicy = new InjectForeverWithProbability();
-        break;
       case "max-count":
         injectionPolicy = new InjectUpToMaxCount(maxInjectionCount);
-        break;
-      case "max-count-with-probability":
-        injectionPolicy = new InjectUpToMaxCountWithProbability(maxInjectionCount);
         break;
       default:
         injectionPolicy = new NoInjection();
         break;
     }
 
-    callersToExceptionsMap = Collections.unmodifiableMap(this.configParser.getCallersToExceptionsMap());
-    reverseRetryLocationsMap = Collections.unmodifiableMap(this.configParser.getReverseRetryLocationsMap());
-    injectionProbabilityMap = Collections.unmodifiableMap(this.configParser.getInjectionProbabilityMap());
+    injectionPlan = Collections.unmodifiableMap(this.configParser.getInjectionPlan());
   }
 
   private Boolean isNullOrEmpty(String str) {
@@ -75,7 +66,9 @@ class WasabiContext {
     return injectionCounts.compute(hval, (k, v) -> (v == null) ? 1 : v + 1);
   }
 
-  public synchronized void addToExecTrace(int uniqueId, int opType, StackSnapshot stackSnapshot) {
+  public synchronized void addToExecTrace(int uniqueId, 
+                                          int opType, 
+                                          StackSnapshot stackSnapshot) {
     long currentTime = System.nanoTime();
 
     ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace());
@@ -84,71 +77,51 @@ class WasabiContext {
     trace.addLast(new OpEntry(opType, currentTime, stackSnapshot));
   }
 
-  public synchronized void addToExecTrace(int uniqueId, int opType, StackSnapshot stackSnapshot, String retriedException) {
+  public synchronized void addToExecTrace(int uniqueId, 
+                                          int opType, 
+                                          StackSnapshot stackSnapshot, 
+                                          String retryException) {
     long currentTime = System.nanoTime();
 
     ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace());
     executionTrace.putIfAbsent(uniqueId, trace);
 
-    trace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retriedException));
+    trace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retryException));
   }
 
-  public Boolean isRetryLogic(String retryCaller, String retriedCallee) {
-    return ( 
-      !isNullOrEmpty(retryCaller) && 
-      !isNullOrEmpty(retriedCallee) &&
-      callersToExceptionsMap.containsKey(retryCaller) && 
-      callersToExceptionsMap.get(retryCaller).containsKey(retriedCallee)
+  public synchronized InjectionPoint getInjectionPoint(String injectionSite, 
+                                                       String injectionSourceLocation,
+                                                       String retryException, 
+                                                       String retryCallerFunction,
+                                                       StackSnapshot stackSnapshot) {
+    int uniqueId = HashingPrimitives.getHashValue(
+      stackSnapshot.normalizeStackBelowFrame(retryCallerFunction)
+    );
+    addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, retryException);
+                                                        
+    String retrySourceLocation = injectionPlan.containsKey(injectionSourceLocation) ?
+                                  injectionPlan.get(injectionSourceLocation).retryCallerFunction : 
+                                  "???";
+    int injectionCount = getInjectionCount(stackSnapshot.getStacktrace());
+    Boolean hasBackoff = checkMissingBackoffDuringRetry(
+      injectionCount, 
+      stackSnapshot, 
+      retryCallerFunction, 
+      retrySourceLocation
+    );
+  
+    return new InjectionPoint(
+      stackSnapshot,
+      retrySourceLocation, 
+      retryCallerFunction,
+      injectionSite,
+      retryException,
+      injectionCount
     );
   }
 
-  public synchronized InjectionPoint getInjectionPoint() {
-    StackSnapshot stackSnapshot = new StackSnapshot();
-
-    if (
-      isRetryLogic(
-        StackSnapshot.getQualifiedName(stackSnapshot.getFrame(1)), // retry caller
-        StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0))  // retried callee
-        ) 
-    ) {
-      String retriedCallee = StackSnapshot.getQualifiedName(stackSnapshot.getFrame(0));
-      String retryCaller = StackSnapshot.getQualifiedName(stackSnapshot.getFrame(1));
-      String retriedException = callersToExceptionsMap.get(retryCaller).get(retriedCallee);
-      
-      int hval = hashingPrimitives.getHashValue(retryCaller, retriedCallee, retriedException);
-      String retryLocation = reverseRetryLocationsMap.get(hval);
-      Double injectionProbability = injectionProbabilityMap.getOrDefault(hval, 0.0);
-
-      int uniqueId = HashingPrimitives.getHashValue(
-          stackSnapshot.normalizeStackBelowFrame(retryCaller)
-        );
-      addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, retriedException);
-
-      int injectionCount = getInjectionCount(stackSnapshot.getStacktrace());
-      Boolean hasBackoff = checkMissingBackoffDuringRetry(
-          injectionCount, 
-          stackSnapshot, 
-          retryCaller, 
-          retryLocation
-        );
-      
-      return new InjectionPoint(
-          stackSnapshot,
-          retryLocation, 
-          retryCaller,
-          retriedCallee,
-          retriedException,
-          injectionProbability,
-          injectionCount
-        );
-    }
-    
-    stackSnapshot = null;
-    return null;
-  }
-
   public Boolean shouldInject(InjectionPoint ipt) {
-    if (injectionPolicy.shouldInject(ipt.injectionCount, ipt.injectionProbability)) {
+    if (injectionPolicy.shouldInject(ipt.injectionCount)) {
       ipt.injectionCount = updateInjectionCount(ipt.stackSnapshot.getStacktrace());
       return true;
     }
@@ -163,8 +136,8 @@ class WasabiContext {
    * needed, move all such checks to a separate BugOracles class.
    */
 
-  public synchronized Boolean checkMissingBackoffDuringRetry(int injectionCount, StackSnapshot stackSnapshot, String retryCaller, String retryLocation) {
-    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.normalizeStackBelowFrame(retryCaller));
+  public synchronized Boolean checkMissingBackoffDuringRetry(int injectionCount, StackSnapshot stackSnapshot, String retryCallerFunction, String retrySourceLocation) {
+    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.normalizeStackBelowFrame(retryCallerFunction));
 
     if (executionTrace.containsKey(uniqueId)) {
       ExecutionTrace trace = executionTrace.get(uniqueId);
@@ -176,11 +149,11 @@ class WasabiContext {
 
         if (!(trace.checkIfOpsAreEqual(lastIndex, thirdToLastIndex) &&
               trace.checkIfOpIsOfType(secondToLastIndex, OpEntry.THREAD_SLEEP_OP) &&
-              trace.checkIfOpHasFrame(secondToLastIndex, retryCaller))) {
+              trace.checkIfOpHasFrame(secondToLastIndex, retryCallerFunction))) {
           this.LOG.printMessage(
               WasabiLogger.LOG_LEVEL_ERROR, 
               String.format("No backoff between retry attempts at !!%s!! with callstack:\n%s", 
-                retryLocation, stackSnapshot.toString())
+                retrySourceLocation, stackSnapshot.toString())
             );
           return true; // missing backoff
         }

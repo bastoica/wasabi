@@ -4,32 +4,20 @@ import java.util.Random;
 
 abstract class InjectionPolicy {
 
-  public abstract boolean shouldInject(int injectionCount, double injectionProbability);
+  public abstract boolean shouldInject(int injectionCount);
 }
 
 class NoInjection extends InjectionPolicy {
   @Override
-  public boolean shouldInject(int injectionCount, double injectionProbability) {
+  public boolean shouldInject(int injectionCount) {
     return false;
   }
 }
 
 class InjectForever extends InjectionPolicy {
   @Override
-  public boolean shouldInject(int injectionCount, double injectionProbability) {
+  public boolean shouldInject(int injectionCount) {
     return true;
-  }
-}
-
-class InjectForeverWithProbability extends InjectionPolicy {
-  private static final Random randomGenerator = new Random();
-
-  @Override
-  public boolean shouldInject(int injectionCount, double injectionProbability) {
-    if (randomGenerator.nextDouble() < injectionProbability) {
-      return true;
-    }
-    return false;
   }
 }
 
@@ -41,25 +29,8 @@ class InjectUpToMaxCount extends InjectionPolicy {
   }
 
   @Override
-  public boolean shouldInject(int injectionCount, double injectionProbability) {
+  public boolean shouldInject(int injectionCount) {
     if (injectionCount < this.maxInjectionCount) {
-      return true;
-    }
-    return false;
-  }
-}
-
-class InjectUpToMaxCountWithProbability extends InjectionPolicy {
-  private static final Random randomGenerator = new Random();
-  private int maxInjectionCount = 0;
-
-  InjectUpToMaxCountWithProbability(int maxInjectionCount) {
-    this.maxInjectionCount = maxInjectionCount;
-  }
- 
-  @Override
-  public boolean shouldInject(int injectionCount, double injectionProbability) {
-    if (randomGenerator.nextDouble() < injectionProbability && injectionCount < this.maxInjectionCount) {
       return true;
     }
     return false;

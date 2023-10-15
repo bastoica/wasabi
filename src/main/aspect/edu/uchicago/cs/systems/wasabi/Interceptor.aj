@@ -93,10 +93,7 @@ public aspect Interceptor {
 
   pointcut recordThreadSleep():
    (call(* Thread.sleep(..)) &&
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType)));
+    !within(edu.uchicago.cs.systems.wasabi.*));
 
   before() : recordThreadSleep() {
     try {
@@ -180,14 +177,14 @@ public aspect Interceptor {
     
     /* HBase */
 
-    call(* java.io.FilterOutputStream.write(..) throws *IOException*) ||
-    call(* org.apache.hadoop.fs.FileSystem.create(..) throws *IOException*) ||
-    call(* org.apache.hadoop.fs.FileSystem.delete(..) throws *IOException*) ||
-    call(* org.apache.hadoop.fs.FileSystem.exists(..) throws *IOException*) ||
-    call(* org.apache.hadoop.fs.FileSystem.mkdirs(..) throws *IOException*) ||
-    call(* org.apache.hadoop.fs.FileSystem.rename(..) throws *IOException*) ||
-    call(* org.apache.hadoop.fs.FSDataOutputStream.close(..) throws *IOException*) ||
-    call(* org.apache.hadoop.fs.Path.getFileSystem(..) throws *IOException*) ||
+    call(* java.io.FilterOutputStream.write(..) throws IOException) ||
+    call(* org.apache.hadoop.fs.FileSystem.create(..) throws IOException) ||
+    call(* org.apache.hadoop.fs.FileSystem.delete(..) throws IOException) ||
+    call(* org.apache.hadoop.fs.FileSystem.exists(..) throws IOException) ||
+    call(* org.apache.hadoop.fs.FileSystem.mkdirs(..) throws IOException) ||
+    call(* org.apache.hadoop.fs.FileSystem.rename(..) throws IOException) ||
+    call(* org.apache.hadoop.fs.FSDataOutputStream.close(..) throws IOException) ||
+    call(* org.apache.hadoop.fs.Path.getFileSystem(..) throws IOException) ||
     call(* org.apache.hadoop.hbase.backup.HFileArchiver.*.moveAndClose(..)) ||
     call(* org.apache.hadoop.hbase.chaos.actions.Action.killRs(..)) ||
     call(* org.apache.hadoop.hbase.chaos.actions.Action.resumeRs(..)) ||
@@ -207,6 +204,7 @@ public aspect Interceptor {
     call(* org.apache.hadoop.hbase.master.procedure.SwitchRpcThrottleProcedure.switchThrottleState(..)) ||
     call(* org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALManager.finishReplayWAL(..)) ||
     call(* org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALManager.isReplayWALFinished(..)) ||
+    call(* org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALManager.renameToPeerSnapshotWALDir(..)) ||
     call(* org.apache.hadoop.hbase.master.SplitWALManager.isSplitWALFinished(..)) ||
     call(* org.apache.hadoop.hbase.MiniHBaseCluster.getClusterMetrics(EnumSet.*)) || 
     call(* org.apache.hadoop.hbase.procedure2.store.wal.ProcedureWALFile.removeFile(..)) ||
@@ -255,9 +253,9 @@ public aspect Interceptor {
     call(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readInt32(..)) ||
     call(* org.apache.hbase.thirdparty.com.google.protobuf.CodedInputStream.readTag(..)) ||
     call(* org.apache.hbase.thirdparty.com.google.protobuf.GeneratedMessageV3.*.parseUnknownField(..)) ||
-    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.init(..) throws *IOException*) ||
-    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..) throws *IOException*) ||
-    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..) throws *IOException*) ||
+    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.init(..) throws IOException) ||
+    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..) throws IOException) ||
+    call(* org.apache.kerby.kerberos.kerb.server.SimpleKdcServer.start(..) throws IOException) ||
     
     /* Hive */
 
@@ -283,12 +281,18 @@ public aspect Interceptor {
 
     /* Ignore Wasabi code */
     
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType));
+    !within(edu.uchicago.cs.systems.wasabi.*);
     
   after() throws IOException : forceIOException() {
+
+    StackSnapshot sn = new StackSnapshot();
+    if (sn.hasFrame("reportProcedureDone") || sn.hasFrame("isReplayWALFinished") || sn.hasFrame("renameToPeerSnapshotWALDir")) {
+      this.LOG.printMessage(
+          WasabiLogger.LOG_LEVEL_WARN, 
+          String.format("Callback at \n%s", sn.toString())
+        );
+    }
+
     WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
     InjectionPoint ipt = wasabiCtx.getInjectionPoint();
 
@@ -302,7 +306,8 @@ public aspect Interceptor {
 
       this.LOG.printMessage(
           WasabiLogger.LOG_LEVEL_WARN, 
-          String.format("Pointcut inside retry logic at ~~%s~~ after calling %s\n", ipt.retryLocation, ipt.retriedCallee)
+          String.format("Pointcut triggered at retry location // %s // after calling // %s // from // %s //\n", 
+            retryLocation, retryInjectionSite, retryCallerFunction)
         );
       
       if (wasabiCtx.shouldInject(ipt)) {
@@ -329,10 +334,7 @@ public aspect Interceptor {
        
    /* Ignore Wasabi code */
    
-   !within(edu.uchicago.cs.systems.wasabi.*) &&
-   !within(is(FinalType)) &&
-   !within(is(EnumType)) &&
-   !within(is(AnnotationType));
+   !within(edu.uchicago.cs.systems.wasabi.*);
 
  after() throws InterruptedException : forceInterruptedException() {
    WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
@@ -375,10 +377,7 @@ public aspect Interceptor {
         
     /* Ignore Wasabi code */
     
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType));
+    !within(edu.uchicago.cs.systems.wasabi.*);
  
   after() throws EOFException : forceEOFException() {
     WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
@@ -425,10 +424,7 @@ public aspect Interceptor {
         
     /* Ignore Wasabi code */
     
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType));
+    !within(edu.uchicago.cs.systems.wasabi.*);
  
   after() throws FileNotFoundException : forceFileNotFoundException() {
     WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
@@ -471,15 +467,12 @@ public aspect Interceptor {
    
    /* Hive */
    
-   call(* java.net.InetAddress.getByName(..)) ||
+   call(* java.net.InetAddress.getByName(..) throws UnknownHostException) ||
    call(* org.apache.hadoop.hive.metastore.MetaStoreTestUtils.startMetaStore(..))) &&
        
    /* Ignore Wasabi code */
     
-   !within(edu.uchicago.cs.systems.wasabi.*) &&
-   !within(is(FinalType)) &&
-   !within(is(EnumType)) &&
-   !within(is(AnnotationType));
+   !within(edu.uchicago.cs.systems.wasabi.*);
 
  after() throws UnknownHostException : forceUnknownHostException() {
    WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
@@ -523,10 +516,7 @@ public aspect Interceptor {
         
     /* Ignore Wasabi code */
     
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType));
+    !within(edu.uchicago.cs.systems.wasabi.*);
   
   after() throws ConnectException : forceConnectException() {
     WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
@@ -586,10 +576,7 @@ public aspect Interceptor {
        
    /* Ignore Wasabi code */
    
-   !within(edu.uchicago.cs.systems.wasabi.*) &&
-   !within(is(FinalType)) &&
-   !within(is(EnumType)) &&
-   !within(is(AnnotationType));
+   !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws SQLException : forceSQLException() {
     WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
@@ -633,10 +620,7 @@ public aspect Interceptor {
         
     /* Ignore Wasabi code */
     
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType));
+    !within(edu.uchicago.cs.systems.wasabi.*);
    
   after() throws SocketTimeoutException : forceSocketTimeoutException() {
     WasabiContext wasabiCtx = threadLocalWasabiCtx.get();
@@ -752,7 +736,7 @@ public aspect Interceptor {
     call(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.canCommit(..)) ||
     call(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.commitPending(..)) ||
     call(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.done(..)) ||
-    call(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.getTask(..) throws *IOException*) ||
+    call(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.getTask(..) throws IOException) ||
     call(* org.apache.hadoop.mapred.TaskUmbilicalProtocol.statusUpdate(..)) ||
     call(* org.apache.hadoop.mapreduce.Cluster.getJob(..)) ||
     call(* org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter.commitJobInternal(..)) ||
@@ -768,7 +752,7 @@ public aspect Interceptor {
     call(* org.apache.hadoop.security.token.delegation.web.DelegationTokenManager.renewToken(..)) ||
     call(* org.apache.hadoop.security.token.delegation.web.DelegationTokenManager.verifyToken(..)) ||
     call(* org.apache.hadoop.security.UserGroupInformation.checkTGTAndReloginFromKeytab(..)) ||
-    call(* org.apache.hadoop.security.UserGroupInformation.doAs(..) throws *IOException*) ||
+    call(* org.apache.hadoop.security.UserGroupInformation.doAs(..) throws IOException) ||
     call(* org.apache.hadoop.security.UserGroupInformation.getCurrentUser(..)) ||
     call(* org.apache.hadoop.security.UserGroupInformation*.relogin(..)) ||
     call(* org.apache.hadoop.thirdparty.protobuf.GeneratedMessageV3.parseUnknownField(..)) ||
@@ -778,15 +762,15 @@ public aspect Interceptor {
     call(* org.apache.hadoop.yarn.api.ApplicationBaseProtocol.getApplicationAttemptReport(..)) ||
     call(* org.apache.hadoop.yarn.api.ApplicationClientProtocol.getNewReservation(..)) ||
     call(* org.apache.hadoop.yarn.api.ApplicationClientProtocol.submitReservation(..)) ||
-    call(* org.apache.hadoop.yarn.client.api.impl.TimelineConnector*.run(..) throws *Exception*) ||
+    call(* org.apache.hadoop.yarn.client.api.impl.TimelineConnector*.run(..) throws  SocketException) ||
     call(* org.apache.hadoop.yarn.client.api.impl.TimelineV2ClientImpl.putObjects(..)) ||
     call(* org.apache.hadoop.yarn.client.api.YarnClient.getApplications(..)) ||
-    call(* org.apache.hadoop.yarn.client.cli.LogsCLI*.run(..) throws *Exception*) ||
+    call(* org.apache.hadoop.yarn.client.cli.LogsCLI*.run(..) throws  IOException) ||
     call(* org.apache.hadoop.yarn.logaggregation.filecontroller.ifile.LogAggregationIndexedFileController.deleteFileWithRetries(..)) ||
     call(* org.apache.hadoop.yarn.server.federation.retry.FederationActionRetry.run(..)) ||
     call(* org.apache.hadoop.yarn.server.nodemanager.containermanager.container.ResourceMappings*.fromBytes(..)) ||
     call(* org.apache.hadoop.yarn.server.resourcemanager.AdminService.getServiceStatus(..)) ||
-    call(* org.apache.hadoop.yarn.server.resourcemanager.recovery.FileSystemRMStateStore*.run(..) throws *Exception*) ||
+    call(* org.apache.hadoop.yarn.server.resourcemanager.recovery.FileSystemRMStateStore*.run(..) throws  SocketException) ||
     call(* org.apache.hadoop.yarn.server.timelineservice.storage.FileSystemTimelineWriterImpl*.run(..)) ||
     call(* org.apache.hadoop.yarn.server.uam.UnmanagedApplicationManager.getApplicationReport(..)) ||
     call(* org.apache.hadoop.yarn.server.utils.BuilderUtils.newContainerTokenIdentifier(..)) ||
@@ -813,10 +797,7 @@ public aspect Interceptor {
 
     /* Ignore Wasabi code */
 
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType));
+    !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws SocketException : forceSocketException() {
     WasabiContext wasabiCtx = threadLocalWasabiCtx.get();

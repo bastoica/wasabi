@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.uchicago.cs.systems.wasabi.InjectionPoint;
+
 import org.junit.Assert;
 
 class ConfigParser {
@@ -25,12 +27,10 @@ class ConfigParser {
   private static int maxInjectionCount;
   
   private static final ArrayList<String[]> rawRecords = new ArrayList<>();
-  private static final Map<String, HashMap<String, String>> callersToExceptionsMap = new HashMap<>();
-  private static final Map<Integer, String> reverseRetryLocationsMap = new HashMap<>();
-  private static final Map<Integer, Double> injectionProbabilityMap = new HashMap<>();
+  private static final Map<String, InjectionPoint> injectionPlan = new HashMap<>();
   
   private static final HashingPrimitives hashingPrimitives = new HashingPrimitives();
-  private static final String[] RETRY_DATA_COLUMN_NAMES = {"Retry location", "Enclosing method", "Retried method", "Exception", "Injection probability", "Test coverage"};
+  private static final String[] RETRY_DATA_COLUMN_NAMES = {"Retry location", "Retry caller", "Injection site", "Injection location", "Exception"};
   
   public ConfigParser(WasabiLogger logger, String configFile) {
     this.LOG = logger;
@@ -104,29 +104,22 @@ class ConfigParser {
     }
 
     for (String[] record : rawRecords) {
-      String retryLocation = record[0];
-      String retryCaller = record[1];
-      String retriedCallee = record[2];
-      String retriedException = record[3];
-      String injectionProbabilityString = record[4];
+      String retrySourceLocation = record[0];
+      String retryCallerFunction = record[1];
+      String injectionSite = record[2];
+      String injectionLocation = record[3];
+      String retryException = record[4];
 
-      HashMap<String, String> calleesToExceptionsMap = callersToExceptionsMap.computeIfAbsent(retryCaller, v -> new HashMap<>());
-      calleesToExceptionsMap.put(retriedCallee, retriedException);
-
-      int key = hashingPrimitives.getHashValue(retryCaller, retriedCallee, retriedException);
-      reverseRetryLocationsMap.put(key, retryLocation);
+      InjectionPoint entry = new InjectionPoint(
+        null,
+        retrySourceLocation,
+        retryCallerFunction,
+        injectionSite,
+        retryException,
+        -1
+      );
       
-      try {
-        Double injectionProbablity = Double.parseDouble(injectionProbabilityString);
-        injectionProbabilityMap.put(key, injectionProbablity);
-      } catch (Exception e) {
-        this.LOG.printMessage(
-            LOG.LOG_LEVEL_ERROR, 
-            String.format("An exception occurred when parsing entry ( %s , %s , %s , %s ): %s\n", 
-              record[0], record[1], record[2], record[3], e.getMessage())
-          );
-        e.printStackTrace();
-      }
+      injectionPlan.put(injectionLocation, entry);
     }
   }
 
@@ -134,16 +127,8 @@ class ConfigParser {
     return rawRecords;
   }
 
-  public Map<String, HashMap<String, String>> getCallersToExceptionsMap() {
-    return Collections.unmodifiableMap(callersToExceptionsMap);
-  }
-
-  public Map<Integer, String> getReverseRetryLocationsMap() {
-    return Collections.unmodifiableMap(reverseRetryLocationsMap);
-  }
-
-  public Map<Integer, Double> getInjectionProbabilityMap() {
-    return Collections.unmodifiableMap(injectionProbabilityMap);
+  public Map<String, InjectionPoint> getInjectionPlan() {
+    return Collections.unmodifiableMap(injectionPlan);
   }
 
   public int getMaxInjectionCount() {

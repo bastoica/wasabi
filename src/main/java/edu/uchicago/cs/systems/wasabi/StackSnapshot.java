@@ -22,6 +22,10 @@ class StackSnapshot {
   public StackSnapshot(ArrayList<String> stacktrace) {
     this.stacktrace = stacktrace;
   }
+
+  public int getSize() {
+    return this.stacktrace.size();
+  }
   
   public Boolean isNullOrEmpty() {
     return this.stacktrace == null || this.stacktrace.isEmpty();
