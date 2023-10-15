@@ -3,6 +3,8 @@ import re
 import shutil
 import argparse
 
+RETRY_BOUND = 997
+
 def find_java_file(test_class, test_directory_path):
   """
   Recursively search for the Java test file in the given directory.
@@ -16,7 +18,7 @@ def find_java_file(test_class, test_directory_path):
   """
   for root, _, files in os.walk(test_directory_path):
     for file in files:
-      if file.endswith(".java") and file.startswith(test_class):
+      if file.endswith(".java") and file.split(".")[0] == test_class:
         return os.path.join(root, file)
   return None
 
@@ -46,7 +48,7 @@ def find_and_modify_assignment(test_class, assign_method, var_name, new_value, t
   modified_lines = []
   index = 0
   while index < len(lines):
-    if f"{assign_method}(" in lines[index]:
+    if f"{assign_method}(" in lines[index] and var_name in lines[index]:
       to_change = lines[index].rstrip("\n")
       index = index + 1
       while index < len(lines) and ");" not in lines[index - 1]:
@@ -77,9 +79,10 @@ def process_input(input_file, test_directory_path):
     for line in file:
       line = line.strip()
       var_name, assigned_value, assign_method, test_class = line.split("!!!")
-
-      assign_method = assign_method.strip().split('.')[-1]
-      new_value = int(997)
+      
+      if int(assigned_value.strip('"')) < int(RETRY_BOUND):
+        assign_method = assign_method.strip().split('.')[-1]
+        new_value = int(RETRY_BOUND)
 
       find_and_modify_assignment(test_class, assign_method, var_name, new_value, test_directory_path)
 
