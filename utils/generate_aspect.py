@@ -24,7 +24,7 @@ def generate_aspectj_code(exception_map):
         patterns = []
         
         for enclosing, retried in method_pairs:
-            patterns.append(f"    (withincode(* {enclosing}(..)) &&\n    execution(* {retried}(..))) ||\n")
+            patterns.append(f"    (withincode(* {enclosing}(..)) &&\n    call(* {retried}(..))) ||\n")
         
         pointcut_template = f"""
   /* Inject {exception} */
@@ -33,19 +33,44 @@ def generate_aspectj_code(exception_map):
     ({''.join(patterns)}) &&\n    !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws {exception} : inject{exception}() {{
-    StackSnapshot sn = new StackSnapshot();
-    String retryCallerFunction = sn.getSize() > 1 ? sn.getFrame(1) : "???";
-    String retryInjectionSite = thisJoinPoint.toString();
+    if (this.wasabiCtx == null) {{ // This happens for non-test methods (e.g. config) inside test code
+      return; // Ignore retry in "before" and "after" annotated methods
+    }}
+
+    StackSnapshot stackSnapshot = new StackSnapshot();
+    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
+    String injectionSite = thisJoinPoint.toString();
     String retryException = "{exception}";
-    String retryLocation = String.format("%s:%d",
+    String injectionSourceLocation = String.format("%s:%d",
                                 thisJoinPoint.getSourceLocation().getFileName(),
                                 thisJoinPoint.getSourceLocation().getLine());
 
     LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("Pointcut triggered at retry location // %s // after calling // %s // from // %s //\\n", 
-            retryLocation, retryInjectionSite, retryCallerFunction)
+      WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\\n",
+        this.testMethodName, 
+        injectionSite, 
+        injectionSourceLocation, 
+        retryCallerFunction)
     );
+
+    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(injectionSite, 
+                                                     injectionSourceLocation,
+                                                     retryException,
+                                                     retryCallerFunction, 
+                                                     stackSnapshot);
+    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {{
+      long threadId = Thread.currentThread().getId();
+      throw new {exception}(
+        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
+          threadId,
+          this.testMethodName,
+          ipt.retryException,
+          ipt.injectionSite,
+          ipt.retrySourceLocation,
+          ipt.injectionCount)
+      );
+    }}
   }}
 """
         pointcut_code += pointcut_template
@@ -80,48 +105,74 @@ import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 
 public aspect Interceptor {{
 
+  private static final String UNKNOWN = "UNKNOWN";
+
   private static final WasabiLogger LOG = new WasabiLogger();
-  private static String testmethodName = "";
+  private static final String configFile = (System.getProperty("configFile") != null) ? System.getProperty("configFile") : "default.conf";
+  private static final ConfigParser configParser = new ConfigParser(LOG, configFile);
+
+  private String testMethodName = UNKNOWN;
+  private WasabiContext wasabiCtx = null;
 
   pointcut testMethod():
-      (execution(* *(..)) && 
-        ( @annotation(org.junit.Test) 
-          || @annotation(org.junit.jupiter.api.Test) 
-        ));
+    (@annotation(org.junit.Test) || 
+     // @annotation(org.junit.Before) ||
+     // @annotation(org.junit.After) || 
+     // @annotation(org.junit.BeforeClass) ||
+     // @annotation(org.junit.AfterClass) || 
+     // @annotation(org.junit.jupiter.api.BeforeEach) ||
+     // @annotation(org.junit.jupiter.api.AfterEach) || 
+     // @annotation(org.junit.jupiter.api.BeforeAll) ||
+     // @annotation(org.junit.jupiter.api.AfterAll) || 
+     @annotation(org.junit.jupiter.api.Test));
 
 
   before() : testMethod() {{
+    this.wasabiCtx = new WasabiContext(LOG, configParser);
     this.LOG.printMessage(
       WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Test-Before]: Running test %s", thisJoinPoint.toString())
+      String.format("[Test-Before]: Test ---%s--- started", thisJoinPoint.toString())
     );
 
-    if (testmethodName != "") {{
+    if (this.testMethodName != this.UNKNOWN) {{
       this.LOG.printMessage(
-          WasabiLogger.LOG_LEVEL_WARN, 
-          String.format("[Test-Before]: [ALERT]: Test method %s executes concurrentlly with test method %s", 
-            testmethodName, thisJoinPoint.toString())
-        ); 
+        WasabiLogger.LOG_LEVEL_WARN, 
+        String.format("[Test-Before]: [ALERT]: Test method ---%s--- executes concurrentlly with test method ---%s---", 
+          this.testMethodName, thisJoinPoint.toString())
+      ); 
     }}
 
-    testmethodName = thisJoinPoint.toString();
+    this.testMethodName = thisJoinPoint.toString();
   }}
 
   after() returning: testMethod() {{
     this.LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Test-After]: [SUCCESS]: Test %s ran succesfully", thisJoinPoint.toString())
-      );
-    testmethodName = "";
+      WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("[Test-After]: [SUCCESS]: Test ---%s--- done", thisJoinPoint.toString())
+    );
+
+    this.testMethodName = this.UNKNOWN;
+    this.wasabiCtx = null;
   }}
 
   after() throwing (Throwable t): testMethod() {{
+    StringBuilder exception = new StringBuilder();
+    for (Throwable e = t; e != null; e = e.getCause()) {{
+      exception.append(" | ");
+      exception.append(e.toString());
+      exception.append(" | ");
+      exception.append(e.getMessage());
+      
+    }}
+    exception.append(" :-:-:\\n\\n");
+
     this.LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Test-After]: [FAILURE]: Test %s fails with error: %s", 
-            thisJoinPoint.toString(), t.toString())
-      );
-    testmethodName = "";
+      WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("[Test-After] [FAILURE] Test ---%s--- | Exception: %s", 
+          thisJoinPoint.toString(), exception.toString())
+    );
+
+    this.testMethodName = this.UNKNOWN;
   }}
 
   {pointcut_code}

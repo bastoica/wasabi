@@ -49,7 +49,7 @@ def get_test_file_name(config_file):
   Returns:
     str: The path of the log file for the config file.
   """
-  test_name = re.search(r"-(Test[^.]+)\.conf", config_file).group(1)
+  test_name = re.search(r"(Test[^.]+)\.conf", config_file).group(1)
 
   return test_name
 
