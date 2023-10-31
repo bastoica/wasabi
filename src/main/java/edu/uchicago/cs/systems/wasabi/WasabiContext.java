@@ -126,4 +126,8 @@ class WasabiContext {
     return false;
   }
 
+  public void printExecTrace(WasabiLogger log, String msg) {
+    this.trace.printExecutionTrace(log, msg);
+  }
+
 }
