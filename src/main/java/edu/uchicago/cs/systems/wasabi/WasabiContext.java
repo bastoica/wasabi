@@ -71,7 +71,7 @@ class WasabiContext {
                                           StackSnapshot stackSnapshot) {
     long currentTime = System.nanoTime();
 
-    ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace());
+    ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace(10));
     executionTrace.putIfAbsent(uniqueId, trace);
 
     trace.addLast(new OpEntry(opType, currentTime, stackSnapshot));
@@ -83,33 +83,30 @@ class WasabiContext {
                                           String retryException) {
     long currentTime = System.nanoTime();
 
-    ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace());
+    ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace(10));
     executionTrace.putIfAbsent(uniqueId, trace);
 
     trace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retryException));
   }
 
-  public synchronized InjectionPoint getInjectionPoint(String injectionSite, 
+  public synchronized InjectionPoint getInjectionPoint(String testName,
+                                                       String injectionSite, 
                                                        String injectionSourceLocation,
                                                        String retryException, 
                                                        String retryCallerFunction,
                                                        StackSnapshot stackSnapshot) {
+
+    if (!injectionPlan.containsKey(injectionSourceLocation)) {
+      return null;
+    }
+
     int uniqueId = HashingPrimitives.getHashValue(
-      stackSnapshot.normalizeStackBelowFrame(retryCallerFunction)
+      stackSnapshot.normalizeStackBelowFrame(retryCallerFunction.split("\\(", 2)[0])
     );
     addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, retryException);
                                                         
-    String retrySourceLocation = injectionPlan.containsKey(injectionSourceLocation) ?
-                                  injectionPlan.get(injectionSourceLocation).retryCallerFunction : 
-                                  "???";
+    String retrySourceLocation = injectionPlan.get(injectionSourceLocation).retryCallerFunction;    
     int injectionCount = getInjectionCount(stackSnapshot.getStacktrace());
-    Boolean hasBackoff = checkMissingBackoffDuringRetry(
-      injectionCount, 
-      stackSnapshot, 
-      retryCallerFunction, 
-      retrySourceLocation
-    );
-  
     return new InjectionPoint(
       stackSnapshot,
       retrySourceLocation, 
@@ -129,37 +126,4 @@ class WasabiContext {
     return false;
   }
 
-  /*
-   * Bug Oracles
-   * 
-   * NOTE: Currently, only one bug oracle is implemented. If more are
-   * needed, move all such checks to a separate BugOracles class.
-   */
-
-  public synchronized Boolean checkMissingBackoffDuringRetry(int injectionCount, StackSnapshot stackSnapshot, String retryCallerFunction, String retrySourceLocation) {
-    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.normalizeStackBelowFrame(retryCallerFunction));
-
-    if (executionTrace.containsKey(uniqueId)) {
-      ExecutionTrace trace = executionTrace.get(uniqueId);
-
-      if (injectionCount >= 2) {
-        int lastIndex = trace.getSize() - 1;
-        int secondToLastIndex = trace.getSize() - 2;
-        int thirdToLastIndex = trace.getSize() - 3;
-
-        if (!(trace.checkIfOpsAreEqual(lastIndex, thirdToLastIndex) &&
-              trace.checkIfOpIsOfType(secondToLastIndex, OpEntry.THREAD_SLEEP_OP) &&
-              trace.checkIfOpHasFrame(secondToLastIndex, retryCallerFunction))) {
-          this.LOG.printMessage(
-              WasabiLogger.LOG_LEVEL_ERROR, 
-              String.format("No backoff between retry attempts at !!%s!! with callstack:\n%s", 
-                retrySourceLocation, stackSnapshot.toString())
-            );
-          return true; // missing backoff
-        }
-      }
-    }
-
-    return false; // backoff either present or not yet needed
-  }
 }

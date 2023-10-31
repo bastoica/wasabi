@@ -39,6 +39,20 @@ class StackSnapshot {
     return this.stacktrace;
   }
 
+  public String serializeTopFrames(int maxLevel) {
+    ArrayList<String> topOfStack = new ArrayList<String>();
+    int level = 0;
+
+    for (String frame : this.stacktrace) {
+      if (++level > maxLevel) {
+        break;
+      }
+      topOfStack.add(target);
+    }
+
+    return topOfStack.stream().map(frame -> "\t" + frame).collect(Collectors.joining("\n"));
+  }
+
   public String getFrame(int index) {
     if (index >= 0 && index < this.stacktrace.size()) {
       return stacktrace.get(index);

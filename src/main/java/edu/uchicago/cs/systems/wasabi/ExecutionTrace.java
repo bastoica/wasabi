@@ -69,7 +69,7 @@ class OpEntry {
 
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Op type: %d", this.opType));
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Timestamp: %d", this.timestamp));
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Callstack:\n%s", this.stackSnapshot.toString()));
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Callstack (top):\n%s", this.stackSnapshot.serializeTopFrames(5)));
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Exception: %s", this.exception));
 
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("--------------------------------\n"));
