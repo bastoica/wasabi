@@ -23,7 +23,7 @@ class WasabiContext {
   private Map<String, InjectionPoint> injectionPlan;
   private InjectionPolicy injectionPolicy;
 
-  private ConcurrentHashMap<Integer, ExecutionTrace> executionTrace = new ConcurrentHashMap<>();
+  private ExecutionTrace executionTrace = new ExecutionTrace(10);
   private ConcurrentHashMap<Integer, Integer> injectionCounts = new ConcurrentHashMap<>();
 
   public WasabiContext(WasabiLogger logger, 
@@ -66,27 +66,14 @@ class WasabiContext {
     return injectionCounts.compute(hval, (k, v) -> (v == null) ? 1 : v + 1);
   }
 
-  public synchronized void addToExecTrace(int uniqueId, 
-                                          int opType, 
-                                          StackSnapshot stackSnapshot) {
+  public synchronized void addToExecTrace(int opType, StackSnapshot stackSnapshot) {
     long currentTime = System.nanoTime();
-
-    ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace(10));
-    executionTrace.putIfAbsent(uniqueId, trace);
-
-    trace.addLast(new OpEntry(opType, currentTime, stackSnapshot));
+    executionTrace.addLast(new OpEntry(opType, currentTime, stackSnapshot));
   }
 
-  public synchronized void addToExecTrace(int uniqueId, 
-                                          int opType, 
-                                          StackSnapshot stackSnapshot, 
-                                          String retryException) {
+  public synchronized void addToExecTrace(int opType, StackSnapshot stackSnapshot, String retryException) {
     long currentTime = System.nanoTime();
-
-    ExecutionTrace trace = executionTrace.getOrDefault(uniqueId, new ExecutionTrace(10));
-    executionTrace.putIfAbsent(uniqueId, trace);
-
-    trace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retryException));
+    executionTrace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retryException));
   }
 
   public synchronized InjectionPoint getInjectionPoint(String testName,
@@ -100,21 +87,19 @@ class WasabiContext {
       return null;
     }
 
-    int uniqueId = HashingPrimitives.getHashValue(
-      stackSnapshot.normalizeStackBelowFrame(retryCallerFunction.split("\\(", 2)[0])
-    );
-    addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, retryException);
-                                                        
     String retrySourceLocation = injectionPlan.get(injectionSourceLocation).retryCallerFunction;    
     int injectionCount = getInjectionCount(stackSnapshot.getStacktrace());
+    
+    addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, retryException);
+                                                        
     return new InjectionPoint(
-      stackSnapshot,
-      retrySourceLocation, 
-      retryCallerFunction,
-      injectionSite,
-      retryException,
-      injectionCount
-    );
+        stackSnapshot,
+        retrySourceLocation, 
+        retryCallerFunction,
+        injectionSite,
+        retryException,
+        injectionCount
+      );
   }
 
   public Boolean shouldInject(InjectionPoint ipt) {
@@ -127,7 +112,7 @@ class WasabiContext {
   }
 
   public void printExecTrace(WasabiLogger log, String msg) {
-    this.trace.printExecutionTrace(log, msg);
+    executionTrace.printExecutionTrace(log, msg);
   }
 
 }
