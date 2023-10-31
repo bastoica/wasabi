@@ -47,7 +47,7 @@ class StackSnapshot {
       if (++level > maxLevel) {
         break;
       }
-      topOfStack.add(target);
+      topOfStack.add(frame);
     }
 
     return topOfStack.stream().map(frame -> "\t" + frame).collect(Collectors.joining("\n"));
