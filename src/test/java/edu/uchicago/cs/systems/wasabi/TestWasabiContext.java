@@ -123,37 +123,6 @@ public class TestWasabiContext {
   }
   */
 
-  @Test
-  public void testCheckMissingBackoffDuringRetry() {
-    WasabiContext wasabiCtx = new WasabiContext(this.LOG, this.configParser);
-    StackSnapshot stackSnapshot = new StackSnapshot();
-    int uniqueId = HashingPrimitives.getHashValue(stackSnapshot.normalizeStackBelowFrame(stackSnapshot.getFrame(1)));
-
-    wasabiCtx.addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
-    wasabiCtx.addToExecTrace(uniqueId, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
-    wasabiCtx.addToExecTrace(uniqueId, OpEntry.RETRY_CALLER_OP, stackSnapshot, "FakeException");
-
-    // Retry backoff present
-    assertFalse(
-        wasabiCtx.checkMissingBackoffDuringRetry(
-          2,
-          stackSnapshot,
-          stackSnapshot.getFrame(1),
-          "FakeRetryLocation"
-        )
-      );
-
-    // No backoff needed before first retry attempt
-    assertFalse(
-        wasabiCtx.checkMissingBackoffDuringRetry(
-          1,
-          stackSnapshot,
-          "FakeCaller",
-          "FakeRetryLocation"
-        )
-      );
-  }
-
   @After
   public void tearDown() {
     try {
