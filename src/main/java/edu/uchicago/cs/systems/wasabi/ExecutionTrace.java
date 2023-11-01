@@ -71,11 +71,14 @@ class OpEntry {
   }
 
   public void printOpEntry(WasabiLogger log) {
-    log.printMessage(WasabiLogger.LOG_LEVEL_WARN, String.format("\nOp type: %s", this.opType == this.RETRY_CALLER_OP ? "retry" : "sleep"));
-    log.printMessage(WasabiLogger.LOG_LEVEL_WARN, String.format("\nOp name: %s", this.opName));
-    log.printMessage(WasabiLogger.LOG_LEVEL_WARN, String.format("Timestamp: %d", this.timestamp));
-    log.printMessage(WasabiLogger.LOG_LEVEL_WARN, String.format("Callstack (top):\n%s", this.stackSnapshot.serializeTopFrames(5)));
-    log.printMessage(WasabiLogger.LOG_LEVEL_WARN, String.format("Exception: %s\n", this.exception));
+    log.printMessage(WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("\n Op type: %s\n Op name: %s\n Timestamp: %d\n Callstack (top):\n%s\n Exception: %s\n", 
+        this.opType == this.RETRY_CALLER_OP ? "retry" : "sleep",
+        this.opName,
+        this.stackSnapshot.serializeTopFrames(5),
+        this.exception
+      )
+    );
   }
 }
 
