@@ -66,14 +66,14 @@ class WasabiContext {
     return injectionCounts.compute(hval, (k, v) -> (v == null) ? 1 : v + 1);
   }
 
-  public synchronized void addToExecTrace(int opType, StackSnapshot stackSnapshot) {
+  public synchronized void addToExecTrace(String opName, int opType, StackSnapshot stackSnapshot) {
     long currentTime = System.nanoTime();
-    executionTrace.addLast(new OpEntry(opType, currentTime, stackSnapshot));
+    executionTrace.addLast(new OpEntry(opName, opType, currentTime, stackSnapshot));
   }
 
-  public synchronized void addToExecTrace(int opType, StackSnapshot stackSnapshot, String retryException) {
+  public synchronized void addToExecTrace(String opName, int opType, StackSnapshot stackSnapshot, String retryException) {
     long currentTime = System.nanoTime();
-    executionTrace.addLast(new OpEntry(opType, currentTime, stackSnapshot, retryException));
+    executionTrace.addLast(new OpEntry(opName, opType, currentTime, stackSnapshot, retryException));
   }
 
   public synchronized InjectionPoint getInjectionPoint(String testName,
@@ -90,7 +90,7 @@ class WasabiContext {
     String retrySourceLocation = injectionPlan.get(injectionSourceLocation).retryCallerFunction;    
     int injectionCount = getInjectionCount(stackSnapshot.getStacktrace());
     
-    addToExecTrace(OpEntry.RETRY_CALLER_OP, stackSnapshot, retryException);
+    addToExecTrace(injectionSite, OpEntry.RETRY_CALLER_OP, stackSnapshot, retryException);
                                                         
     return new InjectionPoint(
         stackSnapshot,
@@ -112,7 +112,9 @@ class WasabiContext {
   }
 
   public void printExecTrace(WasabiLogger log, String msg) {
-    executionTrace.printExecutionTrace(log, msg);
+    if (executionTrace.getSize() > 0) {
+      executionTrace.printExecutionTrace(log, msg);
+    }
   }
 
 }

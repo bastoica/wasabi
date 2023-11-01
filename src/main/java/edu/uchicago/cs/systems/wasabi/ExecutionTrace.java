@@ -14,33 +14,40 @@ class OpEntry {
   public static final Integer RETRY_CALLER_OP = 0;
   public static final Integer THREAD_SLEEP_OP = 1;
 
+  private String opName = "";
   private Integer opType = this.RETRY_CALLER_OP;
   private StackSnapshot stackSnapshot = null;
   private Long timestamp = 0L;
   private String exception = null;
 
-  public OpEntry(Integer opType,
+  public OpEntry(String opName,
+                 Integer opType,
                  Long timestamp, 
                  StackSnapshot stackSnapshot) {
+    this.opName = opName;
     this.opType = opType;
     this.timestamp = timestamp;
     this.stackSnapshot = stackSnapshot;
     this.exception = null;
   }
 
-  public OpEntry(Integer opType,
+  public OpEntry(String opName,
+                 Integer opType,
                  Long timestamp, 
                  StackSnapshot stackSnapshot,
                  String exception) {
+    this.opName = opName;
     this.opType = opType;
     this.timestamp = timestamp;
     this.stackSnapshot = stackSnapshot;
     this.exception = exception;
   }
 
-  public OpEntry(Integer opType,
+  public OpEntry(String opName,
+                 Integer opType,
                  StackSnapshot stackSnapshot,
                  String exception) {
+    this.opName = opName;
     this.opType = opType;
     this.timestamp = 0L;
     this.stackSnapshot = stackSnapshot;
@@ -64,15 +71,10 @@ class OpEntry {
   }
 
   public void printOpEntry(WasabiLogger log) {
-
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("--------------------------------"));
-
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Op type: %d", this.opType));
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("\nOp name: %s", this.opName));
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Timestamp: %d", this.timestamp));
     log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Callstack (top):\n%s", this.stackSnapshot.serializeTopFrames(5)));
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Exception: %s", this.exception));
-
-    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("--------------------------------\n"));
+    log.printMessage(WasabiLogger.LOG_LEVEL_ERROR, String.format("Exception: %s\n", this.exception));
   }
 }
 
