@@ -12,6 +12,7 @@ public class TestExecutionTrace {
   @Test
   public void testIsSameOpEntry() {
     OpEntry testOpA = new OpEntry(
+        "baz(Baz.java:42)",
         OpEntry.RETRY_CALLER_OP,
         0L,
         new StackSnapshot( 
@@ -26,6 +27,7 @@ public class TestExecutionTrace {
         "IOException"
       );
     OpEntry testOpB = new OpEntry(
+        "baz(Baz.java:42)",
         OpEntry.RETRY_CALLER_OP,
         0L,
         new StackSnapshot( 
@@ -47,6 +49,7 @@ public class TestExecutionTrace {
   @Test
   public void testHasFrame() {
     OpEntry testOp = new OpEntry(
+        "baz(Baz.java:42)",
         OpEntry.RETRY_CALLER_OP,
         0L,
         new StackSnapshot( 
@@ -68,6 +71,7 @@ public class TestExecutionTrace {
   @Test
   public void testIsOfType() {
     OpEntry testOp = new OpEntry(
+        "foo(Foo.java:42)",
         OpEntry.RETRY_CALLER_OP,
         0L,
         new StackSnapshot( 
@@ -95,6 +99,7 @@ public class TestExecutionTrace {
     ExecutionTrace execTrace = new ExecutionTrace();
     execTrace.addLast(
         new OpEntry(
+            "foo(Foo.java:42)",
             OpEntry.RETRY_CALLER_OP,
             0L,
             new StackSnapshot( 
@@ -119,6 +124,7 @@ public class TestExecutionTrace {
     ExecutionTrace execTrace = new ExecutionTrace();
     execTrace.addLast(
         new OpEntry(
+            "foo(Foo.java:42)",
             OpEntry.RETRY_CALLER_OP,
             0L,
             new StackSnapshot( 
@@ -143,6 +149,7 @@ public class TestExecutionTrace {
     ExecutionTrace execTrace = new ExecutionTrace();
     execTrace.addLast(
         new OpEntry(
+            "foo(Foo.java:42)",
             OpEntry.RETRY_CALLER_OP,
             0L,
             new StackSnapshot( 
@@ -157,6 +164,7 @@ public class TestExecutionTrace {
       );
     execTrace.addLast(
         new OpEntry(
+            "Thread.sleep(Bar.java:43)",
             OpEntry.THREAD_SLEEP_OP,
             0L,
             new StackSnapshot( 
@@ -172,6 +180,7 @@ public class TestExecutionTrace {
       );
     execTrace.addLast(
         new OpEntry(
+            "foo(Foo.java:42)",
             OpEntry.RETRY_CALLER_OP,
             0L,
             new StackSnapshot( 
@@ -196,6 +205,7 @@ public class TestExecutionTrace {
     ExecutionTrace execTrace = new ExecutionTrace(maxOpCacheSize);
     execTrace.addLast(
         new OpEntry(
+            "foo(Foo.java:42)",
             OpEntry.RETRY_CALLER_OP,
             0L,
             new StackSnapshot( 
@@ -211,6 +221,7 @@ public class TestExecutionTrace {
     for (int i = 1; i < maxOpCacheSize; ++i) {
       execTrace.addLast(
           new OpEntry(
+              "bar(Bar.java:42)",
               OpEntry.RETRY_CALLER_OP,
               0L,
               new StackSnapshot( 
@@ -230,6 +241,7 @@ public class TestExecutionTrace {
 
     execTrace.addLast(
       new OpEntry(
+          "bar(Bar.java:42)",
           OpEntry.RETRY_CALLER_OP,
           0L,
           new StackSnapshot( 
