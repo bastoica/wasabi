@@ -112,12 +112,23 @@ public aspect Interceptor {
    * Callback before calling Thread.sleep(...)
    */
 
+  /* 
+   * Callback before calling Thread.sleep(...)
+   */
+
    pointcut recordThreadSleep():
-   (call(* Thread.sleep(..)) &&
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType)));
+    (execution(* java.lang.Object.wait(..)) ||
+    execution(* java.lang.Thread.sleep(..)) ||
+    execution(* java.util.concurrent.locks.LockSupport.parkNanos(..)) ||
+    execution(* java.util.concurrent.locks.LockSupport.parkUntil(..)) ||
+    execution(* java.util.concurrent.ScheduledExecutorService.schedule(..)) ||
+    execution(* java.util.concurrent.TimeUnit.*scheduledExecutionTime(..)) ||
+    execution(* java.util.concurrent.TimeUnit.*sleep(..)) ||
+    execution(* java.util.concurrent.TimeUnit.*timedWait(..)) ||
+    execution(* java.util.Timer.schedule*(..)) ||
+    execution(* java.util.TimerTask.wait(..)) ||
+    execution(* org.apache.hadoop.hbase.*.Procedure.suspend(..))) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
 
   before() : recordThreadSleep() {
     try {
