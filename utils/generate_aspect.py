@@ -33,10 +33,6 @@ def generate_aspectj_code(exception_map):
     ({''.join(patterns)}) &&\n    !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws {exception} : inject{exception}() {{
-    if (this.wasabiCtx == null) {{ // This happens for non-test methods (e.g. config) inside test code
-      return; // Ignore retry in "before" and "after" annotated methods
-    }}
-
     StackSnapshot stackSnapshot = new StackSnapshot();
     String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
     String injectionSite = thisJoinPoint.toString();
@@ -44,6 +40,19 @@ def generate_aspectj_code(exception_map):
     String injectionSourceLocation = String.format("%s:%d",
                                 thisJoinPoint.getSourceLocation().getFileName(),
                                 thisJoinPoint.getSourceLocation().getLine());
+
+    if (this.wasabiCtx == null) {{
+      LOG.printMessage(
+        WasabiLogger.LOG_LEVEL_WARN, 
+        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\\n",
+          this.testMethodName, 
+          injectionSite, 
+          injectionSourceLocation, 
+          retryCallerFunction)
+      );
+
+      return;
+    }}
 
     LOG.printMessage(
       WasabiLogger.LOG_LEVEL_WARN, 
@@ -54,12 +63,15 @@ def generate_aspectj_code(exception_map):
         retryCallerFunction)
     );
 
-    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(injectionSite, 
-                                                     injectionSourceLocation,
-                                                     retryException,
-                                                     retryCallerFunction, 
-                                                     stackSnapshot);
+    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
+                                                          injectionSite, 
+                                                          injectionSourceLocation,
+                                                          retryException,
+                                                          retryCallerFunction, 
+                                                          stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {{
+      this.activeInjectionLocations.add(retryCallerFunction);
+  
       long threadId = Thread.currentThread().getId();
       throw new {exception}(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
@@ -104,6 +116,7 @@ import edu.uchicago.cs.systems.wasabi.InjectionPoint;
 import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 
 public aspect Interceptor {{
+  private WasabiContext wasabiCtx = null;
 
   private static final String UNKNOWN = "UNKNOWN";
 
@@ -111,6 +124,7 @@ public aspect Interceptor {{
   private static final String configFile = (System.getProperty("configFile") != null) ? System.getProperty("configFile") : "default.conf";
   private static final ConfigParser configParser = new ConfigParser(LOG, configFile);
 
+  private Set<String> activeInjectionLocations = ConcurrentHashMap.newKeySet(); 
   private String testMethodName = UNKNOWN;
   private WasabiContext wasabiCtx = null;
 
@@ -124,20 +138,23 @@ public aspect Interceptor {{
      // @annotation(org.junit.jupiter.api.AfterEach) || 
      // @annotation(org.junit.jupiter.api.BeforeAll) ||
      // @annotation(org.junit.jupiter.api.AfterAll) || 
-     @annotation(org.junit.jupiter.api.Test));
+     @annotation(org.junit.jupiter.api.Test)) &&
+     !within(org.apache.hadoop.*.TestDFSClientFailover.*) &&
+     !within(org.apache.hadoop.hdfs.*.TestOfflineImageViewer.*) &&
+     !within(org.apache.hadoop.example.ITUseHadoopCodec.*);
 
 
   before() : testMethod() {{
     this.wasabiCtx = new WasabiContext(LOG, configParser);
     this.LOG.printMessage(
       WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Test-Before]: Test ---%s--- started", thisJoinPoint.toString())
+      String.format("[TEST-BEFORE]: Test ---%s--- started", thisJoinPoint.toString())
     );
 
     if (this.testMethodName != this.UNKNOWN) {{
       this.LOG.printMessage(
         WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Test-Before]: [ALERT]: Test method ---%s--- executes concurrentlly with test method ---%s---", 
+        String.format("[TEST-BEFORE]: [ALERT]: Test method ---%s--- executes concurrentlly with test method ---%s---", 
           this.testMethodName, thisJoinPoint.toString())
       ); 
     }}
@@ -148,31 +165,78 @@ public aspect Interceptor {{
   after() returning: testMethod() {{
     this.LOG.printMessage(
       WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Test-After]: [SUCCESS]: Test ---%s--- done", thisJoinPoint.toString())
+      String.format("[TEST-AFTER]: [SUCCESS]: Test ---%s--- done", thisJoinPoint.toString())
     );
+
+    this.wasabiCtx.printExecTrace(this.LOG, String.format(" Test: %s", this.testMethodName));
 
     this.testMethodName = this.UNKNOWN;
     this.wasabiCtx = null;
+    this.activeInjectionLocations.clear();
   }}
 
   after() throwing (Throwable t): testMethod() {{
+    this.wasabiCtx.printExecTrace(this.LOG, String.format(" Test: %s", this.testMethodName));
+
     StringBuilder exception = new StringBuilder();
     for (Throwable e = t; e != null; e = e.getCause()) {{
-      exception.append(" | ");
-      exception.append(e.toString());
-      exception.append(" | ");
-      exception.append(e.getMessage());
-      
+      exception.append(e);
+      exception.append(" :-: ");
     }}
-    exception.append(" :-:-:\\n\\n");
 
+    StackSnapshot stackSnapshot = new StackSnapshot();
     this.LOG.printMessage(
       WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Test-After] [FAILURE] Test ---%s--- | Exception: %s", 
-          thisJoinPoint.toString(), exception.toString())
+      String.format("[TEST-AFTER] [FAILURE] Test ---%s--- | Failure message :-: %s| Stack trace:\\n%s\\n:-:-:\\n\\n", 
+          thisJoinPoint.toString(), exception.toString(), stackSnapshot.toString())
     );
-
+     
     this.testMethodName = this.UNKNOWN;
+    this.activeInjectionLocations.clear();
+  }}
+
+  /* 
+   * Callback before calling Thread.sleep(...)
+   */
+
+   pointcut recordThreadSleep():
+   (call(* Thread.sleep(..)) &&
+    !within(edu.uchicago.cs.systems.wasabi.*) &&
+    !within(is(FinalType)) &&
+    !within(is(EnumType)) &&
+    !within(is(AnnotationType)));
+
+  before() : recordThreadSleep() {{
+    try {{
+      if (this.wasabiCtx == null) {{ // This happens for non-test methods (e.g. config) inside test code
+        return; // Ignore retry in "before" and "after" annotated methods
+      }}
+  
+      StackSnapshot stackSnapshot = new StackSnapshot();    
+      for (String retryCallerFunction : this.activeInjectionLocations) {{
+        if (stackSnapshot.hasFrame(retryCallerFunction.split("\\(", 2)[0])) {{
+          String sleepLocation = String.format("%s(%s:%d)",
+                                  retryCallerFunction.split("\\(", 2)[0],
+                                  thisJoinPoint.getSourceLocation().getFileName(),
+                                  thisJoinPoint.getSourceLocation().getLine());
+
+          this.wasabiCtx.addToExecTrace(sleepLocation, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
+          LOG.printMessage(
+            WasabiLogger.LOG_LEVEL_WARN, 
+            String.format("[THREAD-SLEEP] Test ---%s--- | Sleep location ---%s--- | Retry location ---%s---\n",
+              this.testMethodName, 
+              sleepLocation, 
+              retryCallerFunction.split("\\(", 2)[0])
+          );
+        }}
+      }}
+    }} catch (Exception e) {{
+      this.LOG.printMessage(
+          WasabiLogger.LOG_LEVEL_ERROR, 
+          String.format("Exception occurred in recordThreadSleep(): %s", e.getMessage())
+        );
+      e.printStackTrace();
+    }}
   }}
 
   {pointcut_code}

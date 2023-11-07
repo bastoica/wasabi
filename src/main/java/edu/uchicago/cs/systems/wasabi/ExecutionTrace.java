@@ -75,6 +75,7 @@ class OpEntry {
       String.format("\n Op type: %s\n Op name: %s\n Timestamp: %d\n Callstack (top):\n%s\n Exception: %s\n", 
         this.opType == this.RETRY_CALLER_OP ? "retry" : "sleep",
         this.opName,
+        this.timestamp,
         this.stackSnapshot.serializeTopFrames(5),
         this.exception
       )
