@@ -1,0 +1,9 @@
+org.apache.hadoop.hdfs.server.namenode.TestCheckpoint,SecondaryNameNode.java:360
+org.apache.hadoop.yarn.server.nodemanager.recovery.TestNMLeveldbStateStoreService,NMLeveldbStateStoreService.java:432
+org.apache.hadoop.hdfs.server.sps.TestExternalStoragePolicySatisfier,BlockStorageMovementNeeded.java:256
+org.apache.hadoop.mapreduce.task.reduce.TestFetcher,Fetcher.java:413
+org.apache.hadoop.mapreduce.task.reduce.TestFetcher,Fetcher.java:717
+org.apache.hadoop.mapreduce.tools.TestCLI,CLI.java:670
+org.apache.hadoop.yarn.server.nodemanager.amrmproxy.TestFederationInterceptor,UnmanagedApplicationManager.java:498
+org.apache.hadoop.yarn.server.nodemanager.amrmproxy.TestFederationInterceptorSecure,UnmanagedApplicationManager.java:498
+org.apache.hadoop.yarn.server.uam.TestUnmanagedApplicationManager,UnmanagedApplicationManager.java:498

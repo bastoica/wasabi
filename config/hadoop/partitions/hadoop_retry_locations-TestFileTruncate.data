@@ -1,3 +1,0 @@
-Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection probability!!!Test coverage
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/DFSInputStream.java#L840!!!org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy!!!org.apache.hadoop.hdfs.DFSInputStream.readBuffer!!!java.io.IOException!!!0.005051!!!198
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/DFSInputStream.java#L840!!!org.apache.hadoop.hdfs.DFSInputStream.readWithStrategy!!!org.apache.hadoop.hdfs.DFSInputStream.blockSeekTo!!!java.io.IOException!!!0.005051!!!198

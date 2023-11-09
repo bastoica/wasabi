@@ -1,3 +1,0 @@
-Retry location!!!Enclosing method!!!Retried method!!!Exception!!!Injection probability!!!Test coverage
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/DFSInputStream.java#L1156!!!org.apache.hadoop.hdfs.DFSInputStream.actualGetFromOneDataNode!!!org.apache.hadoop.fs.ByteBufferReadable.read!!!java.io.IOException!!!0.021277!!!47
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-hdfs-project/hadoop-hdfs-client/src/main/java/org/apache/hadoop/hdfs/DFSInputStream.java#L1156!!!org.apache.hadoop.hdfs.DFSInputStream.actualGetFromOneDataNode!!!org.apache.hadoop.hdfs.DFSInputStream.getBlockReader!!!java.io.IOException!!!0.021277!!!47

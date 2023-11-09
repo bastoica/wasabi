@@ -45,29 +45,12 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjrt</artifactId>
 	    <version>${aspectj.version}</version>
-	  </dependency>
-      <!--dependency>
-      	<groupId>org.aspectj</groupId>
-    	<artifactId>aspectjweaver</artifactId>
-        <version>${aspectj.version}</version>
-	  </dependency-->
+      </dependency>
       <dependency>
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-client</artifactId>
         <version>3.4.0-SNAPSHOT</version>
       </dependency>      
-      <dependency>
-        <groupId>org.apache.hive</groupId>
-        <artifactId>hive-cli</artifactId>
-        <version>3.1.3</version>
-        <type>pom</type>
-      </dependency> 
-      <dependency>
-        <groupId>org.apache.hive</groupId>
-        <artifactId>hive-metastore</artifactId>
-        <version>3.1.3</version>
-        <type>pom</type>
-      </dependency> 
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
@@ -98,16 +81,6 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
     </dependencies>
 
   <repositories>
-    <repository>
-      <id>mvn-repository-hive-cli</id>
-      <name>Maven Repositry for Hive Service</name>
-      <url>https://mvnrepository.com/artifact/org.apache.hive/hive-cli</url>
-    </repository>
-    <repository>
-      <id>mvn-repository-hive-metastore</id>
-      <name>Maven Repositry for Hive</name>
-      <url>https://mvnrepository.com/artifact/org.apache.hive/hive-metastore</url>
-    </repository>
     <!--
       Repeat Central definition from super POM https://maven.apache.org/ref/3.6.3/maven-model-builder/super-pom.html.
       Define it as the first repository to search at, otherwise Maven would always search any other repositories defined
@@ -177,7 +150,7 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
+        <version>3.8.1</version>
         <!-- Let the AspectJ compiler do the work -->
         <executions>
           <execution>
@@ -207,8 +180,8 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           <verbose>true</verbose>
           <source>11</source>
           <target>11</target>
-          <encoding>UTF-8</encoding>
           <complianceLevel>11</complianceLevel>
+          <encoding>UTF-8</encoding>
           <enablePreview>false</enablePreview>
           <!--weaveDependencies>
             <weaveDependency>
@@ -222,6 +195,12 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
             <version>${aspectj.version}</version>
+	        <exclusions>
+              <exclusion>
+                <groupId>javax.xml.stream</groupId>
+                <artifactId>stax-api</artifactId>
+              </exclusion>
+            </exclusions> 
           </dependency>
         </dependencies>
       </plugin>
