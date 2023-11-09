@@ -18,8 +18,6 @@ import java.sql.SQLTransientException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
-import org.apache.hadoop.ipc.RetriableException;
-
 import edu.uchicago.cs.systems.wasabi.ConfigParser;
 import edu.uchicago.cs.systems.wasabi.WasabiLogger;
 import edu.uchicago.cs.systems.wasabi.WasabiContext;
