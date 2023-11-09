@@ -71,7 +71,7 @@ perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" build.log
   ...
 
   <!-- Wasabi Fault Injection Library -->
-  <aspectj.version>1.9.8.RC1</aspectj.version>
+  <aspectj.version>1.9.19</aspectj.version>
   <aspectj-maven.version>1.13.1</aspectj-maven.version>
   <wasabi.version>1.0.0</wasabi.version>
   
@@ -89,33 +89,40 @@ perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" build.log
     <!-- Wasabi Fault Injection Library -->
     <plugin>
       <groupId>dev.aspectj</groupId>
-      <artifactId>aspectj-maven-plugin</artifactId>
-      <version>${aspectj-maven.version}</version>
-      <configuration>
-        <aspectLibraries>
-          <aspectLibrary>
-            <groupId>edu.uchicago.cs.systems</groupId>
-            <artifactId>wasabi</artifactId>
-          </aspectLibrary>
-        </aspectLibraries>
-      </configuration>
-      <executions>
-        <execution>
-          <goals>
-            <goal>compile</goal>
-          </goals>
-          <configuration>
-            <source>11</source>
-            <target>11</target>
-            <complianceLevel>11</complianceLevel> 
-            <enablePreview>false</enablePreview> 
-            <showWeaveInfo>true</showWeaveInfo>
-            <verbose>true</verbose>
-            <Xlint>unmatchedSuperTypeInCall=ignore,adviceDidNotMatch=ignore,typeNotExposedToWeaver=ignore,uncheckedAdviceConversion=ignore,invalidAbsoluteTypeName=ignore</Xlint>
-          </configuration>
-        </execution>
-      </executions>
-    </plugin>
+        <artifactId>aspectj-maven-plugin</artifactId>
+        <version>${aspectj-maven.version}</version>
+        <configuration>
+          <aspectLibraries>
+            <aspectLibrary>
+              <groupId>edu.uchicago.cs.systems</groupId>
+              <artifactId>wasabi</artifactId>
+            </aspectLibrary>
+          </aspectLibraries>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-compile</goal>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <source>11</source>
+              <target>11</target>
+              <enablePreview>false</enablePreview> 
+              <showWeaveInfo>true</showWeaveInfo>
+              <verbose>true</verbose>
+              <Xlint>unmatchedSuperTypeInCall=ignore,adviceDidNotMatch=ignore,typeNotExposedToWeaver=ignore,uncheckedAdviceConversion=ignore,invalidAbsoluteTypeName=ignore,cantFindType=ignore</Xlint>
+                </configuration>
+              </execution>
+        </executions>
+        <dependencies>
+           <dependency>
+             <groupId>org.aspectj</groupId>
+             <artifactId>aspectjtools</artifactId>
+             <version>${aspectj.version}</version>
+           </dependency>
+         </dependencies>
+      </plugin>
 
   ...
 
