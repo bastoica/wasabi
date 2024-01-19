@@ -207,6 +207,12 @@ public aspect Interceptor {
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
   
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        // do nothing
+      }
+  
       long threadId = Thread.currentThread().getId();
       throw new EOFException(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
@@ -270,6 +276,12 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
+  
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        // do nothing
+      }
   
       long threadId = Thread.currentThread().getId();
       throw new FileNotFoundException(
@@ -641,6 +653,12 @@ public aspect Interceptor {
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
   
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        // do nothing
+      }
+  
       long threadId = Thread.currentThread().getId();
       throw new IOException(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
@@ -711,6 +729,12 @@ public aspect Interceptor {
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
   
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        // do nothing
+      }
+  
       long threadId = Thread.currentThread().getId();
       throw new ConnectException(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
@@ -722,6 +746,71 @@ public aspect Interceptor {
           ipt.injectionCount)
       );
     }
+  }
+  
+  /* RetriableException */
+
+  pointcut injectRetriableException():
+    ((withincode(* org.apache.hadoop.hdfs.server.namenode.ReencryptionUpdater.takeAndProcessTasks(..)) &&
+    call(* org.apache.hadoop.hdfs.server.namenode.ReencryptionUpdater.processTask(..)))) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
+
+  after() throws RetriableException : injectRetriableException() {
+    StackSnapshot stackSnapshot = new StackSnapshot();
+    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
+    String injectionSite = thisJoinPoint.toString();
+    String retryException = "RetriableException";
+    String injectionSourceLocation = String.format("%s:%d",
+                                thisJoinPoint.getSourceLocation().getFileName(),
+                                thisJoinPoint.getSourceLocation().getLine());
+
+    if (this.wasabiCtx == null) {
+      LOG.printMessage(
+        WasabiLogger.LOG_LEVEL_WARN, 
+        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+          this.testMethodName, 
+          injectionSite, 
+          injectionSourceLocation, 
+          retryCallerFunction)
+      );
+
+      return;
+    }
+
+    LOG.printMessage(
+      WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+        this.testMethodName, 
+        injectionSite, 
+        injectionSourceLocation, 
+        retryCallerFunction)
+    );
+
+    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
+                                                          injectionSite, 
+                                                          injectionSourceLocation,
+                                                          retryException,
+                                                          retryCallerFunction, 
+                                                          stackSnapshot);
+    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
+      this.activeInjectionLocations.add(retryCallerFunction);
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        // do nothing
+      }
+  
+      long threadId = Thread.currentThread().getId();
+      throw new RetriableException(
+        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
+          threadId,
+          this.testMethodName,
+          ipt.retryException,
+          ipt.injectionSite,
+          ipt.retrySourceLocation,
+          ipt.injectionCount)
+      );
+    }  
   }
 
   /* Inject SocketException */
@@ -833,6 +922,12 @@ public aspect Interceptor {
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
   
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        // do nothing
+      }
+  
       long threadId = Thread.currentThread().getId();
       throw new SocketException(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
@@ -894,6 +989,12 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
+  
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        // do nothing
+      }
   
       long threadId = Thread.currentThread().getId();
       throw new SocketTimeoutException(

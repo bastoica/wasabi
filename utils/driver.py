@@ -6,10 +6,10 @@ import os
 import re
 import shutil
 import subprocess
+import time
 
-
-LOG_FILE_NAME = "build.log" # log file
-TIMEOUT = 3600              # command timeout value in seconds
+LOG_FILE_NAME = "build.log"  # log file
+TIMEOUT = 3600               # command timeout value in seconds
 
 
 def remove_ansi_escape_codes(output):
@@ -207,7 +207,7 @@ def move_log_files(target_root_dir):
     for file in files:
       if re.match(r'.*-output\.txt$', file):
         output_file = os.path.join(dirpath, file)
-        shutil.move(output_file, os.path.join(test_reports_dir, f"{date}.{file}"))   
+        shutil.copy(output_file, os.path.join(test_reports_dir, f"{date}.{file}"))   
 
 def main():
   parser = argparse.ArgumentParser()
@@ -225,9 +225,15 @@ def main():
   # Execute 'mvn ... compile'
   run_mvn_install_command(target_root_dir)
 
+  start_time = time.perf_counter()
+
   # Create and run threads to execute multiple 'mvn ... test' commands in parallel
   run_mvn_test_command(target_root_dir, mvn_parameters)
   
+  end_time = time.perf_counter()
+  print("\n\n******************************************************")
+  print(f"End-to-end running time: {end_time - start_time} secs")
+
   # Save and move logs
   append_log_files(target_root_dir)
   move_log_files(target_root_dir)

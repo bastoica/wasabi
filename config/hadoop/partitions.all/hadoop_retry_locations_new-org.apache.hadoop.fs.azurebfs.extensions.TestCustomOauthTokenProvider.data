@@ -1,0 +1,2 @@
+Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
+https://github.com/apache/hadoop/tree//ee7d178//hadoop-tools/hadoop-azure/src/main/java/org/apache/hadoop/fs/azurebfs/oauth2/CustomTokenProviderAdapter.java#L72!!!org.apache.hadoop.fs.azurebfs.oauth2.CustomTokenProviderAdapter.refreshToken!!!org.apache.hadoop.fs.azurebfs.extensions.CustomTokenProviderAdaptee.getAccessToken!!!CustomTokenProviderAdapter.java:75!!!java.io.IOException

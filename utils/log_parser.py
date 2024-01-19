@@ -13,11 +13,21 @@ failures_missing_backoff = []
 failures_missing_cap = []
 
 message_tags = ["[Pointcut]", "[Injection]", "[FAILURE]", "[THREAD-SLEEP]"]
-test_frames_patterns = ["Test", ".test", "MiniYARNCluster", "MiniDFSCluster", "MiniRouterDFSCluster", ".addToLocalDeadNodes(DFSInputStream.java:184)", ".doBenchmark(ErasureCodeBenchmarkThroughput.java:133)"]
+test_frames_patterns = ["Test", ".test", ".wait", "MiniYARNCluster", "MiniDFSCluster", "MiniRouterDFSCluster"]
 javalib_frames_prefixes = ["java.", "jdk.", "org.junit.", "app//org.mockito.", "app//org.slf4j.", "org.apache.maven.surefire."]
 keywords_to_ignore = [
   ["[Injection]", "Retry location", "Retry attempt"],
-  ["MiniDFSCluster"],
+  #["are excluded in this operation"],
+  #["Unexpected HTTP response"],
+  #["Error while authenticating with endpoint"],
+  #["missing blocks, the strip"],
+  #["the number of failed blocks"],
+  #["Timed out waiting for condition"],
+  #["There are not enough healthy streamers"],
+  #["due to no more good datanodes being available to try"],
+  #["does not exist"],
+  #["out of bounds for length "],
+  #["MiniDFSCluster"],
   [" timed out "], # Sometimes hadoop doesn't throw a timeout exception, but prints a message instead
   [".TimeoutException"],
   [".TimeoutIOException"],
@@ -34,9 +44,11 @@ keywords_to_ignore = [
   [".ConnectException"],
   [".SocketException"],
   [".SocketTimeoutException"],
-  [".CannotObtainBlockLengthException"],
-  [".BlockMissingException"],
-  [".InaccessibleObjectException"]
+  [".FileNotFoundException"],
+  [".RuntimeException"],
+  #[".CannotObtainBlockLengthException"],
+  #[".BlockMissingException"],
+  #[".InaccessibleObjectException"]
 ]
 
 
@@ -246,6 +258,7 @@ def parse_build_log(dir_path: str):
               while index < len(lines) and (lines[index].strip().startswith("at ") or ((index-offset+1) <= 50)):
                 log_message += lines[index].strip() + "\n"
                 index += 1
+              index = offset + 1  
 
               msg = parse_log_message(log_message)
 
