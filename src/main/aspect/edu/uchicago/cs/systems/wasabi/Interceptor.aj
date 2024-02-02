@@ -28,6 +28,8 @@ import edu.uchicago.cs.systems.wasabi.StackSnapshot;
 import edu.uchicago.cs.systems.wasabi.InjectionPoint;
 import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 
+import org.junit.jupiter.api.Test;
+
 public aspect Interceptor {
 
   private static final String UNKNOWN = "UNKNOWN";
@@ -50,7 +52,8 @@ public aspect Interceptor {
      // @annotation(org.junit.jupiter.api.AfterEach) || 
      // @annotation(org.junit.jupiter.api.BeforeAll) ||
      // @annotation(org.junit.jupiter.api.AfterAll) || 
-     @annotation(org.junit.jupiter.api.Test));
+     @annotation(org.junit.jupiter.api.Test)) &&
+     !within(edu.uchicago.cs.systems.wasabi.*);
 
 
   before() : testMethod() {
