@@ -369,11 +369,6 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        // do nothing
-      }
   
       long threadId = Thread.currentThread().getId();
       throw new IOException(
@@ -443,11 +438,6 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        // do nothing
-      }
   
       long threadId = Thread.currentThread().getId();
       throw new SocketException(
@@ -499,11 +489,6 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        // do nothing
-      }
   
       long threadId = Thread.currentThread().getId();
       throw new UnknownHostException(
@@ -555,11 +540,6 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        // do nothing
-      }
   
       long threadId = Thread.currentThread().getId();
       throw new BindException(
@@ -611,11 +591,6 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        // do nothing
-      }
   
       long threadId = Thread.currentThread().getId();
       throw new FileNotFoundException(
@@ -695,11 +670,6 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        // do nothing
-      }
   
       long threadId = Thread.currentThread().getId();
       LOG.printMessage(
@@ -763,11 +733,6 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        // do nothing
-      }
   
       long threadId = Thread.currentThread().getId();
       LOG.printMessage(
@@ -821,11 +786,6 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        // do nothing
-      }
   
       long threadId = Thread.currentThread().getId();
       LOG.printMessage(
@@ -879,11 +839,6 @@ public aspect Interceptor {
                                                           stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
       this.activeInjectionLocations.add(retryCallerFunction);
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        // do nothing
-      }
   
       long threadId = Thread.currentThread().getId();
       throw new InterruptedException(
