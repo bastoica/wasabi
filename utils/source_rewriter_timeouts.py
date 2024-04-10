@@ -20,7 +20,7 @@ def read_test_targets(input_file):
     lines = target.read().splitlines()
 
   for line in lines:
-    test_file, test_name = line.strip().split(".")
+    test_file, test_name = line.strip().split("/")
     test_file = test_file.strip()
     test_name = test_name.strip()
 
@@ -164,7 +164,8 @@ def main():
           # Create a copy of the original file
           original_file_path = f"{os.path.splitext(os.path.join(os.path.dirname(file_path), os.path.basename(file_path)))[0]}.original"
           print(original_file_path)
-          shutil.copy2(file_path, original_file_path)
+          if os.path.isfile(original_file_path) == False:
+            shutil.copy2(file_path, original_file_path)
 
           # Modify the timeout annotations and wait_for statements
           modify_timeout_annotations(file_path, file_base_name)

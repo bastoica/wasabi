@@ -37,8 +37,17 @@ def find_and_modify_assignment(test_class, assign_method, var_name, new_value, t
     bool: True if modification is successful, False otherwise.
   """
   java_file = find_java_file(test_class, test_directory_path)
+
+  if java_file is None:
+    print(f">>> Not found: {test_class}")
+    return False
+
   java_file_copy = f"{os.path.splitext(os.path.join(os.path.dirname(java_file), os.path.basename(java_file)))[0]}.original"
-  print(java_file_copy)
+
+  if os.path.isfile(java_file_copy):
+    return False
+
+  print(f">>> Modified: {java_file_copy}")
   shutil.copy2(java_file, java_file_copy)
 
   with open(java_file, 'r') as file:
@@ -64,6 +73,8 @@ def find_and_modify_assignment(test_class, assign_method, var_name, new_value, t
   with open(java_file, 'w') as file:
     file.writelines(modified_lines)
 
+  return True
+
 
 def process_input(input_file, test_directory_path):
   """
@@ -80,11 +91,14 @@ def process_input(input_file, test_directory_path):
       line = line.strip()
       var_name, assigned_value, assign_method, test_class = line.split("!!!")
       
-      if int(assigned_value.strip('"')) < int(RETRY_BOUND):
-        assign_method = assign_method.strip().split('.')[-1]
-        new_value = int(RETRY_BOUND)
+      try:
+        if int(assigned_value.strip('"')) < int(RETRY_BOUND):
+          assign_method = assign_method.strip().split('.')[-1]
+          new_value = int(RETRY_BOUND)
 
-      find_and_modify_assignment(test_class, assign_method, var_name, new_value, test_directory_path)
+        find_and_modify_assignment(test_class, assign_method, var_name, new_value, test_directory_path)
+      except:
+        print(f">>> ERROR: {test_class}")
 
 
 def main():

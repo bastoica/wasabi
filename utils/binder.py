@@ -111,7 +111,7 @@ def append_to_config_file(input_config, dir_path, matching):
         with open(config_filename, "w") as config_file:
           config_file.write(f"retry_data_file: {output_filename}\n")
           config_file.write("injection_policy: max-count\n")
-          config_file.write("max_injection_count: 31\n")
+          config_file.write("max_injection_count: 311\n")
 
 
 def main():
@@ -135,9 +135,9 @@ def main():
   matched_injection_locations, unmatched_injection_locations, unmatched_tests, multi_matched_tests = find_unmatched(matching, graph)
   print("================= Statistics ================")
   print("Total matched retried methods:", len(matched_injection_locations))
-  print("Unmatched retried method:", "\n\t".join(unmatched_injection_locations))
-  print("Unmatched tests:", '\n\t'.join(unmatched_tests))
-  print("Tests matched multiple times:", "\n\t".join(multi_matched_tests))
+  print("Unmatched retried method:\n\t", "\n\t".join(unmatched_injection_locations))
+  print("Unmatched tests:\n\t", '\n\t'.join(unmatched_tests))
+  print("Tests matched multiple times:\n\t", "\n\t".join(multi_matched_tests))
   print("=================    |||    =================")
 
   # Step 4: Split the larger config file based on the retry locations to tests matching.

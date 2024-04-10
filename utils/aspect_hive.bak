@@ -14,7 +14,6 @@ import java.net.UnknownHostException;
 import java.lang.InterruptedException;
 import java.sql.SQLException;
 import java.sql.SQLTransientException;
-import javax.jms.JMSException;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
@@ -103,7 +102,7 @@ public aspect Interceptor {
     if (this.wasabiCtx == null) { // This happens for non-test methods (e.g. config) inside test code
       return; // Ignore retry in "before" and "after" annotated methods
     }
-    
+
     this.wasabiCtx.printExecTrace(this.LOG, String.format(" Test: %s", this.testMethodName));
 
     StringBuilder exception = new StringBuilder();
@@ -167,82 +166,79 @@ public aspect Interceptor {
     }
   }
 
-  
   /* Inject IOException */
 
   pointcut injectIOException():
-    ((withincode(* org.apache.hadoop.hive.ql.parse.repl.CopyUtils.doCopyRetry(..)) &&
-    call(* org.apache.hadoop.hive.ql.parse.repl.CopyUtils.getFilesToRetry(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.parse.repl.CopyUtils.doCopyRetry(..)) &&
-    call(* org.apache.hadoop.hive.ql.parse.repl.CopyUtils.doCopyOnce(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.druid.DruidStorageHandlerUtils.publishSegmentWithShardSpec(..)) &&
-    call(* org.apache.hadoop.fs.FileSystem.mkdirs(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.druid.DruidStorageHandlerUtils.publishSegmentWithShardSpec(..)) &&
-    call(* org.apache.hadoop.fs.FileSystem.rename(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClient.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.utils.SecurityUtils.getUGI(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.hooks.HiveProtoLoggingHook.*EventLogger.writeEvent(..)) &&
-    call(* org.apache.hadoop.hive.ql.hooks.HiveProtoLoggingHook.*EventLogger.maybeRolloverWriterForDay(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.hooks.HiveProtoLoggingHook.*EventLogger.writeEvent(..)) &&
-    call(* org.apache.tez.dag.history.logging.proto.ProtoMessageWriter.*.writeProto(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.hooks.HiveProtoLoggingHook.*EventLogger.writeEvent(..)) &&
-    call(* org.apache.tez.dag.history.logging.proto.ProtoMessageWriter.*.hflush(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.ObjectStore.*RetryingExecutor.run(..)) &&
-    call(* org.apache.hadoop.hive.metastore.ObjectStore.*RetryingExecutor.*Command.process(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.util.Retryable.executeCallable(..)) &&
-    call(* org.apache.hadoop.security.UserGroupInformation.doAs(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.util.Retryable.executeCallable(..)) &&
-    call(* org.apache.hadoop.security.UserGroupInformation.getLoginUser(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.repl.atlas.RetryingClientTimeBased.invokeWithRetry(..)) &&
-    call(* java.util.concurrent.Callable.*.call(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.registry.impl.ZkRegistryBase.ensureInstancesCache(..)) &&
-    call(* org.apache.curator.framework.recipes.cache.PathChildrenCache.start(..) throws *Exception*)) ||
-    (withincode(* org.apache.hive.common.util.RetryUtilities.*ExponentiallyDecayingBatchWork.run(..)) &&
-    call(* org.apache.hive.common.util.RetryUtilities.*ExponentialBackOffRetry.*.execute(..) throws *Exception*)) ||
-    (withincode(* org.apache.hive.common.util.Retry.*RetryingStatement.evaluate(..)) &&
-    call(* org.junit.runners.model.Statement.evaluate(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.druid.DruidStorageHandlerUtils.publishSegmentWithShardSpec(..)) &&
-    call(* org.apache.hadoop.fs.FileSystem.exists(..) throws *Exception*)) ||
-    (withincode(* org.apache.hive.hcatalog.templeton.LauncherDelegator.killTempletonJobWithRetry(..)) &&
-    call(* org.apache.hive.hcatalog.templeton.LauncherDelegator.killJob(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.kafka.RetryUtils.retry(..)) &&
-    call(* org.apache.hadoop.hive.kafka.RetryUtils.*Task.*.perform(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.llap.AsyncPbRpcProxy.*AsyncCallableRequest.call(..)) &&
-    call(* org.apache.hadoop.hive.llap.AsyncPbRpcProxy.*AsyncCallableRequest.callInternal(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.tez.monitoring.TezJobMonitor.monitorExecution(..)) &&
-    call(* org.apache.tez.dag.api.client.DAGClient.getDAGStatus(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.hooks.HiveProtoLoggingHook.*EventLogger.writeEvent(..)) &&
-    call(* org.apache.tez.dag.history.logging.proto.DatePartitionedLogger.*.getWriter(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.RetryingMetaStoreClient.invoke(..)) &&
-    call(* org.apache.hadoop.security.UserGroupInformation.doAs(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.grpc.HiveMetastore.*CompactionInfoStruct.CompactionInfoStruct(..)) &&
-    call(* com.google.protobuf.CodedInputStream.readBool(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.grpc.HiveMetastore.*CompactionInfoStruct.CompactionInfoStruct(..)) &&
-    call(* com.google.protobuf.CodedInputStream.readEnum(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.grpc.HiveMetastore.*CompactionInfoStruct.CompactionInfoStruct(..)) &&
-    call(* com.google.protobuf.CodedInputStream.readInt64(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.grpc.HiveMetastore.*CompactionInfoStruct.CompactionInfoStruct(..)) &&
-    call(* com.google.protobuf.CodedInputStream.readStringRequireUtf8(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.grpc.HiveMetastore.*CompactionInfoStruct.CompactionInfoStruct(..)) &&
-    call(* com.google.protobuf.CodedInputStream.readTag(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.grpc.HiveMetastore.*CompactionInfoStruct.CompactionInfoStruct(..)) &&
-    call(* com.google.protobuf.GeneratedMessageV3.parseUnknownField(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.utils.MetaStoreServerUtils.loopUntilHMSReady(..)) &&
-    call(* java.net.Socket.close(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.utils.MetaStoreServerUtils.loopUntilHMSReady(..)) &&
-    call(* java.net.Socket.connect(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.utils.RetryUtilities.*ExponentiallyDecayingBatchWork.run(..)) &&
-    call(* org.apache.hadoop.hive.metastore.utils.RetryUtilities.*ExponentialBackOffRetry.*.execute(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.conf.MetastoreConf.getPassword(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.security.HadoopThriftAuthBridge.*Client.createClientTransport(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.utils.SecurityUtils.getTokenStrForm(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.utils.SecurityUtils.getUGI(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.tez.YarnQueueHelper.checkQueueAccessInternal(..)) &&
-    call(* checkQueueAccessFromSingleRm(..) throws *Exception*))) &&
+    ((withincode(* org..*.publishSegmentWithShardSpec(..)) &&
+    call(* org..*.mkdirs(..)  throws *Exception*)) ||
+    (withincode(* org..*.publishSegmentWithShardSpec(..)) &&
+    call(* org..*.FileSystem.exists(..)  throws *Exception*)) ||
+    (withincode(* org..*.publishSegmentWithShardSpec(..)) &&
+    call(* org..*.rename(..)  throws *Exception*)) ||
+    (withincode(* org..*.killTempletonJobWithRetry(..)) &&
+    call(* org..*.LauncherDelegator.killJob(..)  throws *Exception*)) ||
+    (withincode(* org..*.retry(..)) &&
+    call(* org..*.perform(..)  throws *Exception*)) ||
+    (withincode(* org..*.ensureInstancesCache(..)) &&
+    call(* org..*.start(..)  throws *Exception*)) ||
+    (withincode(* org..*.call(..)) &&
+    call(* org..*.callInternal(..) throws *Exception*)) ||
+    (withincode(* org..*.invokeWithRetry(..)) &&
+    call(* java..*.call(..) throws *Exception*)) ||
+    (withincode(* org..*.monitorExecution(..)) &&
+    call(* org..*.getDAGStatus(..) throws *Exception*)) ||
+    (withincode(* org..*.executeCallable(..)) &&
+    call(* org..*.doAs(..) throws *Exception*)) ||
+    (withincode(* org..*.executeCallable(..)) &&
+    call(* org..*.getLoginUser(..) throws *Exception*)) ||
+    (withincode(* org..*.writeEvent(..)) &&
+    call(* org..*.maybeRolloverWriterForDay(..) throws *Exception*)) ||
+    (withincode(* org..*.writeEvent(..)) &&
+    call(* org..*.hflush(..) throws *Exception*)) ||
+    (withincode(* org..*.writeEvent(..)) &&
+    call(* org..*.writeProto(..) throws *Exception*)) ||
+    (withincode(* org..*.writeEvent(..)) &&
+    call(* org..*.getWriter(..) throws *Exception*)) ||
+    (withincode(* org..*.doCopyRetry(..)) &&
+    call(* org..*.doCopyOnce(..) throws *Exception*)) ||
+    (withincode(* org..*.doCopyRetry(..)) &&
+    call(* org..*.getFilesToRetry(..) throws *Exception*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org..*.getUGI(..) throws *Exception*)) ||
+    (withincode(* org..*.invoke(..)) &&
+    call(* org..*.doAs(..) throws *Exception*)) ||
+    (withincode(* org..*.CompactionInfoStruct(..)) &&
+    call(* com..*.readEnum(..) throws *Exception*)) ||
+    (withincode(* org..*.CompactionInfoStruct(..)) &&
+    call(* com..*.readStringRequireUtf8(..) throws *Exception*)) ||
+    (withincode(* org..*.CompactionInfoStruct(..)) &&
+    call(* com..*.readBool(..) throws *Exception*)) ||
+    (withincode(* org..*.CompactionInfoStruct(..)) &&
+    call(* com..*.readInt64(..) throws *Exception*)) ||
+    (withincode(* org..*.CompactionInfoStruct(..)) &&
+    call(* com..*.readTag(..) throws *Exception*)) ||
+    (withincode(* org..*.CompactionInfoStruct(..)) &&
+    call(* com..*.parseUnknownField(..) throws *Exception*)) ||
+    (withincode(* org..*.run(..) throws *MetaException*) &&
+    call(* org..*.process(..) throws *Exception*)) ||
+    (withincode(* org..*.loopUntilHMSReady(..)) &&
+    call(* java..*.close(..) throws *Exception*)) ||
+    (withincode(* org..*.loopUntilHMSReady(..)) &&
+    call(* java..*.connect(..) throws *Exception*)) ||
+    (withincode(* org..*metastore.*RetryUtilities.*.run(..)) &&
+    call(* org..*metastore.*RetryUtilities.*.execute(..) throws *Exception*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org..*.getPassword(..) throws *Exception*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org..*.createClientTransport(..) throws *Exception*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org..*.getTokenStrForm(..) throws *Exception*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org..*.getUGI(..) throws *Exception*)) || 
+    (withincode(* org..*RetryUtilities.*.run(..)) &&
+    call(* org..*common.*RetryUtilities.*.execute(..) throws *Exception*)) ||
+    (withincode(* org..*common.*.evaluate(..)) &&
+    call(* org..*.evaluate(..) throws *Exception*))) &&
     !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws IOException : injectIOException() {
@@ -298,361 +294,29 @@ public aspect Interceptor {
     }
   }
 
-  /* Inject LockException */
-
-  pointcut injectLockException():
-    ((withincode(* org.apache.hadoop.hive.ql.lockmgr.DbLockManager.lock(..)) &&
-    call(* org.apache.hadoop.hive.ql.lockmgr.DbTxnManager.getMS(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.lockmgr.EmbeddedLockManager.lock(..)) &&
-    call(* org.apache.hadoop.hive.ql.lockmgr.EmbeddedLockManager.lockPrimitive(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.tez.monitoring.TezJobMonitor.monitorExecution(..)) &&
-    call(* org.apache.hadoop.hive.ql.Context.checkHeartbeaterLockException(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.lockmgr.zookeeper.ZooKeeperHiveLockManager.lock(..)) &&
-    call(* org.apache.hadoop.hive.ql.lockmgr.zookeeper.ZooKeeperHiveLockManager.lockPrimitive(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.lockmgr.zookeeper.ZooKeeperHiveLockManager.unlockWithRetry(..)) &&
-    call(* org.apache.hadoop.hive.ql.lockmgr.zookeeper.ZooKeeperHiveLockManager.unlockPrimitive(..) throws *Exception*))) &&
-    !within(edu.uchicago.cs.systems.wasabi.*);
-
-  after() throws LockException : injectLockException() {
-    StackSnapshot stackSnapshot = new StackSnapshot();
-    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
-    String injectionSite = thisJoinPoint.toString();
-    String retryException = "LockException";
-    String injectionSourceLocation = String.format("%s:%d",
-                                thisJoinPoint.getSourceLocation().getFileName(),
-                                thisJoinPoint.getSourceLocation().getLine());
-
-    if (this.wasabiCtx == null) {
-      LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-          this.testMethodName, 
-          injectionSite, 
-          injectionSourceLocation, 
-          retryCallerFunction)
-      );
-
-      return;
-    }
-
-    LOG.printMessage(
-      WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-        this.testMethodName, 
-        injectionSite, 
-        injectionSourceLocation, 
-        retryCallerFunction)
-    );
-
-    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
-                                                          injectionSite, 
-                                                          injectionSourceLocation,
-                                                          retryException,
-                                                          retryCallerFunction, 
-                                                          stackSnapshot);
-    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
-      this.activeInjectionLocations.add(retryCallerFunction);
-  
-      long threadId = Thread.currentThread().getId();
-      throw new LockException(
-        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
-          threadId,
-          this.testMethodName,
-          ipt.retryException,
-          ipt.injectionSite,
-          ipt.retrySourceLocation,
-          ipt.injectionCount)
-      );
-    }
-  }
-
-  /* Inject TTransportException */
-
-  pointcut injectTTransportException():
-    ((withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClient.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.HiveMetaStoreClient.createHttpClient(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClient.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.HiveMetaStoreClient.createBinaryClient(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClient.open(..)) &&
-    call(* org.apache.thrift.transport.TTransport.open(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.utils.SecurityUtils.getSSLSocket(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
-    call(* org.apache.thrift.transport.TTransport.open(..) throws *Exception*))) &&
-    !within(edu.uchicago.cs.systems.wasabi.*);
-
-  after() throws TTransportException : injectTTransportException() {
-    StackSnapshot stackSnapshot = new StackSnapshot();
-    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
-    String injectionSite = thisJoinPoint.toString();
-    String retryException = "TTransportException";
-    String injectionSourceLocation = String.format("%s:%d",
-                                thisJoinPoint.getSourceLocation().getFileName(),
-                                thisJoinPoint.getSourceLocation().getLine());
-
-    if (this.wasabiCtx == null) {
-      LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-          this.testMethodName, 
-          injectionSite, 
-          injectionSourceLocation, 
-          retryCallerFunction)
-      );
-
-      return;
-    }
-
-    LOG.printMessage(
-      WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-        this.testMethodName, 
-        injectionSite, 
-        injectionSourceLocation, 
-        retryCallerFunction)
-    );
-
-    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
-                                                          injectionSite, 
-                                                          injectionSourceLocation,
-                                                          retryException,
-                                                          retryCallerFunction, 
-                                                          stackSnapshot);
-    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
-      this.activeInjectionLocations.add(retryCallerFunction);
-  
-      long threadId = Thread.currentThread().getId();
-      throw new TTransportException(
-        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
-          threadId,
-          this.testMethodName,
-          ipt.retryException,
-          ipt.injectionSite,
-          ipt.retrySourceLocation,
-          ipt.injectionCount)
-      );
-    }
-  }
-
-  /* Inject TException */
-
-  pointcut injectTException():
-    ((withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClient.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.api.ThriftHiveMetastore.*Iface.set_ugi(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
-    call(* org.apache.hadoop.hive.metastore.api.ThriftHiveMetastore.*Iface.set_ugi(..) throws *Exception*))) &&
-    !within(edu.uchicago.cs.systems.wasabi.*);
-
-  after() throws TException : injectTException() {
-    StackSnapshot stackSnapshot = new StackSnapshot();
-    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
-    String injectionSite = thisJoinPoint.toString();
-    String retryException = "TException";
-    String injectionSourceLocation = String.format("%s:%d",
-                                thisJoinPoint.getSourceLocation().getFileName(),
-                                thisJoinPoint.getSourceLocation().getLine());
-
-    if (this.wasabiCtx == null) {
-      LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-          this.testMethodName, 
-          injectionSite, 
-          injectionSourceLocation, 
-          retryCallerFunction)
-      );
-
-      return;
-    }
-
-    LOG.printMessage(
-      WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-        this.testMethodName, 
-        injectionSite, 
-        injectionSourceLocation, 
-        retryCallerFunction)
-    );
-
-    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
-                                                          injectionSite, 
-                                                          injectionSourceLocation,
-                                                          retryException,
-                                                          retryCallerFunction, 
-                                                          stackSnapshot);
-    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
-      this.activeInjectionLocations.add(retryCallerFunction);
-  
-      long threadId = Thread.currentThread().getId();
-      throw new TException(
-        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
-          threadId,
-          this.testMethodName,
-          ipt.retryException,
-          ipt.injectionSite,
-          ipt.retrySourceLocation,
-          ipt.injectionCount)
-      );
-    }
-  }
-
-  /* Inject MetaException */
-
-  pointcut injectMetaException():
-    ((withincode(* org.apache.hadoop.hive.metastore.RetryingHMSHandler.invokeInternal(..)) &&
-    call(* org.apache.hadoop.hive.metastore.MetaStoreInit.updateConnectionURL(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.RetryingHMSHandler.invokeInternal(..)) &&
-    call(* org.apache.hadoop.hive.metastore.Deadline.startTimer(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.util.Retryable.executeCallable(..)) &&
-    call(* org.apache.hadoop.hive.metastore.utils.SecurityUtils.reloginExpiringKeytabUser(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.RetryingMetaStoreClient.invoke(..)) &&
-    call(* org.apache.hadoop.hive.metastore.utils.SecurityUtils.reloginExpiringKeytabUser(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.txn.CompactionTxnHandler.findReadyToClean(..)) &&
-    call(* org.apache.hadoop.hive.metastore.txn.TxnUtils.dbCompactionType2ThriftType(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.leader.LeaseLeaderElection.tryBeLeader(..)) &&
-    call(* lock(..) throws *Exception*))) &&
-    !within(edu.uchicago.cs.systems.wasabi.*);
-
-  after() throws MetaException : injectMetaException() {
-    StackSnapshot stackSnapshot = new StackSnapshot();
-    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
-    String injectionSite = thisJoinPoint.toString();
-    String retryException = "MetaException";
-    String injectionSourceLocation = String.format("%s:%d",
-                                thisJoinPoint.getSourceLocation().getFileName(),
-                                thisJoinPoint.getSourceLocation().getLine());
-
-    if (this.wasabiCtx == null) {
-      LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-          this.testMethodName, 
-          injectionSite, 
-          injectionSourceLocation, 
-          retryCallerFunction)
-      );
-
-      return;
-    }
-
-    LOG.printMessage(
-      WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-        this.testMethodName, 
-        injectionSite, 
-        injectionSourceLocation, 
-        retryCallerFunction)
-    );
-
-    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
-                                                          injectionSite, 
-                                                          injectionSourceLocation,
-                                                          retryException,
-                                                          retryCallerFunction, 
-                                                          stackSnapshot);
-    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
-      this.activeInjectionLocations.add(retryCallerFunction);
-  
-      long threadId = Thread.currentThread().getId();
-      throw new MetaException(
-        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
-          threadId,
-          this.testMethodName,
-          ipt.retryException,
-          ipt.injectionSite,
-          ipt.retrySourceLocation,
-          ipt.injectionCount)
-      );
-    }
-  }
-
-  /* Inject HiveSQLException */
-
-  pointcut injectHiveSQLException():
-    ((withincode(* org.apache.hive.service.cli.thrift.RetryingThriftCLIServiceClient.connectWithRetry(..)) &&
-    call(* org.apache.hive.service.cli.thrift.RetryingThriftCLIServiceClient.connect(..) throws *Exception*)) ||
-    (withincode(* org.apache.hive.service.cli.thrift.RetryingThriftCLIServiceClient.invoke(..)) &&
-    call(* org.apache.hive.service.cli.thrift.RetryingThriftCLIServiceClient.connectWithRetry(..) throws *Exception*)) ||
-    (withincode(* org.apache.hive.service.cli.thrift.RetryingThriftCLIServiceClient.invoke(..)) &&
-    call(* org.apache.hive.service.cli.thrift.RetryingThriftCLIServiceClient.invokeInternal(..) throws *Exception*))) &&
-    !within(edu.uchicago.cs.systems.wasabi.*);
-
-  after() throws HiveSQLException : injectHiveSQLException() {
-    StackSnapshot stackSnapshot = new StackSnapshot();
-    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
-    String injectionSite = thisJoinPoint.toString();
-    String retryException = "HiveSQLException";
-    String injectionSourceLocation = String.format("%s:%d",
-                                thisJoinPoint.getSourceLocation().getFileName(),
-                                thisJoinPoint.getSourceLocation().getLine());
-
-    if (this.wasabiCtx == null) {
-      LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-          this.testMethodName, 
-          injectionSite, 
-          injectionSourceLocation, 
-          retryCallerFunction)
-      );
-
-      return;
-    }
-
-    LOG.printMessage(
-      WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-        this.testMethodName, 
-        injectionSite, 
-        injectionSourceLocation, 
-        retryCallerFunction)
-    );
-
-    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
-                                                          injectionSite, 
-                                                          injectionSourceLocation,
-                                                          retryException,
-                                                          retryCallerFunction, 
-                                                          stackSnapshot);
-    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
-      this.activeInjectionLocations.add(retryCallerFunction);
-  
-      long threadId = Thread.currentThread().getId();
-      throw new HiveSQLException(
-        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
-          threadId,
-          this.testMethodName,
-          ipt.retryException,
-          ipt.injectionSite,
-          ipt.retrySourceLocation,
-          ipt.injectionCount)
-      );
-    }
-  }
-
   /* Inject SQLException */
 
   pointcut injectSQLException():
-    ((withincode(* org.apache.hive.jdbc.HiveConnection.HiveConnection(..)) &&
-    call(* org.apache.hive.jdbc.HiveConnection.executeInitSql(..) throws *Exception*)) ||
-    (withincode(* org.apache.hive.jdbc.HiveConnection.HiveConnection(..)) &&
-    call(* org.apache.hive.jdbc.HiveConnection.openSession(..) throws *Exception*)) ||
-    (withincode(* org.apache.hive.jdbc.HiveConnection.HiveConnection(..)) &&
-    call(* org.apache.hive.jdbc.HiveConnection.openTransport(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.Utilities.executeWithRetry(..)) &&
-    call(* org.apache.hadoop.hive.ql.exec.Utilities.*SQLCommand.*.run(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.Utilities.connectWithRetry(..)) &&
-    call(* java.sql.DriverManager.getConnection(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.ql.exec.Utilities.prepareWithRetry(..)) &&
-    call(* java.sql.Connection.prepareStatement(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.txn.CompactionTxnHandler.findReadyToClean(..)) &&
-    call(* java.sql.ResultSet.getInt(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.txn.CompactionTxnHandler.findReadyToClean(..)) &&
-    call(* java.sql.ResultSet.getLong(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.txn.CompactionTxnHandler.findReadyToClean(..)) &&
-    call(* java.sql.ResultSet.getString(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.txn.CompactionTxnHandler.findReadyToClean(..)) &&
-    call(* java.sql.ResultSet.next(..) throws *Exception*))) &&
+    ((withincode(* org..*.HiveConnection(..)) &&
+    call(* org..*.openTransport(..) throws *SQLException*)) ||
+    (withincode(* org..*.HiveConnection(..)) &&
+    call(* org..*.openSession(..) throws *SQLException*)) ||
+    (withincode(* org..*.HiveConnection(..)) &&
+    call(* org..*.executeInitSql(..) throws *SQLException*)) ||
+    (withincode(* org..*.executeWithRetry(..)) &&
+    call(* org..*.run(..) throws *SQLException*)) ||
+    (withincode(* org..*.connectWithRetry(..)) &&
+    call(* java..*.getConnection(..) throws *SQLException*)) ||
+    (withincode(* org..*.prepareWithRetry(..)) &&
+    call(* java..*.prepareStatement(..) throws *SQLException*)) ||
+    (withincode(* org..*findReadyToClean(..)) &&
+    call(* java..*.getLong(..) throws *SQLException*)) ||
+    (withincode(* org..*findReadyToClean(..)) &&
+    call(* java..*.getInt(..) throws *SQLException*)) ||
+    (withincode(* org..*findReadyToClean(..)) &&
+    call(* java..*.getString(..) throws *SQLException*)) ||
+    (withincode(* org..*findReadyToClean(..)) &&
+    call(* java..*.next(..) throws *SQLException*))) &&
     !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws SQLException : injectSQLException() {
@@ -708,11 +372,147 @@ public aspect Interceptor {
     }
   }
 
+  /* Inject LockException */
+
+  pointcut injectLockException():
+    ((withincode(* org..*.monitorExecution(..)) &&
+    call(* org..*.checkHeartbeaterLockException(..) throws *LockException*)) ||
+    (withincode(* org..*.lock(..)) &&
+    call(* org..*.getMS(..) throws *LockException*)) ||
+    (withincode(* org..*.lock(..)) &&
+    call(* org..*.lockPrimitive(..) throws *LockException*)) ||
+    (withincode(* org..*.lock(..)) &&
+    call(* org..*.lockPrimitive(..) throws *LockException*)) ||
+    (withincode(* org..*.unlockWithRetry(..)) &&
+    call(* org..*.unlockPrimitive(..) throws *LockException*))) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
+
+  after() throws LockException : injectLockException() {
+    StackSnapshot stackSnapshot = new StackSnapshot();
+    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
+    String injectionSite = thisJoinPoint.toString();
+    String retryException = "LockException";
+    String injectionSourceLocation = String.format("%s:%d",
+                                thisJoinPoint.getSourceLocation().getFileName(),
+                                thisJoinPoint.getSourceLocation().getLine());
+
+    if (this.wasabiCtx == null) {
+      LOG.printMessage(
+        WasabiLogger.LOG_LEVEL_WARN, 
+        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+          this.testMethodName, 
+          injectionSite, 
+          injectionSourceLocation, 
+          retryCallerFunction)
+      );
+
+      return;
+    }
+
+    LOG.printMessage(
+      WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+        this.testMethodName, 
+        injectionSite, 
+        injectionSourceLocation, 
+        retryCallerFunction)
+    );
+
+    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
+                                                          injectionSite, 
+                                                          injectionSourceLocation,
+                                                          retryException,
+                                                          retryCallerFunction, 
+                                                          stackSnapshot);
+    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
+      this.activeInjectionLocations.add(retryCallerFunction);
+  
+      long threadId = Thread.currentThread().getId();
+      throw new LockException(
+        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
+          threadId,
+          this.testMethodName,
+          ipt.retryException,
+          ipt.injectionSite,
+          ipt.retrySourceLocation,
+          ipt.injectionCount)
+      );
+    }
+  }
+
+  /* Inject MetaException */
+
+  pointcut injectMetaException():
+    ((withincode(* org..*.executeCallable(..)) &&
+    call(* org.a.*.reloginExpiringKeytabUser(..) throws *MetaException*)) ||
+    (withincode(* org..*.invoke(..)) &&
+    call(* org.a.*.reloginExpiringKeytabUser(..) throws *MetaException*)) ||
+    (withincode(* org..*.invokeInternal(..)) &&
+    call(* org.apache.hadoop.hive.metastore.Deadline.startTimer(..) throws *MetaException*)) ||
+    (withincode(* org..*.invokeInternal(..)) &&
+    call(* org..*.updateConnectionURL(..) throws *MetaException*)) ||
+    (withincode(* org..*findReadyToClean(..)) &&
+    call(* org..*.dbCompactionType2ThriftType(..) throws *MetaException*))) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
+
+  after() throws MetaException : injectMetaException() {
+    StackSnapshot stackSnapshot = new StackSnapshot();
+    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
+    String injectionSite = thisJoinPoint.toString();
+    String retryException = "MetaException";
+    String injectionSourceLocation = String.format("%s:%d",
+                                thisJoinPoint.getSourceLocation().getFileName(),
+                                thisJoinPoint.getSourceLocation().getLine());
+
+    if (this.wasabiCtx == null) {
+      LOG.printMessage(
+        WasabiLogger.LOG_LEVEL_WARN, 
+        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+          this.testMethodName, 
+          injectionSite, 
+          injectionSourceLocation, 
+          retryCallerFunction)
+      );
+
+      return;
+    }
+
+    LOG.printMessage(
+      WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+        this.testMethodName, 
+        injectionSite, 
+        injectionSourceLocation, 
+        retryCallerFunction)
+    );
+
+    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
+                                                          injectionSite, 
+                                                          injectionSourceLocation,
+                                                          retryException,
+                                                          retryCallerFunction, 
+                                                          stackSnapshot);
+    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
+      this.activeInjectionLocations.add(retryCallerFunction);
+  
+      long threadId = Thread.currentThread().getId();
+      throw new MetaException(
+        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
+          threadId,
+          this.testMethodName,
+          ipt.retryException,
+          ipt.injectionSite,
+          ipt.retrySourceLocation,
+          ipt.injectionCount)
+      );
+    }
+  }
+
   /* Inject NoSuchLockException */
 
   pointcut injectNoSuchLockException():
-    ((withincode(* org.apache.hadoop.hive.ql.lockmgr.DbLockManager.lock(..)) &&
-    call(* org.apache.hadoop.hive.metastore.IMetaStoreClient.checkLock(..) throws *Exception*))) &&
+    ((withincode(* org..*.lock(..)) &&
+    call(* org..*.checkLock(..) throws *NoSuchLockException*))) &&
     !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws NoSuchLockException : injectNoSuchLockException() {
@@ -771,8 +571,8 @@ public aspect Interceptor {
   /* Inject NoSuchTxnException */
 
   pointcut injectNoSuchTxnException():
-    ((withincode(* org.apache.hadoop.hive.ql.lockmgr.DbLockManager.lock(..)) &&
-    call(* org.apache.hadoop.hive.metastore.IMetaStoreClient.checkLock(..) throws *Exception*))) &&
+    ((withincode(* org..*.lock(..)) &&
+    call(* org..*.checkLock(..) throws *NoSuchTxnException*))) &&
     !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws NoSuchTxnException : injectNoSuchTxnException() {
@@ -828,15 +628,77 @@ public aspect Interceptor {
     }
   }
 
+  /* Inject HiveSQLException */
+
+  pointcut injectHiveSQLException():
+    ((withincode(* org..*.connectWithRetry(..)) &&
+    call(* org..*.connect(..) throws *HiveSQLException*)) ||
+    (withincode(* org..*.invoke(..)) &&
+    call(* org..*.invokeInternal(..) throws *HiveSQLException*)) ||
+    (withincode(* org..*.invoke(..)) &&
+    call(* org..*.connectWithRetry(..) throws *HiveSQLException*))) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
+
+  after() throws HiveSQLException : injectHiveSQLException() {
+    StackSnapshot stackSnapshot = new StackSnapshot();
+    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
+    String injectionSite = thisJoinPoint.toString();
+    String retryException = "HiveSQLException";
+    String injectionSourceLocation = String.format("%s:%d",
+                                thisJoinPoint.getSourceLocation().getFileName(),
+                                thisJoinPoint.getSourceLocation().getLine());
+
+    if (this.wasabiCtx == null) {
+      LOG.printMessage(
+        WasabiLogger.LOG_LEVEL_WARN, 
+        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+          this.testMethodName, 
+          injectionSite, 
+          injectionSourceLocation, 
+          retryCallerFunction)
+      );
+
+      return;
+    }
+
+    LOG.printMessage(
+      WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+        this.testMethodName, 
+        injectionSite, 
+        injectionSourceLocation, 
+        retryCallerFunction)
+    );
+
+    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
+                                                          injectionSite, 
+                                                          injectionSourceLocation,
+                                                          retryException,
+                                                          retryCallerFunction, 
+                                                          stackSnapshot);
+    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
+      this.activeInjectionLocations.add(retryCallerFunction);
+  
+      long threadId = Thread.currentThread().getId();
+      throw new HiveSQLException(
+        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
+          threadId,
+          this.testMethodName,
+          ipt.retryException,
+          ipt.injectionSite,
+          ipt.retrySourceLocation,
+          ipt.injectionCount)
+      );
+    }
+  }
+
   /* Inject ServiceException */
 
   pointcut injectServiceException():
-    ((withincode(* org.apache.hive.service.server.HiveServer2.startHiveServer2(..)) &&
-    call(* org.apache.hive.service.server.HiveServer2.init(..) throws *Exception*)) ||
-    (withincode(* org.apache.hive.service.server.HiveServer2.startHiveServer2(..)) &&
-    call(* org.apache.hive.service.server.HiveServer2.start(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.llap.ProactiveEviction.run(..)) &&
-    call(* evictEntity(..) throws *Exception*))) &&
+    ((withincode(* org..*.startHiveServer2(..)) &&
+    call(* org..*.start(..) throws *ServiceException*)) ||
+    (withincode(* org..*.startHiveServer2(..)) &&
+    call(* org..*.init(..) throws *ServiceException*))) &&
     !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws ServiceException : injectServiceException() {
@@ -892,18 +754,20 @@ public aspect Interceptor {
     }
   }
 
-  /* Inject JMSException */
+  /* Inject TException */
 
-  pointcut injectJMSException():
-    ((withincode(* org.apache.hive.hcatalog.listener.NotificationListener.send(..)) &&
-    call(* createProducer(..) throws *Exception*))) &&
+  pointcut injectTException():
+    ((withincode(* org..*.open(..)) &&
+    call(* org..*.set_ugi(..) throws *TException*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org..*.set_ugi(..) throws *TException*))) &&
     !within(edu.uchicago.cs.systems.wasabi.*);
 
-  after() throws JMSException : injectJMSException() {
+  after() throws TException : injectTException() {
     StackSnapshot stackSnapshot = new StackSnapshot();
     String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
     String injectionSite = thisJoinPoint.toString();
-    String retryException = "JMSException";
+    String retryException = "TException";
     String injectionSourceLocation = String.format("%s:%d",
                                 thisJoinPoint.getSourceLocation().getFileName(),
                                 thisJoinPoint.getSourceLocation().getLine());
@@ -940,7 +804,75 @@ public aspect Interceptor {
       this.activeInjectionLocations.add(retryCallerFunction);
   
       long threadId = Thread.currentThread().getId();
-      throw new JMSException(
+      throw new TException(
+        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
+          threadId,
+          this.testMethodName,
+          ipt.retryException,
+          ipt.injectionSite,
+          ipt.retrySourceLocation,
+          ipt.injectionCount)
+      );
+    }
+  }
+
+  /* Inject TTransportException */
+
+  pointcut injectTTransportException():
+    ((withincode(* org..*.open(..)) &&
+    call(* org..*.open(..) throws *TTransportException*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org..*.createBinaryClient(..) throws *TTransportException*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org..*.createHttpClient(..) throws *TTransportException*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org.a.*.getSSLSocket(..) throws *TTransportException*)) ||
+    (withincode(* org..*.open(..)) &&
+    call(* org..*.open(..) throws *TTransportException*))) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
+
+  after() throws TTransportException : injectTTransportException() {
+    StackSnapshot stackSnapshot = new StackSnapshot();
+    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
+    String injectionSite = thisJoinPoint.toString();
+    String retryException = "TTransportException";
+    String injectionSourceLocation = String.format("%s:%d",
+                                thisJoinPoint.getSourceLocation().getFileName(),
+                                thisJoinPoint.getSourceLocation().getLine());
+
+    if (this.wasabiCtx == null) {
+      LOG.printMessage(
+        WasabiLogger.LOG_LEVEL_WARN, 
+        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+          this.testMethodName, 
+          injectionSite, 
+          injectionSourceLocation, 
+          retryCallerFunction)
+      );
+
+      return;
+    }
+
+    LOG.printMessage(
+      WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+        this.testMethodName, 
+        injectionSite, 
+        injectionSourceLocation, 
+        retryCallerFunction)
+    );
+
+    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
+                                                          injectionSite, 
+                                                          injectionSourceLocation,
+                                                          retryException,
+                                                          retryCallerFunction, 
+                                                          stackSnapshot);
+    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
+      this.activeInjectionLocations.add(retryCallerFunction);
+  
+      long threadId = Thread.currentThread().getId();
+      throw new TTransportException(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
           threadId,
           this.testMethodName,

@@ -10,7 +10,7 @@ def read_spec_file_to_dict(csv_file_path):
       tokens = line.strip().split("!!!")
       enclosing_method = tokens[1]
       retried_method = tokens[2]
-      exception = tokens[3].strip().split(".")[-1]
+      exception = tokens[4].strip().split(".")[-1]
       
       if exception not in exception_map:
         exception_map[exception] = []
@@ -24,7 +24,7 @@ def generate_aspectj_code(exception_map):
         patterns = []
         
         for enclosing, retried in method_pairs:
-            patterns.append(f"    (withincode(* {enclosing}(..)) &&\n    call(* {retried}(..))) ||\n")
+            patterns.append(f"    (withincode(* {enclosing}(..)) &&\n    call(* {retried}(..) throws *Exception*)) ||\n")
         
         pointcut_template = f"""
   /* Inject {exception} */
@@ -107,6 +107,9 @@ import java.lang.InterruptedException;
 import java.sql.SQLException;
 import java.sql.SQLTransientException;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
+
 import edu.uchicago.cs.systems.wasabi.ConfigParser;
 import edu.uchicago.cs.systems.wasabi.WasabiLogger;
 import edu.uchicago.cs.systems.wasabi.WasabiContext;
@@ -126,7 +129,6 @@ public aspect Interceptor {{
 
   private Set<String> activeInjectionLocations = ConcurrentHashMap.newKeySet(); 
   private String testMethodName = UNKNOWN;
-  private WasabiContext wasabiCtx = null;
 
   pointcut testMethod():
     (@annotation(org.junit.Test) || 
@@ -163,6 +165,10 @@ public aspect Interceptor {{
   }}
 
   after() returning: testMethod() {{
+    if (this.wasabiCtx == null) {{ // This happens for non-test methods (e.g. config) inside test code
+      return; // Ignore retry in "before" and "after" annotated methods
+    }}
+    
     this.LOG.printMessage(
       WasabiLogger.LOG_LEVEL_WARN, 
       String.format("[TEST-AFTER]: [SUCCESS]: Test ---%s--- done", thisJoinPoint.toString())
@@ -176,6 +182,10 @@ public aspect Interceptor {{
   }}
 
   after() throwing (Throwable t): testMethod() {{
+    if (this.wasabiCtx == null) {{ // This happens for non-test methods (e.g. config) inside test code
+      return; // Ignore retry in "before" and "after" annotated methods
+    }}
+    
     this.wasabiCtx.printExecTrace(this.LOG, String.format(" Test: %s", this.testMethodName));
 
     StringBuilder exception = new StringBuilder();
@@ -214,19 +224,19 @@ public aspect Interceptor {{
   
       StackSnapshot stackSnapshot = new StackSnapshot();    
       for (String retryCallerFunction : this.activeInjectionLocations) {{
-        if (stackSnapshot.hasFrame(retryCallerFunction.split("\\(", 2)[0])) {{
+        if (stackSnapshot.hasFrame(retryCallerFunction.split("\\\\(", 2)[0])) {{
           String sleepLocation = String.format("%s(%s:%d)",
-                                  retryCallerFunction.split("\\(", 2)[0],
+                                  retryCallerFunction.split("\\\\(", 2)[0],
                                   thisJoinPoint.getSourceLocation().getFileName(),
                                   thisJoinPoint.getSourceLocation().getLine());
 
           this.wasabiCtx.addToExecTrace(sleepLocation, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
           LOG.printMessage(
             WasabiLogger.LOG_LEVEL_WARN, 
-            String.format("[THREAD-SLEEP] Test ---%s--- | Sleep location ---%s--- | Retry location ---%s---\n",
+            String.format("[THREAD-SLEEP] Test ---%s--- | Sleep location ---%s--- | Retry location ---%s---\\n",
               this.testMethodName, 
               sleepLocation, 
-              retryCallerFunction.split("\\(", 2)[0])
+              retryCallerFunction.split("\\\\(", 2)[0])
           );
         }}
       }}

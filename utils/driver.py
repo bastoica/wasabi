@@ -12,19 +12,6 @@ LOG_FILE_NAME = "build.log"  # log file
 TIMEOUT = 3600               # command timeout value in seconds
 
 
-def remove_ansi_escape_codes(output):
-  """
-  Strips ANSI escape codes from the given stdout string.
-
-  Args:
-    line (str): The stdout string to be stripped.
-
-  Returns:
-    str: The stripped stdout string without ANSI escape codes.
-  """
-  return re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", output)
-
-
 def get_conf_files(config_dir):
   """
   Find all config files (extension ".conf").
@@ -49,7 +36,7 @@ def get_test_file_name(config_file):
   Returns:
     str: The path of the log file for the config file.
   """
-  test_name = re.search(r"(Test[^.]+)\.conf", config_file).group(1)
+  test_name = re.search(r"retry_locations-(.+?)\.conf", config_file).group(1)
 
   return test_name
 
@@ -80,7 +67,10 @@ def run_mvn_install_command(target_root_dir):
   """
   ### mvn compile
 
-  cmd = ["mvn", "-fn", "-DskipTests", "clean", "compile"]
+  if "hive" not in target_root_dir:
+    cmd = ["mvn", "-fn", "-Drat.numUnapprovedLicenses=20000", "-B", "-DskipTests", "clean", "compile"]
+  else:
+    cmd = ["mvn", "-fn", "-Drat.numUnapprovedLicenses=20000", "-Pdist", "-B", "-DskipTests", "clean", "package"]
 
   print(f"// -------------------------------------------------------------------------- //")
   print(f"Executing command: {' '.join(cmd)}", flush=True)
@@ -89,14 +79,17 @@ def run_mvn_install_command(target_root_dir):
   
   print(f"Status: {result.returncode}", flush=True)
   print(f"// -------------------------------------------------------------------------- //")
-  
+
   log_file_path = os.path.join(target_root_dir, LOG_FILE_NAME)
   with open(log_file_path, "a", encoding="utf-8") as outfile:
-    outfile.write(remove_ansi_escape_codes(result.stdout.decode('utf-8')))
-    outfile.write(remove_ansi_escape_codes((result.stderr.decode('utf-8'))))
+    outfile.write(result.stdout.decode('utf-8'))
+    outfile.write((result.stderr.decode('utf-8')))
 
   #### mvn install
-  cmd = ["mvn", "-fn", "-DskipTests", "install"]
+  if "hive" not in target_root_dir:
+    cmd = ["mvn", "-fn", "-Drat.numUnapprovedLicenses=20000", "-B", "-DskipTests", "install"]
+  else:
+    cmd.append("-Pdist")
   
   print(f"// -------------------------------------------------------------------------- //")
   print(f"Executing command: {' '.join(cmd)}", flush=True)
@@ -105,11 +98,11 @@ def run_mvn_install_command(target_root_dir):
   
   print(f"Status: {result.returncode}", flush=True)
   print(f"// -------------------------------------------------------------------------- //")
-  
+
   log_file_path = os.path.join(target_root_dir, LOG_FILE_NAME)
   with open(log_file_path, "a", encoding="utf-8") as outfile:
-    outfile.write(remove_ansi_escape_codes(result.stdout.decode('utf-8')))
-    outfile.write(remove_ansi_escape_codes((result.stderr.decode('utf-8'))))
+    outfile.write(result.stdout.decode('utf-8'))
+    outfile.write(result.stderr.decode('utf-8'))
 
 
 def run_command_with_timeout(cmd, dir_path):
@@ -123,8 +116,11 @@ def run_command_with_timeout(cmd, dir_path):
   Returns:
     subprocess.CompletedProcess: The result of the command execution.
   """
-  result = subprocess.run(cmd, cwd=dir_path, shell=False, capture_output=True, timeout=TIMEOUT)
-  return result
+  try:
+    result = subprocess.run(cmd, cwd=dir_path, shell=False, capture_output=True, timeout=TIMEOUT)
+    return result
+  except subprocess.TimeoutExpired:
+    return None
 
 
 def run_mvn_test_command(target_root_dir, mvn_parameters):
@@ -151,8 +147,11 @@ def run_mvn_test_command(target_root_dir, mvn_parameters):
     config_file, test_name = cmd_queue.popleft()
     log_file = get_log_file_name(target_root_dir, config_file)
     
-    cmd = ["mvn", f"-DconfigFile={config_file}", f"-Dtest={test_name}", f"-T{max_threads}", "-fn", "surefire:test"]
-  
+    if "hive" not in target_root_dir:
+      cmd = ["mvn", "-B", "-Drat.numUnapprovedLicenses=20000", f"-DconfigFile={config_file}", f"-Dtest={test_name}", f"-T{max_threads}", "-fn", "surefire:test"]
+    else:
+      cmd = ["mvn", "-B", "-Drat.numUnapprovedLicenses=20000", f"-DconfigFile={config_file}", f"-Dtest={test_name}", "-fn", "-Pdist", "surefire:test"]
+    
     print(f"// -------------------------------------------------------------------------- //")
     print(f"Job count: {counter} / {total_cmds}", flush=True)
     print(f"Executing command: {' '.join(cmd)}")
@@ -161,11 +160,17 @@ def run_mvn_test_command(target_root_dir, mvn_parameters):
 
     result = run_command_with_timeout(cmd, target_root_dir)
 
-    print(f"Status: {result.returncode}", flush=True)
-    print(f"// -------------------------------------------------------------------------- //")
-    with open(log_file, "w") as outfile:
-      outfile.write(remove_ansi_escape_codes(result.stdout.decode('utf-8')))
-      outfile.write(remove_ansi_escape_codes(result.stderr.decode('utf-8')))
+    if result is not None:
+      print(f"Status: {result.returncode}", flush=True)
+      print(f"// -------------------------------------------------------------------------- //")
+
+      with open(log_file, "a", encoding="utf-8") as outfile:
+        outfile.write(result.stdout.decode('utf-8'))
+        outfile.write(result.stderr.decode('utf-8'))
+    
+    else:
+      print(f"Status: timeout -- TimeoutExpired exception", flush=True)
+      print(f"// -------------------------------------------------------------------------- //")
 
 
 def append_log_files(target_root_dir):

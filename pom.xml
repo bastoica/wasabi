@@ -65,7 +65,7 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
       <dependency>
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
-        <version>1.16.0</version> <!-- Replace with the latest version available -->
+        <version>1.16.0</version>
       </dependency>
       <dependency>
         <groupId>org.assertj</groupId>
@@ -78,7 +78,38 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
         <artifactId>zookeeper</artifactId>
         <version>3.9.0</version>
       </dependency>
+      <dependency>
+        <groupId>org.apache.hbase</groupId>
+        <artifactId>hbase-client</artifactId> <!-- To import org.apache.hadoop.hbase.replication.ReplicationException -->
+        <version>3.0.0-beta-1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-yarn-server-resourcemanager</artifactId> <!-- To import org.apache.hadoop.yarn.server.resourcemanager.scheduler.constraint.InvalidAllocationTagsQueryException -->
+        <version>3.3.5</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hive</groupId>
+        <artifactId>hive-metastore</artifactId> <!-- To import org.apache.hadoop.hive.metastore.api.NoSuchLockException, org.apache.hadoop.hive.metastore.api.NoSuchTxnException, and org.apache.hadoop.hive.metastore.api.MetaException -->
+        <version>4.0.0-beta-1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hive</groupId>
+        <artifactId>hive-service</artifactId> <!-- To import org.apache.hive.service.cli.HiveSQLException and org.apache.hive.service.ServiceException -->
+        <version>4.0.0-beta-1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hive</groupId>
+        <artifactId>hive-exec</artifactId>  <!-- To import org.apache.hadoop.hive.ql.lockmgr.LockException -->
+        <version>4.0.0-beta-1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.thrift</groupId>
+        <artifactId>libthrift</artifactId> <!-- To import org.apache.thrift.transport.TTransportException and org.apache.thrift.TException -->
+        <version>0.15.0</version>
+      </dependency>
     </dependencies>
+
 
   <repositories>
     <!--
@@ -208,4 +239,3 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
   </build>
 
 </project>
-
