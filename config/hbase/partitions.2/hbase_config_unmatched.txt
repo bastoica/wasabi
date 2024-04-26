@@ -1,0 +1,12 @@
+================= Statistics ================
+Total matched retried methods: 7
+Unmatched retried method: 
+        HBaseServerBase.java:348
+        ModifyPeerProcedure.java:259
+        ReplicationSource.java:555
+        ReplicationSource.java:565
+        ReplicationSourceShipper.java:195
+        SnapshotRegionCallable.java:58
+Unmatched tests: 
+Tests matched multiple times: 
+=================    |||    =================

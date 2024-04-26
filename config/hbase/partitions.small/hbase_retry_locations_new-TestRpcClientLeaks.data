@@ -1,2 +1,0 @@
-Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
-https://github.com/apache/hbase/tree//e1ad781//hbase-client/src/main/java/org/apache/hadoop/hbase/ipc/BlockingRpcConnection.java#L461!!!org.apache.hadoop.hbase.ipc.BlockingRpcConnection.setupIOstreams!!!org.apache.hadoop.hbase.ipc.BlockingRpcConnection.writeConnectionHeader!!!BlockingRpcConnection.java:501!!!java.net.SocketException
