@@ -1,0 +1,2 @@
+Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
+https://github.com/apache/hive/tree//e427ce0//ql/src/java/org/apache/hadoop/hive/ql/lockmgr/DbLockManager.java#L114!!!org.apache.hadoop.hive.ql.lockmgr.DbLockManager.lock!!!org.apache.hadoop.hive.metastore.IMetaStoreClient.checkLock!!!DbLockManager.java:118!!!org.apache.hadoop.hive.metastore.api.NoSuchLockException

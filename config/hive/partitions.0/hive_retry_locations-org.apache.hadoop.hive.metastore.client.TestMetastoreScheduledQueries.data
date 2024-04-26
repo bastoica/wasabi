@@ -1,0 +1,2 @@
+Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
+https://github.com/apache/hive/tree//e427ce0//standalone-metastore/metastore-common/src/main/java/org/apache/hadoop/hive/metastore/HiveMetaStoreClient.java#L753!!!org.apache.hadoop.hive.metastore.HiveMetaStoreClient.open!!!org.apache.hadoop.hive.metastore.HiveMetaStoreClient.createBinaryClient!!!HiveMetaStoreClient.java:800!!!org.apache.thrift.transport.TTransportException

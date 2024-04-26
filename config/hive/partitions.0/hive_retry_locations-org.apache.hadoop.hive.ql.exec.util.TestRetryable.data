@@ -1,0 +1,2 @@
+Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
+https://github.com/apache/hive/tree//e427ce0//ql/src/java/org/apache/hadoop/hive/ql/exec/util/Retryable.java#L71!!!org.apache.hadoop.hive.ql.exec.util.Retryable.executeCallable!!!org.apache.hadoop.hive.metastore.utils.SecurityUtils.reloginExpiringKeytabUser!!!Retryable.java:74!!!org.apache.hadoop.hive.metastore.api.MetaException
