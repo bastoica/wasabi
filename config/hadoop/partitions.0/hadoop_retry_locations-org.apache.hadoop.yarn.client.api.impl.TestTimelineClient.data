@@ -1,0 +1,2 @@
+Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
+https://github.com/apache/hadoop/tree//ee7d178//hadoop-yarn-project/hadoop-yarn/hadoop-yarn-common/src/main/java/org/apache/hadoop/yarn/client/api/impl/TimelineConnector.java#L342!!!org.apache.hadoop.yarn.client.api.impl.TimelineConnector$TimelineClientConnectionRetry.retryOn!!!org.apache.hadoop.yarn.client.api.impl.TimelineConnector$TimelineClientRetryOp.run!!!TimelineConnector.java:341!!!java.net.SocketException
