@@ -1,17 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License. See accompanying LICENSE file.
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -221,12 +208,6 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           <complianceLevel>11</complianceLevel>
           <encoding>UTF-8</encoding>
           <enablePreview>false</enablePreview>
-          <!--weaveDependencies>
-            <weaveDependency>
-              <groupId>org.aspectj</groupId>
-              <artifactId>aspectjweaver</artifactId>
-            </weaveDependency>
-          </weaveDependencies-->
         </configuration>
         <dependencies>
           <dependency>
@@ -244,6 +225,158 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>hadoop</id>
+      <activation>
+        <property>
+          <name>instrumentation.target</name>
+          <value>hadoop</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>dev.aspectj</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <includes>
+                    <include>**/InterceptHadoop.aj</include>
+                  </includes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>hive</id>
+      <activation>
+        <property>
+          <name>instrumentation.target</name>
+          <value>hive</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>dev.aspectj</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <includes>
+                    <include>**/InterceptHive.aj</include>
+                  </includes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>hbase</id>
+      <activation>
+        <property>
+          <name>instrumentation.target</name>
+          <value>hbase</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>dev.aspectj</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <includes>
+                    <include>**/InterceptHBase.aj</include>
+                  </includes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>cassandra</id>
+      <activation>
+        <property>
+          <name>instrumentation.target</name>
+          <value>cassandra</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>dev.aspectj</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <includes>
+                    <include>**/InterceptCassandra.aj</include>
+                  </includes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>elasticsearch</id>
+      <activation>
+        <property>
+          <name>instrumentation.target</name>
+          <value>elasticsearch</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>dev.aspectj</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <includes>
+                    <include>**/InterceptElasticSearch.aj</include>
+                  </includes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
 
