@@ -4,13 +4,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion> 
-    <groupId>edu.uchicago.cs.systems</groupId>
+  <modelVersion>4.0.0</modelVersion> 
+  <groupId>edu.uchicago.cs.systems</groupId>
 	<artifactId>wasabi</artifactId>
 	<description>Wasabi Fault Injection Instrumentation Library</description>
 	<name>Wasabi Library</name>
-    <version>1.0.0</version>
-    <packaging>jar</packaging>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
 
 	<licenses>
       <license>
@@ -22,20 +22,16 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 
   	<properties>
+      <configFile>default.conf</configFile>
       <aspectj.version>1.9.19</aspectj.version>
       <aspectj-maven.version>1.13.1</aspectj-maven.version>
-      <configFile>default.conf</configFile>
+
+      <hbase.version>3.0.0-beta-1</hbase.version>
+      <hadoop.version>3.3.5</hadoop.version>
+      <hive.version>4.0.0-beta-1</hive.version>
   	</properties>
    
 	<dependencies>
-
-      <!-- https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper -->
-      <dependency>
-          <groupId>org.apache.zookeeper</groupId>
-          <artifactId>zookeeper</artifactId>
-          <version>3.9.1</version>
-      </dependency>
-
       <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjrt</artifactId>
@@ -64,42 +60,49 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
       <dependency>
         <groupId>org.assertj</groupId>
       	<artifactId>assertj-core</artifactId>
-	    <version>3.20.2</version>
-    	<scope>test</scope>
+        <version>3.20.2</version>
+        <scope>test</scope>
       </dependency>
+      <!-- To import org.apache.zookeeper.KeeperException -->
       <dependency>
-        <groupId>org.apache.zookeeper</groupId> <!-- To import org.apache.zookeeper.KeeperException -->
+        <groupId>org.apache.zookeeper</groupId>
         <artifactId>zookeeper</artifactId>
-        <version>3.9.0</version>
+        <version>${zookeeper.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.apache.hbase</groupId>
-        <artifactId>hbase-client</artifactId> <!-- To import org.apache.hadoop.hbase.replication.ReplicationException -->
-        <version>3.0.0-beta-1</version>
-      </dependency>
+      <!-- To import org.apache.hadoop.yarn.server.resourcemanager.scheduler.constraint.InvalidAllocationTagsQueryException -->
       <dependency>
         <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-yarn-server-resourcemanager</artifactId> <!-- To import org.apache.hadoop.yarn.server.resourcemanager.scheduler.constraint.InvalidAllocationTagsQueryException -->
-        <version>3.3.5</version>
+        <artifactId>hadoop-yarn-server-resourcemanager</artifactId>
+        <version>${hadoop.version}</version>
       </dependency>
+      <!-- To import org.apache.hadoop.hbase.replication.ReplicationException -->
+      <dependency>
+        <groupId>org.apache.hbase</groupId>
+        <artifactId>hbase-client</artifactId>
+        <version>${hive.version}</version>
+      </dependency>
+      <!-- To import org.apache.hadoop.hive.metastore.api.NoSuchLockException, org.apache.hadoop.hive.metastore.api.NoSuchTxnException, and org.apache.hadoop.hive.metastore.api.MetaException -->
       <dependency>
         <groupId>org.apache.hive</groupId>
-        <artifactId>hive-metastore</artifactId> <!-- To import org.apache.hadoop.hive.metastore.api.NoSuchLockException, org.apache.hadoop.hive.metastore.api.NoSuchTxnException, and org.apache.hadoop.hive.metastore.api.MetaException -->
-        <version>4.0.0-beta-1</version>
+        <artifactId>hive-metastore</artifactId>
+        <version>${hive.version}</version>
       </dependency>
+      <!-- To import org.apache.hive.service.cli.HiveSQLException and org.apache.hive.service.ServiceException -->
       <dependency>
         <groupId>org.apache.hive</groupId>
-        <artifactId>hive-service</artifactId> <!-- To import org.apache.hive.service.cli.HiveSQLException and org.apache.hive.service.ServiceException -->
-        <version>4.0.0-beta-1</version>
+        <artifactId>hive-service</artifactId>
+        <version>${hive.version}</version>
       </dependency>
+      <!-- To import org.apache.hadoop.hive.ql.lockmgr.LockException -->
       <dependency>
         <groupId>org.apache.hive</groupId>
-        <artifactId>hive-exec</artifactId>  <!-- To import org.apache.hadoop.hive.ql.lockmgr.LockException -->
-        <version>4.0.0-beta-1</version>
+        <artifactId>hive-exec</artifactId> 
+        <version>${hive.version}</version>
       </dependency>
+      <!-- To import org.apache.thrift.transport.TTransportException and org.apache.thrift.TException -->
       <dependency>
         <groupId>org.apache.thrift</groupId>
-        <artifactId>libthrift</artifactId> <!-- To import org.apache.thrift.transport.TTransportException and org.apache.thrift.TException -->
+        <artifactId>libthrift</artifactId>
         <version>0.15.0</version>
       </dependency>
     </dependencies>
