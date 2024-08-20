@@ -1,52 +1,47 @@
-WASABI is a fault injection tool written in AspectJ. Integrating, building, and testing instructions to follow.
+WASABI is a fault injection AspectJ tool, designed to inject faults into Java applications to help trigger and identify retry bugs. This README provides instructions on setting up, instrumenting (weaving), and testing applications with WASABI.
 
-## "Weaving" WASABI through a target application
+## Directory Structure
 
-### Gradle build system
+WASABI requires a specific directory structure to work correctly. The expected layout is as follows:
 
-For Gradle post-compile time weaving, see [GRADLE-WEAVING.md](GRADLE-WEAVING.md)
-
-### Maven build system
-
-Instrumenting a target application with AspectJ is called weaving. AspectJ weaving can be achieved in multiple ways. For this project we only discuss weaving when building both WASABI and the target application using Maven.
-
-**Step 1:** Make sure the directory structure looks as illustrated in the diagram below. Note that the target application and wasabi should be located in the same directory.
-```
+```plaintext
 ~/wasabi-framework
-               |
-               |
-               +--- benchmarks/target_application
-               |                              |
-               |                              + ...
-               |                              |
-               |                              + pom.xml
-               |
-               +--- wasabi
-                        |
-                        + ...
-                        |
-                        +--- config
-                        |
-                        +--- src
-                        |
-                        +--- pom.xml
+   ├── benchmarks/
+   │   └── target_application/
+   │       ├── ... (other directories and files)
+   │       └── pom.xml
+   └── wasabi/
+       ├── config/
+       ├── src/
+       └── pom.xml
 ```
 
-**Step 2:** Build and install WASABI by running the following commands:
-```
+## Installation Instructions
+### Dependencies
+Ensure the following dependencies are installed:
+* Maven (version >= 3.6.0)
+* Gradle (version >= 6.0)
+* Java JDK (versions 8 and 11)
+* AspectJ (version 1.9.19)
+
+### Building WASABI
+To build and install WASABI, run the following commands from the `./wasabi` directory:
+```bash
 cd /path/to/wasabi
-mvn clean compile && mvn install 2>&1 | tee wasabi_build.log
-```
-The `-DconfigFile` parameter specifies the location of the configuration file. The `tee` command saves any messages printed on the console to a file. Sometimes `build.log` is not `UTF-8` compliant, so simply run the following script to improve readability:
-```
-perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" build.log
+mvn clean compile && mvn install -B 2>&1 | tee wasabi-build.log
 ```
 
-**Step 3:** Modify the target application's `pom.xml` build configuration file to (1) add WASABI as a dependency, and (2) instruct Maven to perform AspectJ weaving. This requires to change the `pom.xml` by adding:
-```
+## Instrumentation (Weaving) Instructions
+### Using Maven
+1. **Setup directory structure**. Ensure that both WASABI and the target application are in the same directory structure as illustrated above.
+
+2. **Build and install WASABI**. See the "Building WASABI" section above.
+
+3. **Modify the target application's pom.xml**. Add WASABI as a dependency and configure the AspectJ Maven plugin.
+
+```xml
 <dependencies>
-  
-  ...
+  <!-- Existing dependencies -->
   
   <!-- Wasabi Fault Injection Library -->
   <dependency>
@@ -59,106 +54,200 @@ perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" build.log
     <artifactId>wasabi</artifactId>
     <version>${wasabi.version}</version>
   </dependency>
-  
-  ...
-  
 </dependencies>
 
-...
-
 <properties>
-  
-  ...
-
-  <!-- Wasabi Fault Injection Library -->
+  <!-- Wasabi Version -->
   <aspectj.version>1.9.19</aspectj.version>
   <aspectj-maven.version>1.13.1</aspectj-maven.version>
   <wasabi.version>1.0.0</wasabi.version>
-  
-  ... 
-
 </properties>
-
-...
 
 <build>
   <plugins>
-    
-    ...
-    
-    <!-- Wasabi Fault Injection Library -->
+    <!-- Wasabi Fault Injection Plugin -->
     <plugin>
       <groupId>dev.aspectj</groupId>
-        <artifactId>aspectj-maven-plugin</artifactId>
-        <version>${aspectj-maven.version}</version>
-        <configuration>
-          <aspectLibraries>
-            <aspectLibrary>
-              <groupId>edu.uchicago.cs.systems</groupId>
-              <artifactId>wasabi</artifactId>
-            </aspectLibrary>
-          </aspectLibraries>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-compile</goal>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <source>11</source>
-              <target>11</target>
-              <enablePreview>false</enablePreview> 
-              <showWeaveInfo>true</showWeaveInfo>
-              <verbose>true</verbose>
-              <Xlint>unmatchedSuperTypeInCall=ignore,adviceDidNotMatch=ignore,typeNotExposedToWeaver=ignore,uncheckedAdviceConversion=ignore,invalidAbsoluteTypeName=ignore,cantFindType=ignore</Xlint>
-                </configuration>
-              </execution>
-        </executions>
-        <dependencies>
-           <dependency>
-             <groupId>org.aspectj</groupId>
-             <artifactId>aspectjtools</artifactId>
-             <version>${aspectj.version}</version>
-           </dependency>
-         </dependencies>
-      </plugin>
-
-  ...
-
+      <artifactId>aspectj-maven-plugin</artifactId>
+      <version>${aspectj-maven.version}</version>
+      <configuration>
+        <aspectLibraries>
+          <aspectLibrary>
+            <groupId>edu.uchicago.cs.systems</groupId>
+            <artifactId>wasabi</artifactId>
+          </aspectLibrary>
+        </aspectLibraries>
+        <showWeaveInfo>true</showWeaveInfo>
+        <verbose>true</verbose>
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>compile</goal>
+            <goal>test-compile</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
   </plugins>
 </build>
 ```
 
-Note to add WASABI as a dependency under the `<dependencies>` tag, not the `<dependencyManager>` which is only used to specify versions without actually pulling in dependencies. Also, create any tags that don't already exit (e.g. `<dependencies>`, `<properties>`, etc.). 
-
-**Step 4:** Finally, to weave WASABI into the target application, first build the target application: 
-```
+4. **Instrument the target application**. To weave WASABI into the target application, run the following commands:
+```bash
 cd /path/to/target_application
-mvn clean compile -T [NUMBER_OF_THREADS] -fn -DskipTests && mvn install -fn -DskipTests 2>&1 | tee build.log
+mvn clean compile -T 8 -fn -DskipTests && mvn install -fn -DskipTests -B 2>&1 | tee wasabi-build.log
 ```
 
-If weaving is successful, message similar to those below should apear in the build logs:
-```
-[INFO] --- aspectj-maven-plugin:1.13.1:compile (default) @ hadoop-common ---
-[INFO] Showing AJC message detail for messages of types: [error, warning, fail]
-[INFO] Join point 'method-execution(void org.apache.hadoop.metrics2.util.SampleStat.reset())' in Type 'org.apache.hadoop.metrics2.util.SampleStat' (SampleStat.java:40) advised by before advice from 'edu.uchicago.cs.systems.wasabi.ThrowableCallback' (wasabi-1.0.0.jar!ThrowableCallback.class:48(from ThrowableCallback.aj))
-[INFO] Join point 'method-execution(void org.apache.hadoop.metrics2.util.SampleStat.reset(long, double, double, org.apache.hadoop.metrics2.util.SampleStat$MinMax))' in Type 'org.apache.hadoop.metrics2.util.SampleStat' (SampleStat.java:48) advised by before advice from 'edu.uchicago.cs.systems.wasabi.ThrowableCallback' (wasabi-1.0.0.jar!ThrowableCallback.class:48(from ThrowableCallback.aj))
-```
-Compiling and installing the target application prevents the need to re-compile when changes are made to WASABI or running individual tests. 
-
-Finally, to run the entire test suite:
-```
-mvn surefire:test -fn -DconfigFile="/absolute/path/to/wasabi-framework/wasabi/config/[CONFIG_FILE].conf" 2>&1 | tee test.log
+Successful weaving should produce logs similar to:
+```bash
+[INFO] Join point 'method-execution(...)' in Type 'org.apache.hadoop.metrics2.util.SampleStat'...
 ```
 
-Or, to run a specific test:
+### Using Gradle
+1. **Temporary modifications to verify successful instrumentation/weaving**. Modify Interceptor.aj in the WASABI source to print a message confirming successful instrumentation/weaving:
+```Java
+after() : throwableMethods() {
+  StackSnapshot stackSnapshot = new StackSnapshot();
+  this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, 
+  String.format("[wasabi] Throwable function intercepted at %s", stackSnapshot.toString()));
+}
 ```
-mvn surefire:test -T [NUMBER_OF_THREADS] -fn -DconfigFile="/absolute/path/to/wasabi-framework/wasabi/config/[CONFIG_FILE].conf" -Dtest=[NAME_OF_TEST] 2>&1 | tee test.log
+
+2. **Building and installing WASABI**. See the "Building WASABI" section above. Note that a generated `.jar` file will be located in `./wasabi/target/`.
+
+3. **Changes to the target's pom.xml file**. First, add dependenceis:
+```xml
+buildscript {
+  dependencies {
+    classpath "org.aspectj:aspectjrt:1.9.19"
+    classpath "org.hamcrest:hamcrest-core:1.3"
+    classpath "junit:junit:4.13.2"
+  }
+}
 ```
 
-The `surefire:[maven_phase]` parameter instructs the Maven build system to only execute the testing phase, without re-compiling/re-building the target application.
+Second, add the AspectJ weaving plugin:
+```xml
+plugins {
+  id "io.freefair.aspectj.post-compile-weaving" version "8.1.0"
+  id "java"
+}
+```
 
-The `-fn` parameter prevents the build process to stop at the first failure. This is useful if not all components of the target application can be built/tested.
+Third, add the following AspectJ dependnecies:
+```xml
+dependencies {
+  implementation "org.aspectj:aspectjtools:1.9.19"
+  testImplementation "org.aspectj:aspectjtools:1.9.19"
+  implementation "org.aspectj:aspectjrt:1.9.19"
+  testImplementation 'junit:junit:4.13.2'
+  aspectj files("wasabi-files/aspectjtools-1.9.19.jar", "wasabi-files/wasabi-1.0.0.jar")
+  testAspect files("wasabi-files/wasabi-1.0.0.jar")
+}
+```
 
-The `-T` parameter control the number of threads used to build/test the application. This command assumes the machine has only `8` cores, but can be adapted based on the specifications. 
+Forth, add an AspectJ configuration block:
+```xml
+configurations {
+  aspectj
+}
+```
+
+Finally, modify the compile task blocks:
+```xml
+compileJava {
+  ajc {
+    enabled = true
+    classpath.setFrom configurations.aspectj
+    options {
+      aspectpath.setFrom configurations.aspect
+    }
+  }
+}
+
+compileTestJava {
+  ajc {
+    enabled = true
+    classpath.setFrom configurations.aspectj
+    options {
+      aspectpath.setFrom configurations.testAspect
+    }
+  }
+}
+```
+
+4. **Build and Test**. Use Gradle commands to build and verify weaving:
+```bash
+gradle -i assemble 2>&1 | tee wasabi-build.log
+gradle -i test 2>&1 | tee wasabi-test.log
+```
+
+## Running Tests and Usage
+### Configuration files
+
+A `.conf` file provides information to WASABI about where to inject faults and what injection policy to use. These files have the following structure:
+```plaintext
+retry_data_file: //absolute//path//to//data//file//[TARGET_APPLICATION]_retry_locations_[TEST_NAME].data
+injection_policy: [INJECTION_POLICY]
+max_injection_count: [INJECTION_ATTEMPTS_BOUND]
+```
+
+The `injection_policy` parameter takes one of the following values:
+    *`no-injection`: This option ensures that Wasabi does not perform any injection. When this option is selected, it's recommended to set max_injection_count to -1.
+    * `forever`: With this option, Wasabi will continue to inject faults indefinitely. Similarly, it's advised to set max_injection_count to -1.
+    * `max-count`: When this option is selected, you can specify a positive integer for max_injection_count, indicating the upper limit of injections Wasabi should perform.
+Also, note that the `retry_data_file` parameters needs to be an absolute path.
+
+A `.data` file describes the retry locations and their respective exceptions to be injected by Wasabi. It has the following format:
+
+```csv
+Retry location!!!Enclosing method!!!Retried method!!!Injection site!!!Exception
+https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790!!!org.apache.hadoop.ipc.Client$Connection.setupIOstreams!!!org.apache.hadoop.ipc.Client$Connection.writeConnectionContext!!!Client.java:831!!!java.net.SocketException
+https://github.com/apache/hadoop/tree//ee7d178//hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/namenode/ha/EditLogTailer.java#L609!!!org.apache.hadoop.hdfs.server.namenode.ha.EditLogTailer$MultipleNameNodeProxy.getActiveNodeProxy!!!org.apache.hadoop.ipc.RPC.getProtocolVersion!!!N/A!!!java.io.IOException
+https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/RPC.java#L419!!!org.apache.hadoop.ipc.RPC.waitForProtocolProxy!!!org.apache.hadoop.ipc.RPC.getProtocolProxy!!!RPC.java:421!!!java.net.ConnectException
+...
+```
+
+where
+
+* `Retry location` indicates the program locations of a retry (e.g. `https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790`)
+* `Enclosing method` indicates the method from where the retry location is called (e.g. `org.apache.hadoop.ipc.Client$Connection.setupIOstreams`)
+* `Retried method` indicates the method inside the retry logic ought to be retried (e.g. `org.apache.hadoop.ipc.Client$IpcStreams.setSaslClient`)
+* `Injection site` indicates the source location (source file and line of code) where a retried method is called. Also, this represents the program location where Wasabi injects exceptions.
+* `Exception` indicates the exception that Wasabi should throw at that location (e.g. `java.io.SocketException`)
+
+### Configuring Wasabi to inject exceptions at a single location per test
+
+Wasabi can be configured to inject an exception at a single injection site for a particular test. First, users need to create custom `.conf` and `.data` files, as follows:
+* First, create a `.data` file that includes only that particular injection site. For example, this is a `.data` file instructing Wasabi to inject exceptions only at `Client.java#L790` (e.g. `retry_locations_client790.data`):
+   ```csv
+   Retry location!!!Enclosing method!!!Retried method!!!Injection site!!!Exception
+   https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790!!!org.apache.hadoop.ipc.Client$Connection.setupIOstreams!!!org.apache.hadoop.ipc.Client$Connection.writeConnectionContext!!!Client.java:831!!!java.net.SocketException
+   ```
+* Second, create a corresponding ``retry_locations_client790.conf`:
+   ```plaintext
+   retry_data_file: /absolute/path/to/data/file/retry_locations_client790.data
+   injection_policy: [INJECTION_POLICY]
+   max_injection_count: [INJECTION_ATTEMPTS_BOUND]
+   ```
+   We recommend using the "max-count" injection policy with a positive threshold adapted to the type of bugs the user attempts to trigger. For example, a large threshold (e.g. >100) works best for "missing cap", whereas "missing backoff" bugs only required a moderate threshold (e.g. 10).
+
+
+```plaintext
+retry_data_file: /absolute/path/to/data/file/[TARGET_APPLICATION]_retry_locations_[TEST_NAME].data
+injection_policy: max-count
+max_injection_count: 10
+```
+
+### Running tests
+
+To run the entire test suite of the target application after instrumenting/weavinb WASABI:
+```bash
+mvn surefire:test -fn -DconfigFile="//absolute//path//to//wasabi-framework//wasabi/config/[CONFIG_FILE].conf" -B 2>&1 | tee wasabi-test.log
+```
+
+To run a specific tests:
+```bash
+mvn surefire:test -T 8 -fn -DconfigFile="//absolute//path//to//wasabi-framework//wasabi/config/[CONFIG_FILE].conf" -Dtest=[NAME_OF_TEST] -B 2>&1 | tee wasabi-test.log
+```
