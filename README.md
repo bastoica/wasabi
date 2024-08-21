@@ -33,11 +33,11 @@ Ensure the following dependencies are installed:
 * Java JDK (versions 8 and 11)
 * AspectJ (version 1.9.19)
 
-### Building WASABI
+### Building and Installing WASABI
 To build and install WASABI, run the following commands from the `./wasabi` directory:
 ```bash
-cd /path/to/wasabi
-mvn clean compile && mvn install -B 2>&1 | tee wasabi-build.log
+cd /path/to/wasabi/root/directory
+mvn clean install -U -Dinstrumentation.target=[TARGET_APP] -B 2>&1 | tee wasabi-install.log
 ```
 
 ## Instrumentation (Weaving) Instructions
