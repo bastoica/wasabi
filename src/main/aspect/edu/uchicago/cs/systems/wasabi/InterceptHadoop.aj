@@ -28,7 +28,7 @@ import edu.uchicago.cs.systems.wasabi.StackSnapshot;
 import edu.uchicago.cs.systems.wasabi.InjectionPoint;
 import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 
-public aspect Interceptor {
+public aspect InterceptHadoop {
   private WasabiContext wasabiCtx = null;
 
   private static final String UNKNOWN = "UNKNOWN";
