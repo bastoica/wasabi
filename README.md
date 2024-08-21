@@ -5,15 +5,24 @@ WASABI is a fault injection AspectJ tool, designed to inject faults into Java ap
 WASABI requires a specific directory structure to work correctly. The expected layout is as follows:
 
 ```plaintext
-~/wasabi-framework
-   ├── benchmarks/
-   │   └── target_application/
-   │       ├── ... (other directories and files)
-   │       └── pom.xml
-   └── wasabi/
-       ├── config/
-       ├── src/
-       └── pom.xml
+~/sosp24-ae
+   ├── wasabi/
+   │   ├── config/
+   │   ├── src/
+   │   ├── utils/
+   ...
+   │   └── pom.xml
+   └── benchmarks/
+       ├── target_app_1/
+       │   ├── ... (other directories and files)
+       │   └── pom.xml
+       ├── target_app_2/
+       │   ├── ... (other directories and files)
+       │   └── pom.xml
+       ...
+       └── target_app_n/
+           ├── ... (other directories and files)
+           └── pom.xml
 ```
 
 ## Installation Instructions
