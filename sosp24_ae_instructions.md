@@ -35,35 +35,9 @@ This instalation guide assumes users are running Unix-based operating system wit
 
 ### System Requirements
 
-WASABI was developed and evaluated on a Ubuntu 22.04 distribution and the surrounding automation assumes `bash` as the default shell. To check these requirements, users can run
-```bash
-lsb_release -a
-```
-which should yield
-```bash
-Distributor ID: Ubuntu
-Description:    Ubuntu 22.04.4 LTS
-Release:        22.04
-Codename:       jammy
-```
-and
-```bash
-bash --version
-```
-which should yield
-```bash
-GNU bash, version 5.1.16(1)-release (x86_64-pc-linux-gnu)
-Copyright (C) 2020 Free Software Foundation, Inc.
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+WASABI was developed and evaluated on a Ubuntu 22.04 distribution and the surrounding automation assumes `bash` as the default shell, although we expect it to run on other UNIX distributions and shells with minimal changes.
 
-This is free software; you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-
-```
-
-Both WASABI and its benchmarks are primarily built using Java 11, exce[t Hive withch requires Java 8. 
-
-The default build system is Maven (3.6.3), except for ElasticSearch that requires Gradle 4.4.1 
+Both WASABI and its benchmarks are primarily built using Java 11, except Hive wich requires Java 8. The default build system is Maven (3.6.3), except for ElasticSearch that requires Gradle 4.4.1 
 
 
 ### Installing Prerequisites
