@@ -31,15 +31,96 @@ The working directory structure should now look like this:
        └── pom.xml
 ```
 
+This instalation guide assumes users are running Unix-based operating system with `bash` as the default shell.
 
-WASABI relies on the following prerequisits to run:
+### System Requirements
 
-Users can either install them manually using `apt getp` or run the `prereqs.sh` provided by our artifact:
+WASABI was developed and evaluated on a Ubuntu 22.04 distribution
+```bash
+$ lsb_release -a
+Distributor ID: Ubuntu
+Description:    Ubuntu 22.04.4 LTS
+Release:        22.04
+Codename:       jammy
+```
+and the surrounding automation assumes `bash` as the default shell
+```bash
+bash --version
+GNU bash, version 5.1.16(1)-release (x86_64-pc-linux-gnu)
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+
+This is free software; you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+```
+
+Both WASABI and its benchmarks are primarily built using Java 11, exce[t Hive withch requires Java 8. 
+
+The default build system is Maven (3.6.3), except for ElasticSearch that requires Gradle 4.4.1 
+
+
+### Installing Prerequisites
+
+Users can either install them manually using `apt-get` or run the `prereqs.sh` provided by our artifact:
 ```
 cd ~/sosp24-ae/wasabi/utils
 sudo ./prereqs.sh
 ```
 Note that this command requires `sudo` privileges.
+
+To check the installation, users can verify the versions of Maven
+```bash
+mvn -v
+
+Apache Maven 3.6.3
+Maven home: /usr/share/maven
+Java version: 11.0.24, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "6.5.0-27-generic", arch: "amd64", family: "unix"
+```
+and Gradle
+```bash
+gradle -v
+
+------------------------------------------------------------
+Gradle 4.4.1
+------------------------------------------------------------
+
+Build time:   2012-12-21 00:00:00 UTC
+Revision:     none
+
+Groovy:       2.4.21
+Ant:          Apache Ant(TM) version 1.10.12 compiled on January 17 1970
+JVM:          11.0.24 (Ubuntu 11.0.24+8-post-Ubuntu-1ubuntu322.04)
+OS:           Linux 6.5.0-27-generic amd64
+```
+
+Finally, users need to manually switch to Java 11
+```bash
+$ sudo update-alternatives --config java
+```
+which would redirect users to the following menu:
+```bash
+There are 3 choices for the alternative java (providing /usr/bin/java).
+
+  Selection    Path                                            Priority   Status
+------------------------------------------------------------
+  0            /usr/lib/jvm/java-17-openjdk-amd64/bin/java      1711      auto mode
+* 1            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1111      manual mode
+  2            /usr/lib/jvm/java-17-openjdk-amd64/bin/java      1711      manual mode
+  3            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java   1081      manual mode
+```
+
+Also, users need to set the `JAVA_HOME` environment variable to the appropriate path to the Java 11 directory in `/usr/lib`:
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
+```
+and check this operation was successful
+```bash
+echo $JAVA_HOME
+/usr/lib/jvm/java-1.11.0-openjdk-amd64
+```
 
 ## Reproducing Bugs Found Through Fault Injection
 
