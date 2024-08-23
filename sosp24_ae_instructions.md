@@ -36,14 +36,14 @@ WASABI relies on the following prerequisits to run:
 
 Users can either install them manually using `apt getp` or run the `prereqs.sh` provided by our artifact:
 ```
-cd ~/wasabi/utils
+cd ~/sosp24-ae/wasabi/utils
 sudo ./prereqs.sh
 ```
 Note that this command requires `sudo` privileges.
 
 ## Reproducing Bugs Found Through Fault Injection
 
-### Minimal Example: Reproducing HDFS-17590 (~1h, 5min human effort)
+### Minimal Example: Reproducing HDFS-17590 (1.5h, 15min human effort)
 
 We prepared a minimal example to familiarize users with WASABI. Users can either run individual commands one-by-one (highly recommended as to catch inconsistencies early), or use our automated scripts.
 
@@ -53,27 +53,46 @@ To reproduce [HDFS-17590](https://issues.apache.org/jira/browse/HDFS-17590) a pr
    
 2. Build and install WASABI by running the following commands:
 ```
-cd ~/wasabi/
+cd ~/sosp24-ae/wasabo
 mvn clean install -U -fn -B -Dinstrumentation.target=hadoop 2>&1 | tee wasabi-install.log
 ```
 
-3. Clone Hadoop (note: HDFS is part of Hadoop) and check out version/commit `2f1718c` by running
+3. Clone Hadoop (note: HDFS is part of Hadoop),
 ```bash
-cd ~/sosp24-ae
+cd ~/sosp24-ae/
+git clone https://github.com/apache/hadoop
+```
+and check out version/commit `2f1718c`:
+```bash
+cd ~/sosp24-ae/benchmarks/hadoop
 git checkout 2f1718c36345736b93493e4e79fae766ea6d3233
+```
+Users can check whether `2f1718c` was successfully checked out by running
+```bash
+git log
+```
+and checking the output
+```
+commit 2f1718c36345736b93493e4e79fae766ea6d3233 (HEAD)
+Author: Takanobu Asanuma <tasanuma@apache.org>
+Date:   Wed Jan 31 14:30:35 2024 +0900
+
+    HADOOP-19056. Highlight RBF features and improvements targeting version 3.4. (#6512) Contributed by Takanobu Asanuma.
+    
+    Signed-off-by: Shilun Fan <slfan1989@apache.org>
+
 ```
 
 4. Build and install Hadoop using the following commands. This is necessary to download and install any missing dependencies that might break Hadoop's test suite during fault injection.
 ```bash
-cd [/absolute/path/to/hadoop/repo]
+cd ~/sosp24-ae/benchmarks/hadoop
 mvn install -U -fn -B -DskipTests 2>&1 | tee wasabi-install.log
 ```
 
 5. Copy a modified `pom.xml` file that allows WASABI to instrument (weave) Hadoop by running
 ```bash
-cd [/absolute/path/to/hadoop/repo]
-cp ./benchmarks/hadoop/pom.xml ./benchmarks/hadoop/pom-original.xml
-cp ./config/hadoop/pom-hadoop.xml ./benchmarks/hadoop/pom.xml
+cp pom.xml pom-original.xml
+cp ~/sosp24-ae/wasabi/config/hadoop/pom-hadoop.xml ./benchmarks/hadoop/pom.xml
 ```
 Note that these commmands are making a copy of the original `pom.xml` and replace it with a slightly edited version that instructs the AJC compiler to instrument (weave) WASABI. Also, these alterations are specific to version `2f1718c`. Checking out another Hadoop commit ID requires adjustments. We provide instructions on how to adapt an original `pom.xml`, [here](README.md#instrumentation-weaving-instructions).
 
@@ -82,12 +101,26 @@ Note that these commmands are making a copy of the original `pom.xml` and replac
 mvn clean install -fn -B -Dinstrumentation.target=hadoop 2>&1 | tee wasabi-install.log
 ```
 
-7. Run the tests triggering the bug by using
+7. Run the bug-triggering tests with fault injection
 ```bash
-mvn surefire:test -fn -B -DconfigFile="[/absolute/path/to/wasabi/repo]/config/min-example/example.conf" -Dtest=[NAME_OF_TEST] 2>&1 | tee wasabi-test.log
+mvn surefire:test -fn -B -DconfigFile="cd ~/sosp24-ae/wasabi/config/min-example/example.conf" -Dtest=[NAME_OF_TEST] 2>&1 | tee wasabi-failing-test.log
+```
+and check the log to see if fails with a `NullPointerException` error
+```bash
+cat wasabi-failing-test.log | grep -a 5 -b 15 "NullPointerException"
 ```
 
-### Full Evaluation
+8. Run the bug-triggering test without fault injection to confirm that the bug does not get triggered without fault injection
+```bash
+mvn surefire:test -fn -B -DconfigFile="cd ~/sosp24-ae/wasabi/config/min-example/example.conf" -Dtest=[NAME_OF_TEST] 2>&1 | tee wasabi-passing-test.log
+```
+by checking that the test runs successfully
+```bash
+cat wasabi-failing-test.log | grep -a 5 -b 15 "NullPointerException"
+```
+
+
+### Full Evaluation (24-72h, ~1h human effort)
 
 #### Apache-based Benchmarks
 
@@ -97,4 +130,4 @@ mvn surefire:test -fn -B -DconfigFile="[/absolute/path/to/wasabi/repo]/config/mi
 ### Unpacking Results
 
 
-## Validating Bugs Found Through Static Analysis
+## Validating Bugs Found Through Static Analysis (2h, 1.5h human effort)
