@@ -35,17 +35,23 @@ This instalation guide assumes users are running Unix-based operating system wit
 
 ### System Requirements
 
-WASABI was developed and evaluated on a Ubuntu 22.04 distribution
+WASABI was developed and evaluated on a Ubuntu 22.04 distribution and the surrounding automation assumes `bash` as the default shell. To check these requirements, users can run
 ```bash
-$ lsb_release -a
+lsb_release -a
+```
+which should yield
+```bash
 Distributor ID: Ubuntu
 Description:    Ubuntu 22.04.4 LTS
 Release:        22.04
 Codename:       jammy
 ```
-and the surrounding automation assumes `bash` as the default shell
+and
 ```bash
 bash --version
+```
+which should yield
+```bash
 GNU bash, version 5.1.16(1)-release (x86_64-pc-linux-gnu)
 Copyright (C) 2020 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -72,7 +78,9 @@ Note that this command requires `sudo` privileges.
 To check the installation, users can verify the versions of Maven
 ```bash
 mvn -v
-
+```
+which should yield
+```bash
 Apache Maven 3.6.3
 Maven home: /usr/share/maven
 Java version: 11.0.24, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
@@ -82,7 +90,9 @@ OS name: "linux", version: "6.5.0-27-generic", arch: "amd64", family: "unix"
 and Gradle
 ```bash
 gradle -v
-
+```
+which should yield
+```bash
 ------------------------------------------------------------
 Gradle 4.4.1
 ------------------------------------------------------------
