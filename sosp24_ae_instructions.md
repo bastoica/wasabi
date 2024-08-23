@@ -49,7 +49,7 @@ sudo ./prereqs.sh
 ```
 Note that this command requires `sudo` privileges.
 
-To check the installation, users can verify the versions of Maven
+As a sanity check, users can verify the versions of Maven and Gradle by running
 ```bash
 mvn -v
 ```
@@ -61,7 +61,7 @@ Java version: 11.0.24, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd
 Default locale: en_US, platform encoding: UTF-8
 OS name: "linux", version: "6.5.0-27-generic", arch: "amd64", family: "unix"
 ```
-and Gradle
+and
 ```bash
 gradle -v
 ```
@@ -159,7 +159,7 @@ mvn install -U -fn -B -DskipTests 2>&1 | tee wasabi-install.log
 cp pom.xml pom-original.xml
 cp ~/sosp24-ae/wasabi/config/hadoop/pom-hadoop.xml ./benchmarks/hadoop/pom.xml
 ```
-Note that these commmands are making a copy of the original `pom.xml` and replace it with a slightly edited version that instructs the AJC compiler to instrument (weave) WASABI. Also, these alterations are specific to version `2f1718c`. Checking out another Hadoop commit ID requires adjustments. We provide instructions on how to adapt an original `pom.xml`, [here](README.md#instrumentation-weaving-instructions).
+Note that these commands are making a copy of the original `pom.xml` and replace it with a slightly edited version that instructs the AJC compiler to instrument (weave) WASABI. Also, these alterations are specific to version `2f1718c`. Checking out another Hadoop commit ID requires adjustments. We provide instructions on how to adapt an original `pom.xml`, [here](README.md#instrumentation-weaving-instructions).
 
 6. Instrument Hadoop with WASABI by running
 ```bash
@@ -168,22 +168,45 @@ mvn clean install -fn -B -Dinstrumentation.target=hadoop 2>&1 | tee wasabi-insta
 
 7. Run the bug-triggering tests with fault injection
 ```bash
-mvn surefire:test -fn -B -DconfigFile="cd ~/sosp24-ae/wasabi/config/min-example/example.conf" -Dtest=[NAME_OF_TEST] 2>&1 | tee wasabi-failing-test.log
+mvn surefire:test -fn -B -DconfigFile="~/sosp24-ae/wasabi/config/example/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-failing-test.log
 ```
 and check the log to see if fails with a `NullPointerException` error
 ```bash
-cat wasabi-failing-test.log | grep -a 5 -b 15 "NullPointerException"
+grep -A10 -B2 "NullPointerException" wasabi-failing-test.log
 ```
+which should yield an output similar to
+```bash
+[ERROR] Tests run: 26, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 137.645 s <<< FAILURE! - in org.apache.hadoop.hdfs.server.namenode.TestFSEditLogLoader
+[ERROR] testErasureCodingPolicyOperations[0](org.apache.hadoop.hdfs.server.namenode.TestFSEditLogLoader)  Time elapsed: 22.691 s  <<< ERROR!
+java.lang.NullPointerException
+        at java.base/java.util.concurrent.ConcurrentHashMap.putVal(ConcurrentHashMap.java:1011)
+        at java.base/java.util.concurrent.ConcurrentHashMap.put(ConcurrentHashMap.java:1006)
+        at org.apache.hadoop.hdfs.DFSInputStream.addToLocalDeadNodes(DFSInputStream.java:184)
+        at org.apache.hadoop.hdfs.DFSStripedInputStream.createBlockReader(DFSStripedInputStream.java:279)
+        at org.apache.hadoop.hdfs.StripeReader.readChunk(StripeReader.java:304)
+        at org.apache.hadoop.hdfs.StripeReader.readStripe(StripeReader.java:335)
+        at org.apache.hadoop.hdfs.DFSStripedInputStream.readOneStripe(DFSStripedInputStream.java:320)
+        at org.apache.hadoop.hdfs.DFSStripedInputStream.readWithStrategy(DFSStripedInputStream.java:415)
+        at org.apache.hadoop.hdfs.DFSInputStream.read(DFSInputStream.java:919)
+        at java.base/java.io.DataInputStream.read(DataInputStream.java:102)
+```    
 
 8. Run the bug-triggering test without fault injection to confirm that the bug does not get triggered without fault injection
 ```bash
-mvn surefire:test -fn -B -DconfigFile="cd ~/sosp24-ae/wasabi/config/min-example/example.conf" -Dtest=[NAME_OF_TEST] 2>&1 | tee wasabi-passing-test.log
+mvn surefire:test -fn -B -DconfigFile="cd ~/sosp24-ae/wasabi/config/example/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-passing-test.log
 ```
-by checking that the test runs successfully
+by checking that the test runs successfully. First, checking that there is no `NullPointerException`
 ```bash
-cat wasabi-failing-test.log | grep -a 5 -b 15 "NullPointerException"
+grep -A10 -B2 "NullPointerException" wasabi-passing-test.log
 ```
-
+which should yield no output, as well as that all such tests passed
+```
+grep "Tests run.*TestFSEditLogLoader" wasabi-passing-test.log
+```
+which should yield a line similar to this (note that number of tests might differe slightly)
+```bash
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 154.223 s - in org.apache.hadoop.hdfs.server.namenode.TestFSEditLogLoader 
+```
 
 ### Full Evaluation (24-72h, ~1h human effort)
 
