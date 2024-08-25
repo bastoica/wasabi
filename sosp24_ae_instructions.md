@@ -11,12 +11,13 @@ The entire artifact evaluation process can take between 24 and 72h, depending on
 
 WASABI was originally developed, compiled, built, and tested on the Ubuntu 20.25 distribution. While not agnostic to the operating system, guidelines in this document are written with this distribution in mind.
 
-Create a new directory structure and clone this repository by running
+Create a new directory structure, clone this repository, and switch to the `sosp24-ae` brach by running,
 ```
-mkdir ~/sosp24-ae
-mkdir ~/sosp24-ae/benchmarks
+mkdir -p ~/sosp24-ae/benchmarks
 cd ~/sosp24-ae
 git clone https://github.com/bastoica/wasabi
+cd ~/sosp24-ae/wasabi
+git checkout sosp24-ae
 ```
 
 The working directory structure should now look like this:
@@ -100,9 +101,23 @@ Also, users need to set the `JAVA_HOME` environment variable to the appropriate 
 ```bash
 export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
 ```
-and check this operation was successful
+
+Check these operations were successful
+```bash
+java --version
+```
+which should yield
+```bash
+openjdk 11.0.24 2024-07-16
+OpenJDK Runtime Environment (build 11.0.24+8-post-Ubuntu-1ubuntu320.04)
+OpenJDK 64-Bit Server VM (build 11.0.24+8-post-Ubuntu-1ubuntu320.04, mixed mode, sharing)
+```
+and
 ```bash
 echo $JAVA_HOME
+```
+which should yield
+```bash
 /usr/lib/jvm/java-1.11.0-openjdk-amd64
 ```
 
@@ -117,20 +132,31 @@ To reproduce [HDFS-17590](https://issues.apache.org/jira/browse/HDFS-17590) a pr
 1. Make sure the prerequisites are successfully installed (see "Getting Started" above)
    
 2. Build and install WASABI by running the following commands:
-```
-cd ~/sosp24-ae/wasabo
+```bash
+cd ~/sosp24-ae/wasabi
 mvn clean install -U -fn -B -Dinstrumentation.target=hadoop 2>&1 | tee wasabi-install.log
 ```
 
-3. Clone Hadoop (note: HDFS is part of Hadoop),
+If successful users should see a message similar to 
 ```bash
-cd ~/sosp24-ae/
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  36.384 s
+[INFO] Finished at: 2024-08-12T19:57:24Z
+[INFO] ------------------------------------------------------------------------
+```
+
+1. Clone Hadoop (note: HDFS is part of Hadoop),
+```bash
+cd ~/sosp24-ae/benchmarks
 git clone https://github.com/apache/hadoop
 ```
 and check out version/commit `2f1718c`:
 ```bash
 cd ~/sosp24-ae/benchmarks/hadoop
-git checkout 2f1718c36345736b93493e4e79fae766ea6d3233
+git checkout 2f1718c
 ```
 Users can check whether `2f1718c` was successfully checked out by running
 ```bash
@@ -150,29 +176,45 @@ Date:   Wed Jan 31 14:30:35 2024 +0900
 
 4. Build and install Hadoop using the following commands. This is necessary to download and install any missing dependencies that might break Hadoop's test suite during fault injection.
 ```bash
-cd ~/sosp24-ae/benchmarks/hadoop
-mvn install -U -fn -B -DskipTests 2>&1 | tee wasabi-install.log
+mvn install -U -fn -B -DskipTests 2>&1 | tee wasabi-pass-install.log
 ```
 
-5. Copy a modified `pom.xml` file that allows WASABI to instrument (weave) Hadoop by running
+5. Run the test that WASABI uses to trigger HDFS-17590 to confirm that the bug does not get triggered without fault injection
+```bash
+mvn surefire:test -fn -B -DconfigFile="cd ~/sosp24-ae/wasabi/config/example/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-pass-test.log
+```
+by checking that the test runs successfully. First, checking that there is no `NullPointerException`
+```bash
+grep -A10 -B2 "NullPointerException" wasabi-pass-test.log
+```
+which should yield no output, as well as that all such tests passed
+```bash
+grep "Tests run.*TestFSEditLogLoader" wasabi-pass-test.log
+```
+which should yield a line similar to this (note that number of tests might differ slightly)
+```bash
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 154.223 s - in org.apache.hadoop.hdfs.server.namenode.TestFSEditLogLoader 
+```
+
+6. Copy a modified `pom.xml` file that allows WASABI to instrument (weave) Hadoop by running
 ```bash
 cp pom.xml pom-original.xml
-cp ~/sosp24-ae/wasabi/config/hadoop/pom-hadoop.xml ./benchmarks/hadoop/pom.xml
+cp ~/sosp24-ae/wasabi/config/hadoop/pom-hadoop.xml pom.xml
 ```
 Note that these commands are making a copy of the original `pom.xml` and replace it with a slightly edited version that instructs the AJC compiler to instrument (weave) WASABI. Also, these alterations are specific to version `2f1718c`. Checking out another Hadoop commit ID requires adjustments. We provide instructions on how to adapt an original `pom.xml`, [here](README.md#instrumentation-weaving-instructions).
 
-6. Instrument Hadoop with WASABI by running
+7. Instrument Hadoop with WASABI by running
 ```bash
-mvn clean install -fn -B -Dinstrumentation.target=hadoop 2>&1 | tee wasabi-install.log
+mvn clean install -U -fn -B -DskipTests 2>&1 | tee wasabi-fail-install.log
 ```
 
-7. Run the bug-triggering tests with fault injection
+8. Run the bug-triggering tests with fault injection
 ```bash
-mvn surefire:test -fn -B -DconfigFile="~/sosp24-ae/wasabi/config/example/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-failing-test.log
+mvn surefire:test -fn -B -DconfigFile="~/sosp24-ae/wasabi/config/hadoop/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-fail-test.log
 ```
 and check the log to see if fails with a `NullPointerException` error
 ```bash
-grep -A10 -B2 "NullPointerException" wasabi-failing-test.log
+grep -A10 -B2 "NullPointerException" wasabi-fail-test.log
 ```
 which should yield an output similar to
 ```bash
@@ -191,23 +233,6 @@ java.lang.NullPointerException
         at java.base/java.io.DataInputStream.read(DataInputStream.java:102)
 ```    
 
-8. Run the bug-triggering test without fault injection to confirm that the bug does not get triggered without fault injection
-```bash
-mvn surefire:test -fn -B -DconfigFile="cd ~/sosp24-ae/wasabi/config/example/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-passing-test.log
-```
-by checking that the test runs successfully. First, checking that there is no `NullPointerException`
-```bash
-grep -A10 -B2 "NullPointerException" wasabi-passing-test.log
-```
-which should yield no output, as well as that all such tests passed
-```
-grep "Tests run.*TestFSEditLogLoader" wasabi-passing-test.log
-```
-which should yield a line similar to this (note that number of tests might differe slightly)
-```bash
-[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 154.223 s - in org.apache.hadoop.hdfs.server.namenode.TestFSEditLogLoader 
-```
-
 ### Full Evaluation (24-72h, ~1h human effort)
 
 #### Apache-based Benchmarks
@@ -219,3 +244,4 @@ which should yield a line similar to this (note that number of tests might diffe
 
 
 ## Validating Bugs Found Through Static Analysis (2h, 1.5h human effort)
+

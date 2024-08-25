@@ -18,8 +18,6 @@ import java.sql.SQLTransientException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
-import org.apache.hadoop.yarn.server.resourcemanager.scheduler.constraint.InvalidAllocationTagsQueryException;
-
 import edu.uchicago.cs.systems.wasabi.ConfigParser;
 import edu.uchicago.cs.systems.wasabi.WasabiLogger;
 import edu.uchicago.cs.systems.wasabi.WasabiContext;
@@ -907,66 +905,6 @@ public aspect InterceptHadoop {
   
       long threadId = Thread.currentThread().getId();
       throw new EOFException(
-        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
-          threadId,
-          this.testMethodName,
-          ipt.retryException,
-          ipt.injectionSite,
-          ipt.retrySourceLocation,
-          ipt.injectionCount)
-      );
-    }
-  }
-
-  /* Inject InvalidAllocationTagsQueryException */
-
-  pointcut injectInvalidAllocationTagsQueryException():
-    ((withincode(* org.apache.hadoop.yarn.server.resourcemanager.scheduler.constraint.algorithm.DefaultPlacementAlgorithm.doPlacement(..)) &&
-    call(* attemptPlacementOnNode(..) throws *Exception*))) &&
-    !within(edu.uchicago.cs.systems.wasabi.*);
-
-  after() throws InvalidAllocationTagsQueryException : injectInvalidAllocationTagsQueryException() {
-    StackSnapshot stackSnapshot = new StackSnapshot();
-    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
-    String injectionSite = thisJoinPoint.toString();
-    String retryException = "InvalidAllocationTagsQueryException";
-    String injectionSourceLocation = String.format("%s:%d",
-                                thisJoinPoint.getSourceLocation().getFileName(),
-                                thisJoinPoint.getSourceLocation().getLine());
-
-    if (this.wasabiCtx == null) {
-      LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-          this.testMethodName, 
-          injectionSite, 
-          injectionSourceLocation, 
-          retryCallerFunction)
-      );
-
-      return;
-    }
-
-    LOG.printMessage(
-      WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-        this.testMethodName, 
-        injectionSite, 
-        injectionSourceLocation, 
-        retryCallerFunction)
-    );
-
-    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
-                                                          injectionSite, 
-                                                          injectionSourceLocation,
-                                                          retryException,
-                                                          retryCallerFunction, 
-                                                          stackSnapshot);
-    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
-      this.activeInjectionLocations.add(retryCallerFunction);
-  
-      long threadId = Thread.currentThread().getId();
-      throw new InvalidAllocationTagsQueryException(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
           threadId,
           this.testMethodName,
