@@ -157,7 +157,7 @@ If successful users should see a message similar to
 [INFO] ------------------------------------------------------------------------
 ```
 
-1. Clone Hadoop (note: HDFS is part of Hadoop),
+3. Clone Hadoop (note: HDFS is part of Hadoop),
 ```bash
 cd ~/sosp24-ae/benchmarks
 git clone https://github.com/apache/hadoop
@@ -190,7 +190,7 @@ mvn install -U -fn -B -DskipTests 2>&1 | tee wasabi-pass-install.log
 
 5. Run the test that WASABI uses to trigger HDFS-17590 to confirm that the bug does not get triggered without fault injection
 ```bash
-mvn surefire:test -fn -B -DconfigFile="cd ~/sosp24-ae/wasabi/config/example/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-pass-test.log
+mvn surefire:test -fn -B -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-pass-test.log
 ```
 by checking that the test runs successfully. First, checking that there is no `NullPointerException`
 ```bash
