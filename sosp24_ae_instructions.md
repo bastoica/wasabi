@@ -32,6 +32,15 @@ The working directory structure should now look like this:
        └── pom.xml
 ```
 
+Users can check their directory structure against the one above by installing the `tree` package
+```bash
+sudo apt-get install tree
+```
+and print out the structure
+```bash
+tree -L 2 ~/sosp24-ae/
+```
+
 This instalation guide assumes users are running Unix-based operating system with `bash` as the default shell.
 
 ### System Requirements
