@@ -1,20 +1,9 @@
 WASABI is a fault injection AspectJ tool, designed to inject faults into Java applications to help trigger and identify retry bugs. This README provides instructions on setting up, instrumenting (weaving), and testing applications with WASABI.
 
-## Directory Structure
+## SOSP24 Artifact Evaluation
 
-WASABI requires a specific directory structure to work correctly. The expected layout is as follows:
-
-```plaintext
-~/wasabi-framework
-   ├── benchmarks/
-   │   └── target_application/
-   │       ├── ... (other directories and files)
-   │       └── pom.xml
-   └── wasabi/
-       ├── config/
-       ├── src/
-       └── pom.xml
-```
+> [!IMPORTANT] 
+> We created a special branch for the SOSP24 artifact evaluation process. Reviewers are invited clone this repository, switch to the `sosp24-ae` branch, and follow the guidelines in [sosp24_ae_instructions.md](https://github.com/bastoica/wasabi/blob/sosp24-ae/sosp24_ae_instructions.md) for a step-by-step walkthrough through our benchmarks. While we sync the `master` reguraly, the most up-to-date instructions relevant to the AE committee are published on the `sosp24-ae` branch first.
 
 ## Installation Instructions
 ### Dependencies
