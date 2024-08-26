@@ -162,24 +162,24 @@ If successful users should see a message similar to
 cd ~/sosp24-ae/benchmarks
 git clone https://github.com/apache/hadoop
 ```
-and check out version/commit `2f1718c`:
+and check out version/commit `60867de`:
 ```bash
 cd ~/sosp24-ae/benchmarks/hadoop
-git checkout 2f1718c
+git checkout 60867de
 ```
-Users can check whether `2f1718c` was successfully checked out by running
+Users can check whether `60867de` was successfully checked out by running
 ```bash
 git log
 ```
 and checking the output
 ```
-commit 2f1718c36345736b93493e4e79fae766ea6d3233 (HEAD)
-Author: Takanobu Asanuma <tasanuma@apache.org>
-Date:   Wed Jan 31 14:30:35 2024 +0900
+commit 60867de422949be416948bd106419c771c7d13fd (HEAD)
+Author: zhangshuyan <81411509+zhangshuyan0@users.noreply.github.com>
+Date:   Mon Aug 21 10:05:34 2023 +0800
 
-    HADOOP-19056. Highlight RBF features and improvements targeting version 3.4. (#6512) Contributed by Takanobu Asanuma.
+    HDFS-17151. EC: Fix wrong metadata in BlockInfoStriped after recovery. (#5938). Contributed by Shuyan Zhang.
     
-    Signed-off-by: Shilun Fan <slfan1989@apache.org>
+    Signed-off-by: He Xiaoqiao <hexiaoqiao@apache.org>
 
 ```
 
@@ -210,7 +210,7 @@ which should yield a line similar to this (note that number of tests might diffe
 cp pom.xml pom-original.xml
 cp ~/sosp24-ae/wasabi/config/hadoop/pom-hadoop.xml pom.xml
 ```
-Note that these commands are making a copy of the original `pom.xml` and replace it with a slightly edited version that instructs the AJC compiler to instrument (weave) WASABI. Also, these alterations are specific to version `2f1718c`. Checking out another Hadoop commit ID requires adjustments. We provide instructions on how to adapt an original `pom.xml`, [here](README.md#instrumentation-weaving-instructions).
+Note that these commands are making a copy of the original `pom.xml` and replace it with a slightly edited version that instructs the AJC compiler to instrument (weave) WASABI. Also, these alterations are specific to version `60867de`. Checking out another Hadoop commit ID requires adjustments. We provide instructions on how to adapt an original `pom.xml`, [here](README.md#instrumentation-weaving-instructions).
 
 7. Instrument Hadoop with WASABI by running
 ```bash
