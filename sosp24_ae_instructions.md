@@ -9,7 +9,7 @@ The entire artifact evaluation process can take between 24 and 72h, depending on
 
 ## Getting Started
 
-WASABI was originally developed, compiled, built, and tested on the Ubuntu 20.25 distribution. While not agnostic to the operating system, guidelines in this document are written with this distribution in mind.
+WASABI was originally developed, compiled, built, and tested on the Ubuntu 22.04 distribution. While not agnostic to the operating system, guidelines in this document are written assuming this distribution.
 
 Create a new directory structure, clone this repository, and switch to the `sosp24-ae` brach by running,
 ```
@@ -244,10 +244,60 @@ java.lang.NullPointerException
 
 ### Full Evaluation (24-72h, ~1h human effort)
 
-#### Apache-based Benchmarks
+For reproducing retry bugs through unit testing and fault injection, we provide `run.py`, a Python-based script designed to manage the setup and evaluation phases of WASABI. This script operates through several distinct phases:
 
-#### ElasticSearch
+1. **Setup**: Clones the necessary repositories and checks out specific versions required for evaluation.
+2. **Preparation**: Manages and customizes the pom.xml files for each benchmark to facilitate instrumented builds.
+3. **Bug triggering**: Executes the tests with WASABI instrumentation to trigger potential bugs.
+4. **Log analysis**: Analyzes the test logs to identify and report bugs.
 
+The run.py script accepts several command-line arguments that allow you to specify the root directory, select the phase to execute, and choose the benchmarks to evaluate.
+
+* `--root-dir`: Specifies the root directory of the application. This directory should contain the benchmarks and wasabi directories as outlined in the setup instructions.
+* `--phase`: Determines which phase of the pipeline to execute with the following options available:
+  * `setup`: Clones the necessary repositories and checks out specific versions.
+  * `prep`: Prepares the environment by renaming the original pom.xml files and replacing them with customized versions.
+  * `bug-triggering`: Executes the test cases using WASABI instrumentation to trigger bugs.
+  * `bug-oracles`: Analyzes the test logs for any anomalies or errors that indicate bugs.
+  * `all`: Runs all the above phases in sequence.
+* `--benchmark`: Specifies which benchmarks to evaluate, with the following options available: `hadoop`, `hbase`, `hive`, `cassandra`, and `elstaicsearch`. 
+
+We recommend users all phases in one go, either iterating through the benchmarks individually,
+
+```bash
+python3 run.py --root-dir /home/user/sosp24-ae --phase all --benchmark hadoop
+```
+or running a subset, at a time
+
+```bash
+for app in hadoop hbase cassandra; do python3 run.py --root-dir /home/user/sosp24-ae --phase all --benchmark $app; done
+```
+
+Note that Hive requires downgrading to Java 8 and recompile WASABI, as explained below
+
+As an example, let's consider a user running the `bug triggering` phase for Hadoop. This requires running
+```bash
+python3 run.py --root-dir /home/user/sosp24-ae --phase bug-triggering --benchmark hadoop
+```
+which would output
+```bash
+****************************
+* Phase: Bug triggering *
+****************************
+Running tests for hadoop...
+Job count: 1 / 3
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/config/hadoop/test_plan.conf -Dtest=Test1 surefire:test
+Running tests for hadoop...
+Job count: 2 / 3
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/config/hadoop/test_plan.conf -Dtest=Test2 surefire:test
+Running tests for hadoop...
+Job count: 3 / 3
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/config/hadoop/test_plan.conf -Dtest=Test3 surefire:test
+```
+
+#### Hive
+
+[instructions for Hive]
 
 ### Unpacking Results
 

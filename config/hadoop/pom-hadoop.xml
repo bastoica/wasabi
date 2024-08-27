@@ -640,12 +640,20 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
         <artifactId>aspectj-maven-plugin</artifactId>
         <version>${aspectj-maven.version}</version>
         <configuration>
+            <source>11</source>
+            <target>11</target>
+            <showWeaveInfo>true</showWeaveInfo>
+            <verbose>true</verbose>
           <aspectLibraries>
             <aspectLibrary>
               <groupId>edu.uchicago.cs.systems</groupId>
               <artifactId>wasabi</artifactId>
             </aspectLibrary>
           </aspectLibraries>
+          <compilerArgs>
+                <arg>--add-exports=java.base/sun.net.spi.nameservice=ALL-UNNAMED</arg>
+                <arg>--add-opens=java.base/sun.net.spi.nameservice=ALL-UNNAMED</arg>
+            </compilerArgs>
         </configuration>
         <executions>
           <execution>
