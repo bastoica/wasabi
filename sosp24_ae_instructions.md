@@ -219,7 +219,7 @@ mvn clean install -U -fn -B -DskipTests 2>&1 | tee wasabi-fail-install.log
 
 8. Run the bug-triggering tests with fault injection
 ```bash
-mvn surefire:test -fn -B -DconfigFile="~/sosp24-ae/wasabi/config/hadoop/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-fail-test.log
+mvn surefire:test -fn -B -DconfigFile="$(echo $HOME)/sosp24-ae/wasabi/config/hadoop/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-fail-test.log
 ```
 and check the log to see if fails with a `NullPointerException` error
 ```bash
