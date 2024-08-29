@@ -9,7 +9,7 @@ Create a new directory structure, clone this repository, and switch to the `sosp
 mkdir -p ~/sosp24-ae/benchmarks
 cd ~/sosp24-ae
 git clone https://github.com/bastoica/wasabi
-cd ~/sosp24-ae/wasabi-testing
+cd ~/sosp24-ae/wasabi
 git checkout sosp24-ae
 ```
 
@@ -17,12 +17,20 @@ The working directory structure should now look like this:
 ```plaintext
 ~/sosp24-ae
    ├── benchmarks/
-   ├── wasabi/
-   │   ├── config/
-   │   ├── src/
-   │   ├── utils/
-   ...
-       └── pom.xml
+   ├── wasabi-static/
+   │   ├── README.md
+   │   ├── codeql-if-detection
+   │   ├── gpt-when-detection
+   |   ├── retry_issue_set_artifact.xlsx
+   |   └── wasabi_gpt_detection_results--table4.xlsx
+   └── wasabi-testing
+       ├── README.md
+       ├── config/
+       ├── pom-java11.xml
+       ├── pom-java8.xml
+       ├── pom.xml
+       ├── src/
+       └── utils/
 ```
 
 Users can check their directory structure against the one above by installing the `tree` package
@@ -47,7 +55,7 @@ Both WASABI and its benchmarks are primarily built using Java 11, except Hive wi
 
 Users can either install them manually using `apt-get` or run the `prereqs.sh` provided by our artifact:
 ```
-cd ~/sosp24-ae/wasabi-testing/utils
+cd ~/sosp24-ae/wasabi/wasabi-testing/utils
 sudo ./prereqs.sh
 ```
 Note that this command requires `sudo` privileges.
@@ -131,7 +139,7 @@ With the prerequisits installed (see previous section), users can now run indivi
    
 2. Build and install WASABI by running the following commands:
 ```bash
-cd ~/sosp24-ae/wasabi-testing
+cd ~/sosp24-ae/wasabi/wasabi-testing
 mvn clean install -U -fn -B -Dinstrumentation.target=hadoop 2>&1 | tee wasabi-install.log
 ```
 
@@ -197,7 +205,7 @@ which should yield a line similar to this (note that number of tests might diffe
 6. Copy a modified `pom.xml` file that allows WASABI to instrument (weave) Hadoop by running
 ```bash
 cp pom.xml pom-original.xml
-cp ~/sosp24-ae/wasabi-testing/config/hadoop/pom-hadoop.xml pom.xml
+cp ~/sosp24-ae/wasabi/wasabi-testing/config/hadoop/pom-hadoop.xml pom.xml
 ```
 Note that these commands are making a copy of the original `pom.xml` and replace it with a slightly edited version that instructs the AJC compiler to instrument (weave) WASABI. Also, these alterations are specific to version `60867de`. Checking out another Hadoop commit ID requires adjustments. We provide instructions on how to adapt an original `pom.xml`, [here](README.md#instrumentation-weaving-instructions).
 
@@ -208,7 +216,7 @@ mvn clean install -U -fn -B -DskipTests 2>&1 | tee wasabi-fail-install.log
 
 8. Run the bug-triggering tests with fault injection
 ```bash
-mvn surefire:test -fn -B -DconfigFile="$(echo $HOME)/sosp24-ae/wasabi-testing/config/hadoop/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-fail-test.log
+mvn surefire:test -fn -B -DconfigFile="$(echo $HOME)/sosp24-ae/wasabi/wasabi-testing/config/hadoop/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-fail-test.log
 ```
 and check the log to see if fails with a `NullPointerException` error
 ```bash
@@ -275,13 +283,13 @@ which would output
 *************************
 Running tests for hadoop...
 Job count: 1 / 3
-Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test1 surefire:test
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test1 surefire:test
 Running tests for hadoop...
 Job count: 2 / 3
-Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test2 surefire:test
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test2 surefire:test
 Running tests for hadoop...
 Job count: 3 / 3
-Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test3 surefire:test
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test3 surefire:test
 ```
 
 ### Unpacking Results
