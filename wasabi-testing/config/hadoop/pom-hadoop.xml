@@ -31,6 +31,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
         <!-- Use the version needed by maven-clover-plugin -->
         <version>3.0.2</version>
       </dependency>
+      <dependency>
+        <groupId>org.opentest4j</groupId>
+        <artifactId>opentest4j</artifactId>
+        <!-- Use the version needed by maven-compiler-plugin -->
+        <version>1.2.0</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
