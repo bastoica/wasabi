@@ -138,7 +138,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
     <spotbugs.version>4.2.2</spotbugs.version>
     <spotbugs-maven-plugin.version>4.2.0</spotbugs-maven-plugin.version>
     <jsonschema2pojo-maven-plugin.version>1.1.1</jsonschema2pojo-maven-plugin.version>
-    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <cyclonedx.version>2.7.6</cyclonedx.version>
 
     <shell-executable>bash</shell-executable>
@@ -146,8 +146,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
     <leveldbjni.group>org.fusesource.leveldbjni</leveldbjni.group>
  
     <!-- Wasabi Fault Injection Library -->
-    <aspectj.version>1.9.19</aspectj.version>
-    <aspectj-maven.version>1.13.1</aspectj-maven.version>
+    <aspectj.version>1.9.8.M1</aspectj.version>
+    <aspectj-maven.version>1.13</aspectj-maven.version>
     <wasabi.version>1.0.0</wasabi.version>
 
   </properties>
@@ -647,8 +647,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
         <artifactId>aspectj-maven-plugin</artifactId>
         <version>${aspectj-maven.version}</version>
         <configuration>
-            <source>11</source>
-            <target>11</target>
+            <source>1.8</source>
+            <target>1.8</target>
             <showWeaveInfo>true</showWeaveInfo>
             <verbose>true</verbose>
           <aspectLibraries>
@@ -669,9 +669,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
               <goal>compile</goal>
             </goals>
             <configuration>
-              <source>11</source>
-              <target>11</target>
-              <!--complianceLevel>11</complianceLevel--> 
+              <source>1.8</source>
+              <target>1.8</target>
+              <!--complianceLevel>1.8</complianceLevel--> 
               <enablePreview>false</enablePreview> 
               <showWeaveInfo>true</showWeaveInfo>
               <verbose>true</verbose>

@@ -91,7 +91,7 @@ JVM:          11.0.24 (Ubuntu 11.0.24+8-post-Ubuntu-1ubuntu322.04)
 OS:           Linux 6.5.0-27-generic amd64
 ```
 
-Finally, users need to manually switch to Java 11
+Finally, users need to manually switch to Java 8
 ```bash
 $ sudo update-alternatives --config java
 ```
@@ -109,18 +109,18 @@ There are 3 choices for the alternative java (providing /usr/bin/java).
 
 Also, users need to set the `JAVA_HOME` environment variable to the appropriate path to the Java 11 directory in `/usr/lib`:
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 ```
 
 Check these operations were successful
 ```bash
-java --version
+java -version
 ```
 which should yield
 ```bash
-openjdk 11.0.24 2024-07-16
-OpenJDK Runtime Environment (build 11.0.24+8-post-Ubuntu-1ubuntu320.04)
-OpenJDK 64-Bit Server VM (build 11.0.24+8-post-Ubuntu-1ubuntu320.04, mixed mode, sharing)
+openjdk version "1.8.0_422"
+OpenJDK Runtime Environment (build 1.8.0_422-8u422-b05-1~22.04-b05)
+OpenJDK 64-Bit Server VM (build 25.422-b05, mixed mode)
 ```
 and
 ```bash
@@ -128,7 +128,7 @@ echo $JAVA_HOME
 ```
 which should yield
 ```bash
-/usr/lib/jvm/java-1.11.0-openjdk-amd64
+/usr/lib/jvm/java-8-openjdk-amd64/jre
 ```
 
 ## Minimal Example or Kick-the-Tires: Reproducing HDFS-17590 (1.5h, 15min human effort)
@@ -140,7 +140,7 @@ With the prerequisits installed (see previous section), users can now run indivi
 2. Build and install WASABI by running the following commands:
 ```bash
 cd ~/sosp24-ae/wasabi/wasabi-testing
-mvn clean install -U -fn -B -Dinstrumentation.target=hadoop 2>&1 | tee wasabi-install.log
+mvn clean install -U -fn -B -Dinstrumentation.target=hadoop -DskipTests 2>&1 | tee wasabi-install.log
 ```
 
 If successful users should see a message similar to 
