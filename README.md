@@ -1,4 +1,4 @@
-This is the codebase of WASABI, a toolkit for exposing and isolating retry logic bugs in large-scale software systems. For insights, results, and a detailed description please check out our paper "https://sosp24.hotcrp.com/doc/sosp24-paper495.pdf" (SOSP 2024). This branch is created for the artifact evaluation session as part of SOSP 2024. For using the tool a new system, please refer to the `main` branch.
+This is the codebase of WASABI, a toolkit for exposing and isolating retry logic bugs in large-scale software systems. For insights, results, and a detailed description please check out our paper "https://sosp24.hotcrp.com/doc/sosp24-paper495.pdf" (SOSP 2024). This branch is created for the artifact evaluation session as part of SOSP 2024. For using the tool a new system, please refer to the `master` branch.
 
 
 ## Artifact Goals
