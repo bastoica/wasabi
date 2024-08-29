@@ -1,262 +1,306 @@
-WASABI is a fault injection AspectJ tool, designed to inject faults into Java applications to help trigger and identify retry bugs. This README provides instructions on setting up, instrumenting (weaving), and testing applications with WASABI.
+This is the codebase of WASABI, a toolkit for exposing and isolating retry logic bugs in large-scale software systems. For insights, results, and a detailed description please check out our paper "https://sosp24.hotcrp.com/doc/sosp24-paper495.pdf" (SOSP 2024). This branch is created for the artifact evaluation session as part of SOSP 2024. For using the tool a new system, please refer to the `main` branch.
 
-## Directory Structure
 
-WASABI requires a specific directory structure to work correctly. The expected layout is as follows:
+## Artifact Goals
 
+The following instructions will help users reproduce the key results Table 3 (as well as Figure 4), Table 4 and Table 5. Specifically, the steps will help users reproduce the bugs found by WASABI under a cocmpact testing plan.
+
+The entire artifact evaluation process can take between 24 and 72h, depending on the specifications of the machine it runs on.
+
+## Getting Started
+
+WASABI was originally developed, compiled, built, and tested on the Ubuntu 22.04 distribution. While not agnostic to the operating system, guidelines in this document are written assuming this distribution.
+
+Create a new directory structure, clone this repository, and switch to the `sosp24-ae` brach by running,
+```
+mkdir -p ~/sosp24-ae/benchmarks
+cd ~/sosp24-ae
+git clone https://github.com/bastoica/wasabi
+cd ~/sosp24-ae/wasabi
+git checkout sosp24-ae
+```
+
+The working directory structure should now look like this:
 ```plaintext
 ~/sosp24-ae
+   ├── benchmarks/
    ├── wasabi/
    │   ├── config/
    │   ├── src/
    │   ├── utils/
    ...
-   │   └── pom.xml
-   └── benchmarks/
-       ├── target_app_1/
-       │   ├── ... (other directories and files)
-       │   └── pom.xml
-       ├── target_app_2/
-       │   ├── ... (other directories and files)
-       │   └── pom.xml
-       ...
-       └── target_app_n/
-           ├── ... (other directories and files)
-           └── pom.xml
+       └── pom.xml
 ```
 
-## Installation Instructions
-### Dependencies
-Ensure the following dependencies are installed:
-* Maven (version >= 3.6.0)
-* Gradle (version >= 6.0)
-* Java JDK (versions 8 and 11)
-* AspectJ (version 1.9.19)
-
-### Building and Installing WASABI
-To build and install WASABI, run the following commands from the `./wasabi` directory:
+Users can check their directory structure against the one above by installing the `tree` package
 ```bash
-cd /path/to/wasabi/root/directory
-mvn clean install -U -Dinstrumentation.target=[TARGET_APP] -B 2>&1 | tee wasabi-install.log
+sudo apt-get install tree
 ```
-
-## Instrumentation (Weaving) Instructions
-### Using Maven
-1. **Setup directory structure**. Ensure that both WASABI and the target application are in the same directory structure as illustrated above.
-
-2. **Build and install WASABI**. See the "Building WASABI" section above.
-
-3. **Modify the target application's pom.xml**. Add WASABI as a dependency and configure the AspectJ Maven plugin.
-
-```xml
-<dependencies>
-  <!-- Existing dependencies -->
-  
-  <!-- Wasabi Fault Injection Library -->
-  <dependency>
-    <groupId>org.aspectj</groupId>
-    <artifactId>aspectjrt</artifactId>
-    <version>${aspectj.version}</version>
-  </dependency>
-  <dependency>
-    <groupId>edu.uchicago.cs.systems</groupId>
-    <artifactId>wasabi</artifactId>
-    <version>${wasabi.version}</version>
-  </dependency>
-</dependencies>
-
-<properties>
-  <!-- Wasabi Version -->
-  <aspectj.version>1.9.19</aspectj.version>
-  <aspectj-maven.version>1.13.1</aspectj-maven.version>
-  <wasabi.version>1.0.0</wasabi.version>
-</properties>
-
-<build>
-  <plugins>
-    <!-- Wasabi Fault Injection Plugin -->
-    <plugin>
-      <groupId>dev.aspectj</groupId>
-      <artifactId>aspectj-maven-plugin</artifactId>
-      <version>${aspectj-maven.version}</version>
-      <configuration>
-        <aspectLibraries>
-          <aspectLibrary>
-            <groupId>edu.uchicago.cs.systems</groupId>
-            <artifactId>wasabi</artifactId>
-          </aspectLibrary>
-        </aspectLibraries>
-        <showWeaveInfo>true</showWeaveInfo>
-        <verbose>true</verbose>
-      </configuration>
-      <executions>
-        <execution>
-          <goals>
-            <goal>compile</goal>
-            <goal>test-compile</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
-  </plugins>
-</build>
-```
-
-4. **Instrument the target application**. To weave WASABI into the target application, run the following commands:
+and print out the structure
 ```bash
-cd /path/to/target_application
-mvn clean compile -T 8 -fn -DskipTests && mvn install -fn -DskipTests -B 2>&1 | tee wasabi-build.log
+tree -L 2 ~/sosp24-ae/
 ```
 
-Successful weaving should produce logs similar to:
+This instalation guide assumes users are running Unix-based operating system with `bash` as the default shell.
+
+### System Requirements
+
+WASABI was developed and evaluated on a Ubuntu 22.04 distribution and the surrounding automation assumes `bash` as the default shell, although we expect it to run on other UNIX distributions and shells with minimal changes.
+
+Both WASABI and its benchmarks are primarily built using Java 11, except Hive wich requires Java 8. The default build system is Maven (3.6.3), except for ElasticSearch that requires Gradle 4.4.1 
+
+
+### Installing Prerequisites
+
+Users can either install them manually using `apt-get` or run the `prereqs.sh` provided by our artifact:
+```
+cd ~/sosp24-ae/wasabi/utils
+sudo ./prereqs.sh
+```
+Note that this command requires `sudo` privileges.
+
+As a sanity check, users can verify the versions of Maven and Gradle by running
 ```bash
-[INFO] Join point 'method-execution(...)' in Type 'org.apache.hadoop.metrics2.util.SampleStat'...
+mvn -v
 ```
-
-### Using Gradle
-1. **Temporary modifications to verify successful instrumentation/weaving**. Modify Interceptor.aj in the WASABI source to print a message confirming successful instrumentation/weaving:
-```Java
-after() : throwableMethods() {
-  StackSnapshot stackSnapshot = new StackSnapshot();
-  this.LOG.printMessage(WasabiLogger.LOG_LEVEL_ERROR, 
-  String.format("[wasabi] Throwable function intercepted at %s", stackSnapshot.toString()));
-}
-```
-
-2. **Building and installing WASABI**. See the "Building WASABI" section above. Note that a generated `.jar` file will be located in `./wasabi/target/`.
-
-3. **Changes to the target's pom.xml file**. First, add dependenceis:
-```xml
-buildscript {
-  dependencies {
-    classpath "org.aspectj:aspectjrt:1.9.19"
-    classpath "org.hamcrest:hamcrest-core:1.3"
-    classpath "junit:junit:4.13.2"
-  }
-}
-```
-
-Second, add the AspectJ weaving plugin:
-```xml
-plugins {
-  id "io.freefair.aspectj.post-compile-weaving" version "8.1.0"
-  id "java"
-}
-```
-
-Third, add the following AspectJ dependnecies:
-```xml
-dependencies {
-  implementation "org.aspectj:aspectjtools:1.9.19"
-  testImplementation "org.aspectj:aspectjtools:1.9.19"
-  implementation "org.aspectj:aspectjrt:1.9.19"
-  testImplementation 'junit:junit:4.13.2'
-  aspectj files("wasabi-files/aspectjtools-1.9.19.jar", "wasabi-files/wasabi-1.0.0.jar")
-  testAspect files("wasabi-files/wasabi-1.0.0.jar")
-}
-```
-
-Forth, add an AspectJ configuration block:
-```xml
-configurations {
-  aspectj
-}
-```
-
-Finally, modify the compile task blocks:
-```xml
-compileJava {
-  ajc {
-    enabled = true
-    classpath.setFrom configurations.aspectj
-    options {
-      aspectpath.setFrom configurations.aspect
-    }
-  }
-}
-
-compileTestJava {
-  ajc {
-    enabled = true
-    classpath.setFrom configurations.aspectj
-    options {
-      aspectpath.setFrom configurations.testAspect
-    }
-  }
-}
-```
-
-4. **Build and Test**. Use Gradle commands to build and verify weaving:
+which should yield
 ```bash
-gradle -i assemble 2>&1 | tee wasabi-build.log
-gradle -i test 2>&1 | tee wasabi-test.log
+Apache Maven 3.6.3
+Maven home: /usr/share/maven
+Java version: 11.0.24, vendor: Ubuntu, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "6.5.0-27-generic", arch: "amd64", family: "unix"
+```
+and
+```bash
+gradle -v
+```
+which should yield
+```bash
+------------------------------------------------------------
+Gradle 4.4.1
+------------------------------------------------------------
+
+Build time:   2012-12-21 00:00:00 UTC
+Revision:     none
+
+Groovy:       2.4.21
+Ant:          Apache Ant(TM) version 1.10.12 compiled on January 17 1970
+JVM:          11.0.24 (Ubuntu 11.0.24+8-post-Ubuntu-1ubuntu322.04)
+OS:           Linux 6.5.0-27-generic amd64
 ```
 
-## Running Tests and Usage
-### Configuration files
+Finally, users need to manually switch to Java 11
+```bash
+$ sudo update-alternatives --config java
+```
+which would redirect users to the following menu:
+```bash
+There are 3 choices for the alternative java (providing /usr/bin/java).
 
-A `.conf` file provides information to WASABI about where to inject faults and what injection policy to use. These files have the following structure:
-```plaintext
-retry_data_file: //absolute//path//to//data//file//[TARGET_APPLICATION]_retry_locations_[TEST_NAME].data
-injection_policy: [INJECTION_POLICY]
-max_injection_count: [INJECTION_ATTEMPTS_BOUND]
+  Selection    Path                                            Priority   Status
+------------------------------------------------------------
+  0            /usr/lib/jvm/java-17-openjdk-amd64/bin/java      1711      auto mode
+* 1            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1111      manual mode
+  2            /usr/lib/jvm/java-17-openjdk-amd64/bin/java      1711      manual mode
+  3            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java   1081      manual mode
 ```
 
-The `injection_policy` parameter takes one of the following values:
-    *`no-injection`: This option ensures that Wasabi does not perform any injection. When this option is selected, it's recommended to set max_injection_count to -1.
-    * `forever`: With this option, Wasabi will continue to inject faults indefinitely. Similarly, it's advised to set max_injection_count to -1.
-    * `max-count`: When this option is selected, you can specify a positive integer for max_injection_count, indicating the upper limit of injections Wasabi should perform.
-Also, note that the `retry_data_file` parameters needs to be an absolute path.
+Also, users need to set the `JAVA_HOME` environment variable to the appropriate path to the Java 11 directory in `/usr/lib`:
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
+```
 
-A `.data` file describes the retry locations and their respective exceptions to be injected by Wasabi. It has the following format:
+Check these operations were successful
+```bash
+java --version
+```
+which should yield
+```bash
+openjdk 11.0.24 2024-07-16
+OpenJDK Runtime Environment (build 11.0.24+8-post-Ubuntu-1ubuntu320.04)
+OpenJDK 64-Bit Server VM (build 11.0.24+8-post-Ubuntu-1ubuntu320.04, mixed mode, sharing)
+```
+and
+```bash
+echo $JAVA_HOME
+```
+which should yield
+```bash
+/usr/lib/jvm/java-1.11.0-openjdk-amd64
+```
 
-```csv
-Retry location!!!Enclosing method!!!Retried method!!!Injection site!!!Exception
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790!!!org.apache.hadoop.ipc.Client$Connection.setupIOstreams!!!org.apache.hadoop.ipc.Client$Connection.writeConnectionContext!!!Client.java:831!!!java.net.SocketException
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/namenode/ha/EditLogTailer.java#L609!!!org.apache.hadoop.hdfs.server.namenode.ha.EditLogTailer$MultipleNameNodeProxy.getActiveNodeProxy!!!org.apache.hadoop.ipc.RPC.getProtocolVersion!!!N/A!!!java.io.IOException
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/RPC.java#L419!!!org.apache.hadoop.ipc.RPC.waitForProtocolProxy!!!org.apache.hadoop.ipc.RPC.getProtocolProxy!!!RPC.java:421!!!java.net.ConnectException
+## Reproducing Bugs Found Through Fault Injection
+
+### Minimal Example: Reproducing HDFS-17590 (1.5h, 15min human effort)
+
+We prepared a minimal example to familiarize users with WASABI. Users can either run individual commands one-by-one (highly recommended as to catch inconsistencies early), or use our automated scripts.
+
+To reproduce [HDFS-17590](https://issues.apache.org/jira/browse/HDFS-17590) a previously unknown retry bug uncovered by WASABI, users should follow these steps. Note that HDFS is a module of Hadoop.
+
+1. Make sure the prerequisites are successfully installed (see "Getting Started" above)
+   
+2. Build and install WASABI by running the following commands:
+```bash
+cd ~/sosp24-ae/wasabi
+mvn clean install -U -fn -B -Dinstrumentation.target=hadoop 2>&1 | tee wasabi-install.log
+```
+
+If successful users should see a message similar to 
+```bash
 ...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  36.384 s
+[INFO] Finished at: 2024-08-12T19:57:24Z
+[INFO] ------------------------------------------------------------------------
 ```
 
-where
-
-* `Retry location` indicates the program locations of a retry (e.g. `https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790`)
-* `Enclosing method` indicates the method from where the retry location is called (e.g. `org.apache.hadoop.ipc.Client$Connection.setupIOstreams`)
-* `Retried method` indicates the method inside the retry logic ought to be retried (e.g. `org.apache.hadoop.ipc.Client$IpcStreams.setSaslClient`)
-* `Injection site` indicates the source location (source file and line of code) where a retried method is called. Also, this represents the program location where Wasabi injects exceptions.
-* `Exception` indicates the exception that Wasabi should throw at that location (e.g. `java.io.SocketException`)
-
-### Configuring Wasabi to inject exceptions at a single location per test
-
-Wasabi can be configured to inject an exception at a single injection site for a particular test. First, users need to create custom `.conf` and `.data` files, as follows:
-* First, create a `.data` file that includes only that particular injection site. For example, this is a `.data` file instructing Wasabi to inject exceptions only at `Client.java#L790` (e.g. `retry_locations_client790.data`):
-   ```csv
-   Retry location!!!Enclosing method!!!Retried method!!!Injection site!!!Exception
-   https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790!!!org.apache.hadoop.ipc.Client$Connection.setupIOstreams!!!org.apache.hadoop.ipc.Client$Connection.writeConnectionContext!!!Client.java:831!!!java.net.SocketException
-   ```
-* Second, create a corresponding ``retry_locations_client790.conf`:
-   ```plaintext
-   retry_data_file: /absolute/path/to/data/file/retry_locations_client790.data
-   injection_policy: [INJECTION_POLICY]
-   max_injection_count: [INJECTION_ATTEMPTS_BOUND]
-   ```
-   We recommend using the "max-count" injection policy with a positive threshold adapted to the type of bugs the user attempts to trigger. For example, a large threshold (e.g. >100) works best for "missing cap", whereas "missing backoff" bugs only required a moderate threshold (e.g. 10).
-
-
-```plaintext
-retry_data_file: /absolute/path/to/data/file/[TARGET_APPLICATION]_retry_locations_[TEST_NAME].data
-injection_policy: max-count
-max_injection_count: 10
-```
-
-### Running tests
-
-To run the entire test suite of the target application after instrumenting/weavinb WASABI:
+3. Clone Hadoop (note: HDFS is part of Hadoop),
 ```bash
-mvn surefire:test -fn -DconfigFile="//absolute//path//to//wasabi-framework//wasabi/config/[CONFIG_FILE].conf" -B 2>&1 | tee wasabi-test.log
+cd ~/sosp24-ae/benchmarks
+git clone https://github.com/apache/hadoop
+```
+and check out version/commit `60867de`:
+```bash
+cd ~/sosp24-ae/benchmarks/hadoop
+git checkout 60867de
+```
+Users can check whether `60867de` was successfully checked out by running
+```bash
+git log
+```
+and checking the output
+```
+commit 60867de422949be416948bd106419c771c7d13fd (HEAD)
+Author: zhangshuyan <81411509+zhangshuyan0@users.noreply.github.com>
+Date:   Mon Aug 21 10:05:34 2023 +0800
+
+    HDFS-17151. EC: Fix wrong metadata in BlockInfoStriped after recovery. (#5938). Contributed by Shuyan Zhang.
+    
+    Signed-off-by: He Xiaoqiao <hexiaoqiao@apache.org>
+
 ```
 
-To run a specific tests:
+4. Build and install Hadoop using the following commands. This is necessary to download and install any missing dependencies that might break Hadoop's test suite during fault injection.
 ```bash
-mvn surefire:test -T 8 -fn -DconfigFile="//absolute//path//to//wasabi-framework//wasabi/config/[CONFIG_FILE].conf" -Dtest=[NAME_OF_TEST] -B 2>&1 | tee wasabi-test.log
+mvn install -U -fn -B -DskipTests 2>&1 | tee wasabi-pass-install.log
 ```
+
+5. Run the test that WASABI uses to trigger HDFS-17590 to confirm that the bug does not get triggered without fault injection
+```bash
+mvn surefire:test -fn -B -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-pass-test.log
+```
+by checking that the test runs successfully. First, checking that there is no `NullPointerException`
+```bash
+grep -A10 -B2 "NullPointerException" wasabi-pass-test.log
+```
+which should yield no output, as well as that all such tests passed
+```bash
+grep "Tests run.*TestFSEditLogLoader" wasabi-pass-test.log
+```
+which should yield a line similar to this (note that number of tests might differ slightly)
+```bash
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 154.223 s - in org.apache.hadoop.hdfs.server.namenode.TestFSEditLogLoader 
+```
+
+6. Copy a modified `pom.xml` file that allows WASABI to instrument (weave) Hadoop by running
+```bash
+cp pom.xml pom-original.xml
+cp ~/sosp24-ae/wasabi/config/hadoop/pom-hadoop.xml pom.xml
+```
+Note that these commands are making a copy of the original `pom.xml` and replace it with a slightly edited version that instructs the AJC compiler to instrument (weave) WASABI. Also, these alterations are specific to version `60867de`. Checking out another Hadoop commit ID requires adjustments. We provide instructions on how to adapt an original `pom.xml`, [here](README.md#instrumentation-weaving-instructions).
+
+7. Instrument Hadoop with WASABI by running
+```bash
+mvn clean install -U -fn -B -DskipTests 2>&1 | tee wasabi-fail-install.log
+```
+
+8. Run the bug-triggering tests with fault injection
+```bash
+mvn surefire:test -fn -B -DconfigFile="$(echo $HOME)/sosp24-ae/wasabi/config/hadoop/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-fail-test.log
+```
+and check the log to see if fails with a `NullPointerException` error
+```bash
+grep -A10 -B2 "NullPointerException" wasabi-fail-test.log
+```
+which should yield an output similar to
+```bash
+[ERROR] Tests run: 26, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 137.645 s <<< FAILURE! - in org.apache.hadoop.hdfs.server.namenode.TestFSEditLogLoader
+[ERROR] testErasureCodingPolicyOperations[0](org.apache.hadoop.hdfs.server.namenode.TestFSEditLogLoader)  Time elapsed: 22.691 s  <<< ERROR!
+java.lang.NullPointerException
+        at java.base/java.util.concurrent.ConcurrentHashMap.putVal(ConcurrentHashMap.java:1011)
+        at java.base/java.util.concurrent.ConcurrentHashMap.put(ConcurrentHashMap.java:1006)
+        at org.apache.hadoop.hdfs.DFSInputStream.addToLocalDeadNodes(DFSInputStream.java:184)
+        at org.apache.hadoop.hdfs.DFSStripedInputStream.createBlockReader(DFSStripedInputStream.java:279)
+        at org.apache.hadoop.hdfs.StripeReader.readChunk(StripeReader.java:304)
+        at org.apache.hadoop.hdfs.StripeReader.readStripe(StripeReader.java:335)
+        at org.apache.hadoop.hdfs.DFSStripedInputStream.readOneStripe(DFSStripedInputStream.java:320)
+        at org.apache.hadoop.hdfs.DFSStripedInputStream.readWithStrategy(DFSStripedInputStream.java:415)
+        at org.apache.hadoop.hdfs.DFSInputStream.read(DFSInputStream.java:919)
+        at java.base/java.io.DataInputStream.read(DataInputStream.java:102)
+```    
+
+### Full Evaluation (24-72h, ~1h human effort)
+
+For reproducing retry bugs through unit testing and fault injection, we provide `run.py`, a Python-based script designed to manage the setup and evaluation phases of WASABI. This script operates through several distinct phases:
+
+1. **Setup**: Clones the necessary repositories and checks out specific versions required for evaluation.
+2. **Preparation**: Manages and customizes the pom.xml files for each benchmark to facilitate instrumented builds.
+3. **Bug triggering**: Executes the tests with WASABI instrumentation to trigger potential bugs.
+4. **Log analysis**: Analyzes the test logs to identify and report bugs.
+
+The run.py script accepts several command-line arguments that allow you to specify the root directory, select the phase to execute, and choose the benchmarks to evaluate.
+
+* `--root-dir`: Specifies the root directory of the application. This directory should contain the benchmarks and wasabi directories as outlined in the setup instructions.
+* `--phase`: Determines which phase of the pipeline to execute with the following options available:
+  * `setup`: Clones the necessary repositories and checks out specific versions.
+  * `prep`: Prepares the environment by renaming the original pom.xml files and replacing them with customized versions.
+  * `bug-triggering`: Executes the test cases using WASABI instrumentation to trigger bugs.
+  * `bug-oracles`: Analyzes the test logs for any anomalies or errors that indicate bugs.
+  * `all`: Runs all the above phases in sequence.
+* `--benchmark`: Specifies which benchmarks to evaluate, with the following options available: `hadoop`, `hbase`, `hive`, `cassandra`, and `elstaicsearch`. 
+
+We recommend users all phases in one go, either iterating through the benchmarks individually,
+
+```bash
+python3 run.py --root-dir /home/user/sosp24-ae --phase all --benchmark hadoop
+```
+or running a subset, at a time
+
+```bash
+for app in hadoop hbase cassandra; do python3 run.py --root-dir /home/user/sosp24-ae --phase all --benchmark $app; done
+```
+
+Note that Hive requires downgrading to Java 8 and recompile WASABI, as explained below
+
+As an example, let's consider a user running the `bug triggering` phase for Hadoop. This requires running
+```bash
+python3 run.py --root-dir /home/user/sosp24-ae --phase bug-triggering --benchmark hadoop
+```
+which would output
+```bash
+****************************
+* Phase: Bug triggering *
+****************************
+Running tests for hadoop...
+Job count: 1 / 3
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/config/hadoop/test_plan.conf -Dtest=Test1 surefire:test
+Running tests for hadoop...
+Job count: 2 / 3
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/config/hadoop/test_plan.conf -Dtest=Test2 surefire:test
+Running tests for hadoop...
+Job count: 3 / 3
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/config/hadoop/test_plan.conf -Dtest=Test3 surefire:test
+```
+
+#### Hive
+
+[instructions for Hive]
+
+### Unpacking Results
+
+
+## Validating Bugs Found Through Static Analysis (2h, 1.5h human effort)
+
