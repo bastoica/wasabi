@@ -125,9 +125,7 @@ which should yield
 
 ## Minimal Example or Kick-the-Tires: Reproducing HDFS-17590 (1.5h, 15min human effort)
 
-We prepared a minimal example to familiarize users with WASABI. Users can either run individual commands one-by-one (highly recommended as to catch inconsistencies early), or use our automated scripts.
-
-To reproduce [HDFS-17590](https://issues.apache.org/jira/browse/HDFS-17590) a previously unknown retry bug uncovered by WASABI, users should follow these steps. Note that HDFS is a module of Hadoop.
+With the prerequisits installed (see previous section), users can now run individual commands, one-by-one, to reproduce [HDFS-17590](https://issues.apache.org/jira/browse/HDFS-17590) -- a previously unknown retry bug uncovered by WASABI. Note that HDFS is a module of Hadoop, so while the bug manifests in HDFS we will first need to clone and build Hadoop from source.
 
 1. Make sure the prerequisites are successfully installed (see "Getting Started" above)
    
