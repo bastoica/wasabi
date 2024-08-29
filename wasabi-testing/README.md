@@ -317,7 +317,7 @@ Users might observe a "build failure" message at the end of the build process. T
 ```
 </details>
 
-1. Run the test that WASABI uses to trigger HDFS-17590 to confirm that the bug does not get triggered without fault injection
+5. Run the test that WASABI uses to trigger HDFS-17590 to confirm that the bug does not get triggered without fault injection
 ```bash
 mvn surefire:test -fn -B -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-pass-test.log
 ```
@@ -334,19 +334,19 @@ which should yield a line similar to this (note that number of tests might diffe
 [INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 154.223 s - in org.apache.hadoop.hdfs.server.namenode.TestFSEditLogLoader 
 ```
 
-1. Copy a modified `pom.xml` file that allows WASABI to instrument (weave) Hadoop by running
+6. Copy a modified `pom.xml` file that allows WASABI to instrument (weave) Hadoop by running
 ```bash
 cp pom.xml pom-original.xml
 cp ~/sosp24-ae/wasabi/wasabi-testing/config/hadoop/pom-hadoop.xml pom.xml
 ```
 Note that these commands are making a copy of the original `pom.xml` and replace it with a slightly edited version that instructs the AJC compiler to instrument (weave) WASABI. Also, these alterations are specific to version `60867de`. Checking out another Hadoop commit ID requires adjustments. We provide instructions on how to adapt an original `pom.xml`, [here](README.md#instrumentation-weaving-instructions).
 
-1. Instrument Hadoop with WASABI by running
+7. Instrument Hadoop with WASABI by running
 ```bash
 mvn clean install -U -fn -B -DskipTests 2>&1 | tee wasabi-fail-install.log
 ```
 
-1. Run the bug-triggering tests with fault injection
+8. Run the bug-triggering tests with fault injection
 ```bash
 mvn surefire:test -fn -B -DconfigFile="$(echo $HOME)/sosp24-ae/wasabi/wasabi-testing/config/hadoop/example.conf" -Dtest=TestFSEditLogLoader 2>&1 | tee wasabi-fail-test.log
 ```
