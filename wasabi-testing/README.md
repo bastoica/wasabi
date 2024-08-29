@@ -102,9 +102,9 @@ There are 3 choices for the alternative java (providing /usr/bin/java).
   Selection    Path                                            Priority   Status
 ------------------------------------------------------------
   0            /usr/lib/jvm/java-17-openjdk-amd64/bin/java      1711      auto mode
-* 1            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1111      manual mode
+  1            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1111      manual mode
   2            /usr/lib/jvm/java-17-openjdk-amd64/bin/java      1711      manual mode
-  3            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java   1081      manual mode
+* 3            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java   1081      manual mode
 ```
 
 Also, users need to set the `JAVA_HOME` environment variable to the appropriate path to the Java 11 directory in `/usr/lib`:
@@ -185,9 +185,11 @@ Date:   Mon Aug 21 10:05:34 2023 +0800
 mvn install -U -fn -B -DskipTests 2>&1 | tee wasabi-pass-install.log
 ```
 
-Users might see a "build failure" message at the end. This is expected as a few benchmarking components of Hadoop need more configuration to build properly with the ACJ compiler. WASABI does not need those components to find retry bugs. For reference, we attach our build log below. Note that the core components of Hadoop (common and client), HDFS, Yarn, and MapReduce all build successfully. 
+Users might observe a "build failure" message at the end of the build process. This is expected as a few benchmark-related components of Hadoop need more configuration to build properly with the ACJ compiler. WASABI does not need those components to find retry bugs. For reference, we attach our build log below. Note that the core components of Hadoop (common and client), HDFS, Yarn, and MapReduce all build successfully. 
 
-<details><summary>Hadoop build log details:</a></summary>
+<details>
+<summary>Hadoop build log details:</summary>
+
 ```bash
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary for Apache Hadoop Main 3.4.0-SNAPSHOT:
