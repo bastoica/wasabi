@@ -130,9 +130,7 @@ which should yield
 /usr/lib/jvm/java-1.11.0-openjdk-amd64
 ```
 
-## Reproducing Bugs Found Through Fault Injection
-
-### Minimal Example: Reproducing HDFS-17590 (1.5h, 15min human effort)
+## Minimal Example: Reproducing HDFS-17590 (1.5h, 15min human effort)
 
 We prepared a minimal example to familiarize users with WASABI. Users can either run individual commands one-by-one (highly recommended as to catch inconsistencies early), or use our automated scripts.
 
@@ -281,9 +279,9 @@ python3 run.py --root-dir /home/user/sosp24-ae --phase bug-triggering --benchmar
 ```
 which would output
 ```bash
-****************************
+*************************
 * Phase: Bug triggering *
-****************************
+*************************
 Running tests for hadoop...
 Job count: 1 / 3
 Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/config/hadoop/test_plan.conf -Dtest=Test1 surefire:test
@@ -300,7 +298,4 @@ Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/config/hadoop
 [instructions for Hive]
 
 ### Unpacking Results
-
-
-## Validating Bugs Found Through Static Analysis (2h, 1.5h human effort)
 
