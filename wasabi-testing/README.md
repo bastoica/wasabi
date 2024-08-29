@@ -130,7 +130,7 @@ which should yield
 /usr/lib/jvm/java-1.11.0-openjdk-amd64
 ```
 
-## Minimal Example: Reproducing HDFS-17590 (1.5h, 15min human effort)
+## Minimal Example or Kick-the-Tires: Reproducing HDFS-17590 (1.5h, 15min human effort)
 
 We prepared a minimal example to familiarize users with WASABI. Users can either run individual commands one-by-one (highly recommended as to catch inconsistencies early), or use our automated scripts.
 
@@ -292,10 +292,6 @@ Running tests for hadoop...
 Job count: 3 / 3
 Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/config/hadoop/test_plan.conf -Dtest=Test3 surefire:test
 ```
-
-#### Hive
-
-[instructions for Hive]
 
 ### Unpacking Results
 

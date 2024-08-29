@@ -11,3 +11,5 @@ The entire artifact evaluation process can take between 24 and 72h, depending on
 To get started, reviewers can refer to:
 1. The step-by-step guide for replicating our testing workflow results, [here](https://github.com/bastoica/wasabi/blob/sosp24-ae/wasabi-testing/README.md);
 2. The instructions for validating the static analysis worfklow findings, [here](https://github.com/bastoica/wasabi/tree/sosp24-ae/wasabi-static#readme).
+
+We put together a minimal example for the testing workflow, which helps reviewers reproduce (HDFS-17590)[https://github.com/bastoica/wasabi/tree/sosp24-ae/wasabi-testing#minimal-example-or-kick-the-tires-reproducing-hdfs-17590-15h-15min-human-effort].
