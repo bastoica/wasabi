@@ -3,7 +3,7 @@ WASABI is a fault injection AspectJ tool, designed to inject faults into Java ap
 ## SOSP24 Artifact Evaluation
 
 > [!IMPORTANT] 
-> We created a special branch for the SOSP24 artifact evaluation process. Reviewers are invited clone this repository, switch to the `sosp24-ae` branch, and follow the SOSP 2024 artifact evaluation [instructions](https://github.com/bastoica/wasabi/blob/sosp24-ae/wasabi-testing/README.md) for a step-by-step walkthrough over our benchmarks. While we sync the `master` branch reguraly, the most up-to-date instructions relevant to the AE committee are published on the `sosp24-ae` branch first.
+> We created a special branch for the SOSP24 artifact evaluation process. Reviewers are invited clone this repository, switch to the `sosp24-ae` branch, and follow the SOSP 2024 artifact evaluation [instructions](https://github.com/bastoica/wasabi/blob/sosp24-ae/README.md) for a step-by-step walkthrough over our benchmarks. While we sync the `master` branch reguraly, the most up-to-date instructions relevant to the AE committee are published on the `sosp24-ae` branch first.
 
 ## Installation Instructions
 ### Dependencies
