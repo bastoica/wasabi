@@ -24,6 +24,7 @@ class ConfigParser {
   private static WasabiLogger LOG;
   private static String configFile;
 
+  private static String wasabiRootDir;
   private static String retryDataFile;
   private static String injectionPolicy;
   private static int maxInjectionCount;
@@ -63,14 +64,15 @@ class ConfigParser {
         switch (parameter) {
           case "retry_data_file":
             try {
-              this.retryDataFile = Paths.get(this.wasabiRootDir, value).toString();
+              Path retryDataFilePath = Paths.get(this.wasabiRootDir).resolve(value).normalize();
+              this.retryDataFile = retryDataFilePath.toString();
             } catch (Exception e) {
               this.LOG.printMessage(
                   LOG.LOG_LEVEL_ERROR, 
                   String.format("[wasabi] Invalid path: %s/%s", this.wasabiRootDir, value)
                 );
               e.printStackTrace();
-              throw new InvalidPathException("[wasabi] Invalid path: " + this.wasabiRootDir + "/" + value);
+              throw new IllegalStateException("[wasabi] Invalid path: " + this.wasabiRootDir + "/" + value);
             }
             break;
           case "injection_policy":
