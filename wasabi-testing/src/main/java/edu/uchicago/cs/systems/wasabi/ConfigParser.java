@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.System;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +38,15 @@ class ConfigParser {
     this.LOG = logger;
     this.configFile = configFile;
 
+    this.wasabiRootDir = System.getenv("WASABI_ROOT_DIR");
+    if (this.wasabiRootDir == null) {
+      this.LOG.printMessage(
+          LOG.LOG_LEVEL_ERROR, 
+          String.format("WASABI_ROOT_DIR environment variable is not set.")
+        );
+      throw new IllegalStateException("[wasabi] WASABI_ROOT_DIR environment variable is not set.");
+    }
+
     parseConfigFile();
     parseCodeQLOutput();
   }
@@ -51,7 +62,16 @@ class ConfigParser {
         String value = parts[1].replaceAll("\\s+", "").trim();
         switch (parameter) {
           case "retry_data_file":
-            this.retryDataFile = value;
+            try {
+              this.retryDataFile = Paths.get(this.wasabiRootDir, value).toString();
+            } catch (Exception e) {
+              this.LOG.printMessage(
+                  LOG.LOG_LEVEL_ERROR, 
+                  String.format("[wasabi] Invalid path: %s/%s", this.wasabiRootDir, value)
+                );
+              e.printStackTrace();
+              throw new InvalidPathException("[wasabi] Invalid path: " + this.wasabiRootDir + "/" + value);
+            }
             break;
           case "injection_policy":
             this.injectionPolicy = value;
