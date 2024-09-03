@@ -44,7 +44,7 @@ tree -L 3 ~/sosp24-ae/
 
 Next, users should set up the `WASABI_ROOT_DIR` system variable which is used by most of the scripts in this artifact:
 ```
-WASABI_ROOT_DIR=$(echo $HOME)/sosp24-ae/wasabi
+export WASABI_ROOT_DIR=$(echo $HOME)/sosp24-ae/wasabi
 ```
 
 > [!NOTE]
