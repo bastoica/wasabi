@@ -42,7 +42,13 @@ and print out the structure
 tree -L 2 ~/sosp24-ae/
 ```
 
-This instalation guide assumes users are running Unix-based operating system with `bash` as the default shell.
+Next, users should set up the `WASABI_ROOT_DIR` system variable which is used by most of the scripts in this artifact:
+```
+WASABI_ROOT_DIR=$(echo $HOME)/sosp24-ae/wasabi
+```
+
+> [!NOTE]
+> This instalation guide assumes users are running Unix-based operating system with `bash` as the default shell.
 
 ### System Requirements
 
