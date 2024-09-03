@@ -39,7 +39,7 @@ sudo apt-get install tree
 ```
 and print out the structure
 ```bash
-tree -L 2 ~/sosp24-ae/
+tree -L 3 ~/sosp24-ae/
 ```
 
 Next, users should set up the `WASABI_ROOT_DIR` system variable which is used by most of the scripts in this artifact:
