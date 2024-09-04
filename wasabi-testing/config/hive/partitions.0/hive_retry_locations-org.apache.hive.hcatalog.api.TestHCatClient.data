@@ -1,2 +1,0 @@
-Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
-https://github.com/apache/hive/tree//e427ce0//standalone-metastore/metastore-server/src/main/java/org/apache/hadoop/hive/metastore/RetryingHMSHandler.java#L138!!!org.apache.hadoop.hive.metastore.RetryingHMSHandler.invokeInternal!!!org.apache.hadoop.hive.metastore.MetaStoreInit.updateConnectionURL!!!RetryingHMSHandler.java:172!!!org.apache.hadoop.hive.metastore.api.MetaException

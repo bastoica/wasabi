@@ -1,2 +1,0 @@
-Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
-https://github.com/apache/hive/tree//e427ce0//service/src/java/org/apache/hive/service/cli/thrift/RetryingThriftCLIServiceClient.java#L290!!!org.apache.hive.service.cli.thrift.RetryingThriftCLIServiceClient.connectWithRetry!!!org.apache.hive.service.cli.thrift.RetryingThriftCLIServiceClient.connect!!!RetryingThriftCLIServiceClient.java:292!!!org.apache.hive.service.cli.HiveSQLException

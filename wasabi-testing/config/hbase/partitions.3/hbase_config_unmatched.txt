@@ -1,8 +1,0 @@
-================= Statistics ================
-Total matched retried methods: 4
-Unmatched retried method: 
-        ReplicationSource.java:555
-        ModifyPeerProcedure.java:259
-Unmatched tests: 
-Tests matched multiple times: 
-=================    |||    =================

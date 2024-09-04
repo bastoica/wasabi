@@ -1,2 +1,0 @@
-Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
-https://github.com/apache/hadoop/blob/ee7d178/hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/fs/TrashPolicyDefault.java#L151!!!org.apache.hadoop.fs.TrashPolicyDefault.moveToTrash!!!org.apache.hadoop.fs.FileSystem.mkdirs!!!TrashPolicyDefault.java:161!!!java.io.IOException

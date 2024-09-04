@@ -1,2 +1,0 @@
-Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
-https://github.com/apache/hive/tree//e427ce0//ql/src/java/org/apache/hadoop/hive/ql/parse/repl/CopyUtils.java#L232!!!org.apache.hadoop.hive.ql.parse.repl.CopyUtils.doCopyRetry!!!org.apache.hadoop.hive.ql.parse.repl.CopyUtils.getFilesToRetry!!!CopyUtils.java:268!!!java.io.IOException

@@ -1,2 +1,0 @@
-Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
-https://github.com/apache/hadoop/blob/ee7d178/hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-app/src/main/java/org/apache/hadoop/mapreduce/v2/app/local/LocalContainerAllocator.java#L106!!!org.apache.hadoop.mapreduce.v2.app.local.LocalContainerAllocator.heartbeat!!!org.apache.hadoop.yarn.api.ApplicationMasterProtocol.allocate!!!LocalContainerAllocator.java:113!!!java.io.IOException

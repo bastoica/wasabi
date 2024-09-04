@@ -1,2 +1,0 @@
-Retry location!!!Retry caller!!!Injection site!!!Injection location!!!Exception
-https://github.com/apache/hive/tree//e427ce0//ql/src/java/org/apache/hadoop/hive/ql/lockmgr/EmbeddedLockManager.java#L113!!!org.apache.hadoop.hive.ql.lockmgr.EmbeddedLockManager.lock!!!org.apache.hadoop.hive.ql.lockmgr.EmbeddedLockManager.lockPrimitive!!!EmbeddedLockManager.java:117!!!org.apache.hadoop.hive.ql.lockmgr.LockException
