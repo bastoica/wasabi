@@ -9,8 +9,8 @@ import subprocess
 import time
 import sys
 
-LOG_FILE_NAME = "build.log"  # log file
-TIMEOUT = 3600               # command timeout value in seconds
+LOG_FILE_NAME = "wasabi-install.log"
+TIMEOUT = 3600
 
 
 def get_conf_files(config_dir):
@@ -174,46 +174,36 @@ def run_mvn_test_command(target_root_dir, mvn_parameters):
       print(f"// -------------------------------------------------------------------------- //")
 
 
-def append_log_files(target_root_dir):
-  """
-  Append all the log files into one large build.log file at the end using os.system.
+def save_log_files(wasabi_root_dir: str, target_app: str):
+    """
+    Save test and build log files to a separate directory.
 
-  Parameters:
-    target_root_dir (str): The path of the target root directory.
-  """
-  log_files = glob.glob(os.path.join(target_root_dir, "build_*.log"))
-  
-  for log_file in log_files:
-    cmd = f"perl -p -i -e 's/\x1B\[[0-9;]*[a-zA-Z]//g' {log_file}"
-    os.system(cmd)
-  
-  log_files_str = " ".join(log_files)
-  cmd = f"cat {log_files_str} > {os.path.join(target_root_dir, LOG_FILE_NAME)}"
-  os.system(cmd)
+    Parameters:
+        wasabi_root_dir (str): The path of the Wasabi root directory.
+        target_app (str): The target application name for which logs will be saved.
+    """
+    wasabi_results_dir = os.path.join(wasabi_root_dir, "results", target_app)
+    target_root_dir = os.path.join(wasabi_root_dir, "benchmarks", target_app)
 
+    date = datetime.datetime.now().strftime("%Y%m%d%H%M")
+    
+    # Save test reports
+    test_reports_dir = os.path.join(wasabi_results_dir, date, "test_reports")
+    os.makedirs(test_reports_dir, exist_ok=True)
+    for dirpath, _, files in os.walk(target_root_dir):
+        for file in files:
+            if file.endswith("-output.txt"):
+                output_file = os.path.join(dirpath, file)
+                shutil.copy(output_file, os.path.join(test_reports_dir, f"{date}.{file}"))
 
-def move_log_files(target_root_dir):
-  """
-  Move the log files to a separate directory.
+    # Save build reports
+    build_reports_dir = os.path.join(wasabi_results_dir, date, "build_reports")
+    os.makedirs(build_reports_dir, exist_ok=True)
+    for file in os.listdir(target_root_dir):
+        if file.startswith("build-") and file.endswith(".log"):
+            output_file = os.path.join(target_root_dir, file)
+            shutil.copy(output_file, os.path.join(build_reports_dir, f"{date}.{file}"))
 
-  Parameters:
-    target_root_dir (str): The path of the target root directory.
-  """
-  
-  wasabi_dir = "wasabi.data"
-  date = datetime.datetime.now().strftime("%Y%m%d%H%M")
-  
-  test_reports_dir = os.path.join(target_root_dir, wasabi_dir, date, "test_reports")
-  os.makedirs(test_reports_dir, exist_ok=True)
-  shutil.move(os.path.join(target_root_dir, LOG_FILE_NAME), os.path.join(target_root_dir, wasabi_dir, date))
-  
-  for dirpath, dirnames, files in os.walk(target_root_dir):
-    if wasabi_dir in dirnames:
-      dirnames.remove(wasabi_dir)
-    for file in files:
-      if re.match(r'.*-output\.txt$', file):
-        output_file = os.path.join(dirpath, file)
-        shutil.copy(output_file, os.path.join(test_reports_dir, f"{date}.{file}"))   
 
 def main():
   parser = argparse.ArgumentParser()
@@ -225,8 +215,8 @@ def main():
     print("[WASABI-HELPER]: [ERROR]: The WASABI_ROOT_DIR environment variable is not set.")
     sys.exit(1)
   
-  target_root_dir = wasabi_root_dir + "/benchmarks/" + args.benchmark
-  config_dir = wasabi_root_dir + "/wasabi-testing/config" + args.benchmarks + "/test_plan"
+  target_root_dir = os.path.join(wasabi_root_dir, "benchmarks", args.benchmark)
+  config_dir = os.path.join(wasabi_root_dir, "wasabi-testing", "config", args.benchmarks, "test_plan")
 
   conf_files = get_conf_files(config_dir)
   test_names = [get_test_file_name(config_file) for config_file in conf_files]
@@ -246,7 +236,7 @@ def main():
 
   # Save and move logs
   append_log_files(target_root_dir)
-  move_log_files(target_root_dir)
+  save_log_files(target_root_dir)
 
 if __name__ == "__main__":
   main()
