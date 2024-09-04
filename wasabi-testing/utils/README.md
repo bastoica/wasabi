@@ -89,9 +89,9 @@ Wasabi can be configured to inject an exception at a single injection site for a
    ```
    The test report (i.e., `*-output.txt` file) logs the behavior of the application under that particular test along with fault injection related messages printed by Wasabi.
 
-## § `log_parser.py`
+## § `bug_oracles.py`
 
-This `log_parser.py` script parses Maven build logs and extract information about test failures. It can capture information about retry locations exercised and specific types of test failures:
+This `bug_oracles.py` script parses Maven build logs and extract information about test failures. It can capture information about retry locations exercised and specific types of test failures:
 
 * tests failing directly or indirectly triggered by fault injection
 * tests triggering assertions
@@ -103,12 +103,6 @@ Consequently, the script both parsers log files and prunes out failures not conn
 The script runs as follows:
 
 ```bash
-python3 log_parser.py --log-file [MAVEN_TEST_LOG] --excluded-tests [EXCLUDED_TESTS_FILE] --excluded-failure-patterns [EXCLUDED_FAILURE_PATTERNS_FILE]
+python3 bug_oracles.py ...
 ```
-
-where
-
-* `--log-file` indicates the file containing results of a `mvn ... test` command
-* `--excluded-tests` indicates the file that lists the tests to be excluded
-* `--excluded-failure-patterns` indicates the file that contains the failure patterns to be excluded
 

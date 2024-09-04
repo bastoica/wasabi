@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import time
+import sys
 
 LOG_FILE_NAME = "build.log"  # log file
 TIMEOUT = 3600               # command timeout value in seconds
@@ -216,13 +217,17 @@ def move_log_files(target_root_dir):
 
 def main():
   parser = argparse.ArgumentParser()
-  parser.add_argument("target_root_dir", help="The target root directory")
-  parser.add_argument("config_dir", help="The config directory")
+  parser.add_argument("--benchmark", choices=["hadoop", "hbase", "hive", "cassandra", "elasticsearch"], required=True, help="The benchmark to run")
   args = parser.parse_args()
   
-  target_root_dir = args.target_root_dir
-  config_dir = args.config_dir
+  wasabi_root_dir = os.getenv("WASABI_ROOT_DIR")
+  if not wasabi_root_dir:
+    print("[WASABI-HELPER]: [ERROR]: The WASABI_ROOT_DIR environment variable is not set.")
+    sys.exit(1)
   
+  target_root_dir = wasabi_root_dir + "/benchmarks/" + args.benchmark
+  config_dir = wasabi_root_dir + "/wasabi-testing/config" + args.benchmarks + "/test_plan"
+
   conf_files = get_conf_files(config_dir)
   test_names = [get_test_file_name(config_file) for config_file in conf_files]
   mvn_parameters = [(conf_file, test_name) for conf_file, test_name in zip(conf_files, test_names)]
