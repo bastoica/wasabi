@@ -92,12 +92,12 @@ def run_fault_injection(target):
     target (str): The name of the application.
   """
 
-  cmd = ["python3", " run_benchmark.py", "--benchmark", target]
-  result = run_command_with_timeout(cmd, os.getcwd())
-  if result is None:
-    print(f"[WASABI-HELPER]: [ERROR]: Running test suite for '{target}' failed. Status: {result.returncode}.")
+  cmd = ["python3", "run_benchmark.py", "--benchmark", target]
+  result = run_command(cmd, os.getcwd())
+  if result is None or result.returncode != 0:
+    print(f"[WASABI-HELPER]: [ERROR]: Command to run run_benchmark.py on {target} failed with error message: {result.stderr.decode('utf-8').strip()}")
   else:
-    print(f"[WASABI-HELPER]: [INFO]: Finished running test suite for '{target}'. Status: {result.returncode}")
+    print(f"[WASABI-HELPER]: [INFO]: Finished running test suite for {target}. Status: {result.returncode}")
 
 
 def run_bug_oracles(root_dir: str, target: str,):
@@ -112,7 +112,7 @@ def run_bug_oracles(root_dir: str, target: str,):
   csv_file = os.path.join(target_root_dir, f"{target}-bugs-per-test.csv")
   if os.path.exists(csv_file):
     cmd = ["rm", "-f", csv_file]
-    result = run_command_with_timeout(cmd, os.getcwd())
+    result = run_command(cmd, os.getcwd())
     
     if result is None:
       print(f"[WASABI-HELPER]: [ERROR]: Command to remove {csv_file} failed. Status: {result.returncode}.")
@@ -123,21 +123,21 @@ def run_bug_oracles(root_dir: str, target: str,):
     item_path = os.path.join(target_root_dir, item)
     if os.path.isdir(item_path):
       cmd = ["python3", "bug_oracles.py", item_path, "--benchmark", target]
-      result = run_command_with_timeout(cmd, os.getcwd())
+      result = run_command(cmd, os.getcwd())
       if result:
         print(result.stdout.decode())
       
-      if result is None:
-        print(f"[WASABI-HELPER]: [ERROR]: Command to run bug_oracles.py on {item_path} failed. Status: {result.returncode}")
+      if result is None or result.returncode != 0:
+        print(f"[WASABI-HELPER]: [ERROR]: Command to run bug_oracles.py on {item_path} failed with error message: {result.stderr.decode('utf-8').strip()}")
       else:
         print(f"[WASABI-HELPER]: [INFO]: Finished processing {item_path}. Status: {result.returncode}")
 
 
 """ Helper functions
 """
-def run_command_with_timeout(cmd, cwd):
+def run_command(cmd, cwd):
   """
-  Run a command with a timeout in a subprocess.
+  Run a command in a subprocess.
 
   Arguments:
     cmd (list): The command to run.
@@ -146,12 +146,8 @@ def run_command_with_timeout(cmd, cwd):
   Returns:
     CompletedProcess: The result of the command execution.
   """
-  try:
-    result = subprocess.run(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=900)
-    return result
-  except subprocess.TimeoutExpired:
-    print(f"[WASABI-HELPER]: [WARNING]: Command {cmd} timed out")
-    return None
+  result = subprocess.run(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  return result
 
 def display_phase(phase_name):
   """
