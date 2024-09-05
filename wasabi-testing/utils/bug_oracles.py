@@ -316,8 +316,6 @@ def check_how_bugs(test_failures: dict(), execution_trace: defaultdict(list)) ->
         elif error_in_test_code(op) or "| Retry attempt ---" in op.failure_string:
           continue
         else:
-          print(f"+++injection: {last_injection_op.type}+++{last_injection_op.test_name}+++{last_injection_op.exception_injected}+++{last_injection_op.retry_caller}")
-          print(f"+++failure  : {op.type}+++{op.test_name}+++{op.failure_string}+++{op.failure_exceptions}")
           how_bugs.add(("how-bug", last_injection_op))
         last_injection_op = None
  
@@ -379,20 +377,21 @@ def check_when_missing_cap_bugs(execution_trace: defaultdict(list)) -> set:
 def main():
   parser = argparse.ArgumentParser(description="Parse and process log files for retry bug analysis.")
   parser.add_argument("logs_root_dir", type=str, help="The root directory where build/test logs are saved")
+  parser.add_argument("--benchmark", choices=["hadoop", "hbase", "hive", "cassandra", "elasticsearch", "all-maven"], required=True, help="The benchmark to run")
   args = parser.parse_args()
   root_path = args.logs_root_dir
 
   test_failures = dict()
   all_bugs = set()
 
-  for root, _, files in os.walk(os.path.join(root_path, "build_reports/")):
+  for root, _, files in os.walk(os.path.join(root_path, "build-reports/")):
     for fname in files:
-      if fname.startswith('build_') and fname.endswith('.log'):
+      if fname.startswith('build-') and fname.endswith('.log'):
         build_log = parse_build_log(fname, os.path.join(root, fname))
         for msg in build_log:
           test_failures[msg.test_name] = msg
 
-  for root, _, files in os.walk(os.path.join(root_path, "test_reports/")):
+  for root, _, files in os.walk(os.path.join(root_path, "test-reports/")):
     for fname in files:
       if fname.endswith('-output.txt'):
         test_log = parse_test_log(fname, os.path.join(root, fname))
@@ -404,11 +403,18 @@ def main():
         all_bugs.update(check_when_missing_cap_bugs(execution_trace))
         all_bugs.update(check_how_bugs(test_failures, execution_trace))
 
-  print("==== Detected Bugs ====")
+  print("// ----------------------------- //")
+  print(f"   Retry bugs for {args.benchmark}")
+  print("// ----------------------------- //")
   for bug_no, bug in enumerate(all_bugs, 1):
     bug_type, op = bug
     print(f"bug-{bug_no},{bug_type},{op.retry_caller},{op.test_name}")
 
+  csv_file = os.path.join(root_path, f"{args.benchmark}-bugs-per-test.csv")
+  with open(csv_file, "w") as f:
+    for bug_no, bug in enumerate(all_bugs, 1):
+      bug_type, op = bug
+      f.write(f"bug-{bug_no},{bug_type},{op.retry_caller},{op.test_name}\n")
 
 if __name__ == "__main__":
   main()
