@@ -71,7 +71,7 @@ def run_mvn_install_command(target: str, target_root_dir: str):
   elif target == "hive":
     cmd = ["mvn", "clean", "package", "-fn", "-Drat.numUnapprovedLicenses=20000", "-Pdist", "-B", "-U", "-DskipTests"]
   else:
-    cmd = ["mvn", "clean", "install", "-fn", "-B", "-U", "-DskipTests", "-U"]
+    cmd = ["mvn", "clean", "install", "-fn", "-B", "-U", "-DskipTests"]
 
   print("// -------------------------------------------------------------------------- //")
   print(f"Active directory: {target_root_dir}")
