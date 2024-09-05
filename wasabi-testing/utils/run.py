@@ -137,7 +137,7 @@ def run_bug_oracles(root_dir: str, target: str,):
 """
 def run_command(cmd, cwd):
   """
-  Run a command in a subprocess.
+  Run a command in a subprocess and display the output in real-time.
 
   Arguments:
     cmd (list): The command to run.
@@ -146,8 +146,26 @@ def run_command(cmd, cwd):
   Returns:
     CompletedProcess: The result of the command execution.
   """
-  result = subprocess.run(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-  return result
+  process = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+  stdout_lines = []
+  stderr_lines = []
+
+  try:
+    for stdout_line in iter(process.stdout.readline, ""):
+      stdout_lines.append(stdout_line)
+      print(stdout_line, end="")
+
+    process.stdout.close()
+    process.wait()
+
+    stderr_lines = process.stderr.readlines()
+    process.stderr.close()
+
+    return subprocess.CompletedProcess(cmd, process.returncode, ''.join(stdout_lines), ''.join(stderr_lines))
+  except Exception as e:
+    process.kill()
+    raise e
 
 def display_phase(phase_name):
   """

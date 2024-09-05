@@ -80,7 +80,7 @@ def run_mvn_install_command(target: str, target_root_dir: str):
   result = subprocess.run(cmd, cwd=target_root_dir, shell=False, capture_output=True)
   
   print(f"Status: {result.returncode}", flush=True)
-  print("// -------------------------------------------------------------------------- //")
+  print("// -------------------------------------------------------------------------- //\n")
 
   log_file_path = os.path.join(target_root_dir, LOG_FILE_NAME)
   with open(log_file_path, "a", encoding="utf-8") as outfile:
@@ -144,7 +144,7 @@ def run_mvn_test_command(target: str, target_root_dir: str, mvn_parameters: str)
 
     if result is not None:
       print(f"Status: {result.returncode}", flush=True)
-      print("// -------------------------------------------------------------------------- //")
+      print("// -------------------------------------------------------------------------- //\n")
 
       with open(log_file, "a", encoding="utf-8") as outfile:
         outfile.write(result.stdout.decode('utf-8'))
@@ -152,7 +152,7 @@ def run_mvn_test_command(target: str, target_root_dir: str, mvn_parameters: str)
     
     else:
       print(f"Status: timeout -- TimeoutExpired exception", flush=True)
-      print("// -------------------------------------------------------------------------- //")
+      print("// -------------------------------------------------------------------------- //\n")
 
 
 def run_cleanup_command():
@@ -175,7 +175,7 @@ def run_cleanup_command():
         print(f"Command timed out while trying to remove {m2_dir}.", flush=True)
     else:
         print(f"Status: {result.returncode}", flush=True)
-    print("// -------------------------------------------------------------------------- //")
+    print("// -------------------------------------------------------------------------- //\n")
 
 
 def save_log_files(target_app: str, wasabi_root_dir: str):
