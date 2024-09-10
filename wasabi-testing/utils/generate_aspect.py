@@ -19,14 +19,14 @@ def read_spec_file_to_dict(csv_file_path):
   return exception_map
 
 def generate_aspectj_code(exception_map):
-    pointcut_code = ""
-    for exception, method_pairs in exception_map.items():
-        patterns = []
-        
-        for enclosing, retried in method_pairs:
-            patterns.append(f"    (withincode(* {enclosing}(..)) &&\n    call(* {retried}(..) throws *Exception*)) ||\n")
-        
-        pointcut_template = f"""
+  pointcut_code = ""
+  for exception, method_pairs in exception_map.items():
+    patterns = []
+    
+    for enclosing, retried in method_pairs:
+      patterns.append(f"    (withincode(* {enclosing}(..)) &&\n    call(* {retried}(..) throws *Exception*)) ||\n")
+    
+    pointcut_template = f"""
   /* Inject {exception} */
 
   pointcut inject{exception}():
@@ -85,12 +85,12 @@ def generate_aspectj_code(exception_map):
     }}
   }}
 """
-        pointcut_code += pointcut_template
-    
-    pointcut_code = pointcut_code.replace("(    (within", "((within")
-    pointcut_code = pointcut_code.replace(") ||\n) &&", ")) &&")
+    pointcut_code += pointcut_template
+  
+  pointcut_code = pointcut_code.replace("(    (within", "((within")
+  pointcut_code = pointcut_code.replace(") ||\n) &&", ")) &&")
 
-    code_template = f"""package edu.uchicago.cs.systems.wasabi;
+  code_template = f"""package edu.uchicago.cs.systems.wasabi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -252,7 +252,7 @@ public aspect Interceptor {{
   {pointcut_code}
 }}"""
 
-    return code_template
+  return code_template
 
 def main():
   parser = argparse.ArgumentParser(description="Generate AspectJ code following a particular specification.")

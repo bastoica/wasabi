@@ -8,7 +8,7 @@ import sys
 
 """ Evaluation phases
 """
-def clone_repositories(root_dir, benchmark_list):
+def clone_repositories(root_dir: str, benchmark_list: list[str]):
   """
   Clone the necessary repositories and checkout specific versions for the specified benchmarks.
 
@@ -20,7 +20,7 @@ def clone_repositories(root_dir, benchmark_list):
     "hadoop": ("https://github.com/apache/hadoop.git", "60867de"),
     "hbase": ("https://github.com/apache/hbase.git", "89ca7f4"),
     "hive": ("https://github.com/apache/hive.git", "e08a600"),
-    "cassandra": ("https://github.com/apache/cassandra.git", "1c3c500"),
+    "cassandra": ("https://github.com/apache/cassandra.git", "f0ad7ea"),
     "elasticsearch": ("https://github.com/elastic/elasticsearch.git", "5ce03f2"),
   }
   benchmarks_dir = os.path.join(root_dir, "benchmarks")
@@ -33,24 +33,24 @@ def clone_repositories(root_dir, benchmark_list):
 
       if not os.path.exists(repo_dir):
         print(f"[WASABI-HELPER]: [INFO]: Cloning {name} repository from {url}...")
-        clone_result = subprocess.run(["git", "clone", url, repo_dir], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if clone_result.returncode != 0:
-          print(f"[WASABI-HELPER]: [ERROR]: Error cloning {name}: {clone_result.stderr.decode()}")
+        result = subprocess.run(["git", "clone", url, repo_dir], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if result is None or result.returncode != 0:
+          print(f"[WASABI-HELPER]: [ERROR]: Error cloning {name}:\n\t{result.stdout}\n\t{result.stderr}")
           continue
         print(f"[WASABI-HELPER]: [INFO]: Successfully cloned {name}.")
 
       print(f"Checking out version {version} for {name}...")
-      checkout_result = subprocess.run(["git", "checkout", version], cwd=repo_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-      if checkout_result.returncode != 0:
-        print(f"[WASABI-HELPER]: [ERROR]: Error checking out version {version} for {name}: {checkout_result.stderr.decode()}")
+      result = subprocess.run(["git", "checkout", version], cwd=repo_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+      if result is None or result.returncode != 0:
+        print(f"[WASABI-HELPER]: [ERROR]: Error checking out version {version} for {name}:\n\t{result.stdout}\n\t{result.stderr}")
         continue
       print(f"[WASABI-HELPER]: [INFO]: Successfully checked out version {version} for {name}.")
     else:
       print(f"[WASABI-HELPER]: [WARNING]: Benchmark {name} is not recognized and will be skipped.")
 
-def replace_pom_files(root_dir, benchmark_list):
+def replace_config_files(root_dir: str, benchmark_list: list[str]):
   """
-  Renames the original pom.xml (if not already renamed) and replaces it with a customized pom.xml 
+  Replaces the original build config file with a customized version 
   for each application in the benchmark list.
 
   Arguments:
@@ -82,8 +82,36 @@ def replace_pom_files(root_dir, benchmark_list):
     else:
       print(f"[WASABI-HELPER]: [ERROR]: Customized pom.xml not found for {target}. Skipping copy.")
 
+def rewrite_source_code(root_dir: str, benchmark_list: list[str], mode: str):
+  """
+  Rewrites retry related bounds -- either retry thresholds or test timeouts.
 
-def run_fault_injection(target):
+  Arguments:
+    root_dir (str): The root directory of the repository.
+    benchmark_list (list): A list of target applications for which to replace the pom.xml.
+    mode (str): The type of source rewriting -- retry bounds or timeout values.
+  """
+  for target in benchmark_list:
+    # Define the paths
+    benchmark_dir = os.path.join(root_dir, "benchmarks", target)
+    if mode == "bounds-rewriting": 
+      config_file = os.path.join(root_dir, "wasabi", "wasabi-testing", "config", target, f"{target}_retry_bounds.data")
+    elif mode == "timeout-rewriting":
+      config_file = os.path.join(root_dir, "wasabi", "wasabi-testing", "config", target, f"{target}_timeout_bounds.data")
+    else:
+      print(f"[WASABI-HELPER]: [ERROR]: Bad arguments provided to source_rewriter.py.")
+      return
+
+    cmd = ["python3", "source_rewriter.py", "--mode", mode, config_file, benchmark_dir]
+    result = run_command(cmd, os.getcwd())
+    
+    if result is None or result.returncode != 0:
+      print(f"[WASABI-HELPER]: [ERROR]: Rewriting retry-related bounds failed:\n\t{result.stdout}\n\t{result.stderr}")
+    else:
+      print(f"[WASABI-HELPER]: [INFO]: Successfully overwritten retry-related bounds. Status: {result.returncode}")
+    
+
+def run_fault_injection(target: str):
   """
   Run the run_benchmark.py script for a specific application.
 
@@ -95,12 +123,12 @@ def run_fault_injection(target):
   cmd = ["python3", "run_benchmark.py", "--benchmark", target]
   result = run_command(cmd, os.getcwd())
   if result is None or result.returncode != 0:
-    print(f"[WASABI-HELPER]: [ERROR]: Command to run run_benchmark.py on {target} failed with error message: {result.stderr.decode('utf-8').strip()}")
+    print(f"[WASABI-HELPER]: [ERROR]: Command to run run_benchmark.py on {target} failed with error message:\n\t{result.stdout}\n\t{result.stderr}")
   else:
     print(f"[WASABI-HELPER]: [INFO]: Finished running test suite for {target}. Status: {result.returncode}")
 
 
-def run_bug_oracles(root_dir: str, target: str,):
+def run_bug_oracles(root_dir: str, target: str):
   """
   Runs bug oracels over a set of test and build reports.
 
@@ -114,8 +142,8 @@ def run_bug_oracles(root_dir: str, target: str,):
     cmd = ["rm", "-f", csv_file]
     result = run_command(cmd, os.getcwd())
     
-    if result is None:
-      print(f"[WASABI-HELPER]: [ERROR]: Command to remove {csv_file} failed. Status: {result.returncode}.")
+    if result is None or result.returncode != 0:
+      print(f"[WASABI-HELPER]: [ERROR]: Command to remove {csv_file} failed:\n\t{result.stdout}\n\t{result.stderr}")
     else:
       print(f"[WASABI-HELPER]: [INFO]: Removed {csv_file}. Status: {result.returncode}")
   
@@ -125,17 +153,17 @@ def run_bug_oracles(root_dir: str, target: str,):
       cmd = ["python3", "bug_oracles.py", item_path, "--benchmark", target]
       result = run_command(cmd, os.getcwd())
       if result:
-        print(result.stdout.decode())
+        print(result.stdout)
       
       if result is None or result.returncode != 0:
-        print(f"[WASABI-HELPER]: [ERROR]: Command to run bug_oracles.py on {item_path} failed with error message: {result.stderr.decode('utf-8').strip()}")
+        print(f"[WASABI-HELPER]: [ERROR]: Command to run bug_oracles.py on {item_path} failed with error message:\n\t{result.stdout}\n\t{result.stderr}")
       else:
         print(f"[WASABI-HELPER]: [INFO]: Finished processing {item_path}. Status: {result.returncode}")
 
 
 """ Helper functions
 """
-def run_command(cmd, cwd):
+def run_command(cmd: list[str], cwd: str):
   """
   Run a command in a subprocess and display the output in real-time.
 
@@ -167,14 +195,14 @@ def run_command(cmd, cwd):
     process.kill()
     raise e
 
-def display_phase(phase_name):
+def display_phase(phase: str, benchmark: str):
   """
   Prints a "stylized" message indicating the current phase.
 
   Arguments:
-    phase_name (str): The name of the phase to display.
+    phase (str): The name of the phase to display.
   """
-  phase_text = f" Phase: {phase_name} "
+  phase_text = f" {benchmark}: {phase} "
   border_line = "*" * (len(phase_text) + 4)
   inner_line = "*" + " " * (len(phase_text) + 2) + "*"
   print(f"\n{border_line}")
@@ -199,25 +227,27 @@ def main():
   repo_root_dir = os.path.join(wasabi_root_dir, "..")
 
   if args.benchmark == "all-maven":
-    benchmarks = ["hadoop", "hbase", "hive", "cassandra"]
+    benchmarks = ["hadoop", "hbase", "hive"]
   else:
     benchmarks = [args.benchmark]
 
   if args.phase == "setup" or args.phase == "all":
-    display_phase("Setup")
+    display_phase("setup", args.benchmark)
     clone_repositories(repo_root_dir, benchmarks)
 
   if args.phase == "prep" or args.phase == "all":
-    display_phase("Code preparation")
-    replace_pom_files(repo_root_dir, benchmarks)
+    display_phase("code preparation", args.benchmark)
+    replace_config_files(repo_root_dir, benchmarks)
+    rewrite_source_code(repo_root_dir, benchmarks, "bounds-rewriting")
+    rewrite_source_code(repo_root_dir, benchmarks, "timeout-rewriting")
 
   if args.phase == "bug-triggering" or args.phase == "all":
-    display_phase("Bug triggering")
+    display_phase("bug triggering", args.benchmark)
     for benchmark in benchmarks:
       run_fault_injection(benchmark)
 
   if args.phase == "bug-oracles" or args.phase == "all":
-    display_phase("Bug oracles")
+    display_phase("Bug oracles", args.benchmark)
     for benchmark in benchmarks:
       run_bug_oracles(repo_root_dir, benchmark)
 

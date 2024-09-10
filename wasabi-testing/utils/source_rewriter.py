@@ -26,7 +26,6 @@ class RetryBoundsRewriter:
     if os.path.isfile(java_file_copy):
       return False
 
-    print(f">>> Modified: {java_file_copy}")
     shutil.copy2(java_file, java_file_copy)
 
     with open(java_file, 'r') as file:
@@ -83,7 +82,7 @@ class TimeoutBoundsRewriter:
       lines = target.read().splitlines()
 
     for line in lines:
-      test_file, test_name = line.strip().split("/")
+      test_file, test_name = line.strip().split(".")
       test_file = test_file.strip()
       test_name = test_name.strip()
 
@@ -176,7 +175,6 @@ class TimeoutBoundsRewriter:
 
           if file_base_name in self.test_targets:
             original_file_path = f"{os.path.splitext(os.path.join(os.path.dirname(file_path), os.path.basename(file_path)))[0]}.original"
-            print(original_file_path)
             if not os.path.isfile(original_file_path):
               shutil.copy2(file_path, original_file_path)
 
@@ -186,7 +184,7 @@ class TimeoutBoundsRewriter:
 
 def main():
   parser = argparse.ArgumentParser(description='Modify Java test files based on specified criteria.')
-  parser.add_argument('mode', choices=['bounds-rewriting', 'timeout-rewriting'], help='Mode of operation: "bounds-rewriting" or "timeout-rewriting".')
+  parser.add_argument('--mode', choices=['bounds-rewriting', 'timeout-rewriting'], help='Mode of operation: "bounds-rewriting" or "timeout-rewriting".')
   parser.add_argument('config_file', help='Path to the config file describing the list of changes.')
   parser.add_argument('target_root_dir', help='Directory path to start the search for Java test files.')
   args = parser.parse_args()

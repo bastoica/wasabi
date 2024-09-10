@@ -254,7 +254,7 @@ def parse_test_log(log_file: str, file_path: str) -> list:
   log_messages = []
   with open(file_path, 'r') as file:
     log_data = file.read()
-    log_entries = log_data.strip().split("\n\n")
+    log_entries = log_data.strip().split("\n")
     for entry in log_entries:
       msg = LogMessage()
       msg.parse_log_message(entry, True)
@@ -334,7 +334,7 @@ def check_when_missing_backoff_bugs(execution_trace: defaultdict(list)) -> set:
   when_missing_backoff_bugs = set()
 
   for test_name, operations in execution_trace.items():
-    last_injection_op = None
+    max_op = None
     has_sleep = False
     max_retry_attempts = 0
     for op in operations:
@@ -342,10 +342,13 @@ def check_when_missing_backoff_bugs(execution_trace: defaultdict(list)) -> set:
         has_sleep = True
       elif op.type == "injection" and max_retry_attempts < op.retry_attempt:
         max_retry_attempts = op.retry_attempt
-        last_injection_op = op
+        max_op = op
 
     if not has_sleep and max_retry_attempts >= 2:
-      when_missing_backoff_bugs.add(("when-missing-backoff", last_injection_op))
+      when_missing_backoff_bugs.add(("when-missing-backoff", max_op))
+
+    if max_retry_attempts == 1:
+      print(f"single-retry,{max_op.retry_caller},{max_op.test_name}")
 
   return when_missing_backoff_bugs
 
@@ -359,18 +362,13 @@ def check_when_missing_cap_bugs(execution_trace: defaultdict(list)) -> set:
   Returns:
     set: A set of tuples with WHEN missing cap buggy retry locations ahd a 'when-missing-cap' tag
   """
-  MISSING_CAP_BOUND = 60
+  MISSING_CAP_BOUND = 90
   when_missing_cap = set()
 
   for test_name, operations in execution_trace.items():
-    has_cap = True
-
     for op in operations:
       if op.type == "injection" and op.retry_attempt >= MISSING_CAP_BOUND:
-        has_cap = False
-
-    if not has_cap:
-      when_missing_cap.add(("when-missing-cap", op))
+        when_missing_cap.add(("when-missing-cap", op))
 
   return when_missing_cap
 
@@ -383,6 +381,7 @@ def main():
 
   test_failures = dict()
   all_bugs = set()
+  coverage = set()
 
   for root, _, files in os.walk(os.path.join(root_path, "build-reports/")):
     for fname in files:
@@ -399,6 +398,8 @@ def main():
         for msg in test_log:
           if msg.type in ["injection", "sleep", "failure"]:
             execution_trace[msg.test_name].append(msg)
+          if msg.type == "pointcut":
+            coverage.update([f"test-injected,{msg.test_name}"])
         all_bugs.update(check_when_missing_backoff_bugs(execution_trace))
         all_bugs.update(check_when_missing_cap_bugs(execution_trace))
         all_bugs.update(check_how_bugs(test_failures, execution_trace))
@@ -410,11 +411,16 @@ def main():
     bug_type, op = bug
     print(f"bug-{bug_no},{bug_type},{op.retry_caller},{op.test_name}")
 
-  csv_file = os.path.join(root_path, f"{args.benchmark}-bugs-per-test.csv")
-  with open(csv_file, "w") as f:
+  bug_file = os.path.join(root_path, f"{args.benchmark}-bugs-per-test.csv")
+  with open(bug_file, "w") as f:
     for bug_no, bug in enumerate(all_bugs, 1):
       bug_type, op = bug
       f.write(f"bug-{bug_no},{bug_type},{op.retry_caller},{op.test_name}\n")
+
+  cov_file = os.path.join(root_path, f"{args.benchmark}-cov.csv")
+  with open(cov_file, "w") as f:
+    for cov_msg in coverage:
+      f.write(cov_msg)
 
 if __name__ == "__main__":
   main()

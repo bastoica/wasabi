@@ -36,7 +36,7 @@ import edu.uchicago.cs.systems.wasabi.StackSnapshot;
 import edu.uchicago.cs.systems.wasabi.InjectionPoint;
 import edu.uchicago.cs.systems.wasabi.ExecutionTrace;
 
-public aspect Interceptor {
+public aspect InterceptHive {
   private WasabiContext wasabiCtx = null;
 
   private static final String UNKNOWN = "UNKNOWN";
@@ -128,11 +128,18 @@ public aspect Interceptor {
    */
 
    pointcut recordThreadSleep():
-   (call(* Thread.sleep(..)) &&
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType)));
+    (call(* java.lang.Object.wait(..)) ||
+    call(* java.lang.Thread.sleep(..)) ||
+    call(* java.util.concurrent.locks.LockSupport.parkNanos(..)) ||
+    call(* java.util.concurrent.locks.LockSupport.parkUntil(..)) ||
+    call(* java.util.concurrent.ScheduledExecutorService.schedule(..)) ||
+    call(* java.util.concurrent.TimeUnit.*scheduledExecutionTime(..)) ||
+    call(* java.util.concurrent.TimeUnit.*sleep(..)) ||
+    call(* java.util.concurrent.TimeUnit.*timedWait(..)) ||
+    call(* java.util.Timer.schedule*(..)) ||
+    call(* java.util.TimerTask.wait(..)) ||
+    call(* org.apache.hadoop.hbase.*.Procedure.suspend(..))) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
 
   before() : recordThreadSleep() {
     try {
