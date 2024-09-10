@@ -379,7 +379,9 @@ java.lang.NullPointerException
 
 ### Full Evaluation (<12h, ~1h human effort)
 
-For reproducing retry bugs through unit testing and fault injection, we provide `run.py`, a Python-based script designed to manage the setup and evaluation phases of WASABI. This script operates through several distinct phases:
+For reproducing retry bugs through unit testing and fault injection, we provide `run.py`, a Python-based script designed to manage the setup and evaluation phases of WASABI. Each benchmark takes about `2h` to run.
+
+This `run.py` script operates in several distinct phases:
 
 1. **Setup**: Clones the necessary repositories and checks out specific versions required for evaluation.
 2. **Preparation**: Manages and customizes the pom.xml files for each benchmark to facilitate instrumented builds.
@@ -396,7 +398,7 @@ The run.py script accepts several command-line arguments that allow you to speci
   * `all`: Runs all the above phases in sequence.
 * `--benchmark`: Specifies which benchmarks to evaluate, with the following options available: `hadoop`, `hbase`, `hive`, `cassandra`, and `elstaicsearch`. 
 
-We recommend users all phases in one go, either iterating through the benchmarks individually,
+We recommend users all phases in one command, either iterating through the benchmarks individually,
 
 ```bash
 python3 run.py --phase all --benchmark hadoop
@@ -404,8 +406,10 @@ python3 run.py --phase all --benchmark hadoop
 or running a subset, at a time
 
 ```bash
-for app in hadoop hbase cassandra; do python3 run.py --phase all --benchmark $app; done
+for app in hadoop hbase hive; do python3 run.py --phase all --benchmark $app; done
 ```
+
+However we strongly recommend to run one benchmark at a time.
 
 Note that Hive requires downgrading to Java 8 and recompile WASABI, as explained below
 
