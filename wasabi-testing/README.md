@@ -377,7 +377,7 @@ java.lang.NullPointerException
         at java.base/java.io.DataInputStream.read(DataInputStream.java:102)
 ```    
 
-### Full Evaluation (24-72h, ~1h human effort)
+### Full Evaluation (<12h, ~1h human effort)
 
 For reproducing retry bugs through unit testing and fault injection, we provide `run.py`, a Python-based script designed to manage the setup and evaluation phases of WASABI. This script operates through several distinct phases:
 
@@ -388,7 +388,6 @@ For reproducing retry bugs through unit testing and fault injection, we provide 
 
 The run.py script accepts several command-line arguments that allow you to specify the root directory, select the phase to execute, and choose the benchmarks to evaluate.
 
-* `--root-dir`: Specifies the root directory of the application. This directory should contain the benchmarks and wasabi directories as outlined in the setup instructions.
 * `--phase`: Determines which phase of the pipeline to execute with the following options available:
   * `setup`: Clones the necessary repositories and checks out specific versions.
   * `prep`: Prepares the environment by renaming the original pom.xml files and replacing them with customized versions.
@@ -400,19 +399,19 @@ The run.py script accepts several command-line arguments that allow you to speci
 We recommend users all phases in one go, either iterating through the benchmarks individually,
 
 ```bash
-python3 run.py --root-dir /home/user/sosp24-ae --phase all --benchmark hadoop
+python3 run.py --phase all --benchmark hadoop
 ```
 or running a subset, at a time
 
 ```bash
-for app in hadoop hbase cassandra; do python3 run.py --root-dir /home/user/sosp24-ae --phase all --benchmark $app; done
+for app in hadoop hbase cassandra; do python3 run.py --phase all --benchmark $app; done
 ```
 
 Note that Hive requires downgrading to Java 8 and recompile WASABI, as explained below
 
 As an example, let's consider a user running the `bug triggering` phase for Hadoop. This requires running
 ```bash
-python3 run.py --root-dir /home/user/sosp24-ae --phase bug-triggering --benchmark hadoop
+python3 run.py --phase bug-triggering --benchmark hadoop
 ```
 which would output
 ```bash
@@ -430,5 +429,175 @@ Job count: 3 / 3
 Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test3 surefire:test
 ```
 
+> [!NOTE]
+> Cassandra and ElasticSearch use different build systems: `ant` and `gradle`, respectively. This requires a separate largely manual process of weaving at load time instead of at compile time (see below). Thus, we recommend users to replicate the other 6 benchmarks first (39/42 bugs), and then move to the last two applications.
+
+#### Building, instrumenting, and testing ElasticSearch
+
+ElasticSearch uses Gradle as a build system. Thus, to instrument the code users need to weave WASABI at load time as opposed to compile time. This can be one by following these steps:
+
+1. Building and installing WASABI
+  
+See the "Building WASABI" section above. Note that a generated `.jar` file will be located in `./wasabi/target/`.
+
+2. Changes to the target's `pom.xml` file
+   
+First, add dependenceis:
+```xml
+buildscript {
+  dependencies {
+    classpath "org.aspectj:aspectjrt:1.9.19"
+    classpath "org.hamcrest:hamcrest-core:1.3"
+    classpath "junit:junit:4.13.2"
+  }
+}
+```
+
+Second, add the AspectJ weaving plugin:
+```xml
+plugins {
+  id "io.freefair.aspectj.post-compile-weaving" version "8.1.0"
+  id "java"
+}
+```
+
+Third, add the following AspectJ dependnecies:
+```xml
+dependencies {
+  implementation "org.aspectj:aspectjtools:1.9.19"
+  testImplementation "org.aspectj:aspectjtools:1.9.19"
+  implementation "org.aspectj:aspectjrt:1.9.19"
+  testImplementation 'junit:junit:4.13.2'
+  aspectj files("wasabi-files/aspectjtools-1.9.19.jar", "wasabi-files/wasabi-1.0.0.jar")
+  testAspect files("wasabi-files/wasabi-1.0.0.jar")
+}
+```
+
+Forth, add an AspectJ configuration block:
+```xml
+configurations {
+  aspectj
+}
+```
+
+Finally, modify the compile task blocks:
+```xml
+compileJava {
+  ajc {
+    enabled = true
+    classpath.setFrom configurations.aspectj
+    options {
+      aspectpath.setFrom configurations.aspect
+    }
+  }
+}
+
+compileTestJava {
+  ajc {
+    enabled = true
+    classpath.setFrom configurations.aspectj
+    options {
+      aspectpath.setFrom configurations.testAspect
+    }
+  }
+}
+```
+
+#### Building, instrumenting, and testing Cassandra
+
+Similarly to applications using `gradle`, users need to weave WASABI at load time for those applications using `ant`. The steps below are similar to the ones described for `gradle` above.
+
+1. Building and installing WASABI
+
+Follow the steps outlined in the "Building WASABI" section to build and install WASABI. After building, the generated .jar file will be located in the `./wasabi` target directory.
+
+3. Setting up the AspectJ Weaving with Ant
+
+To configure AspectJ weaving with Ant for Cassandra, follow these steps:
+
+3.a Include AspectJ dependencies
+
+First, ensure that AspectJ libraries are available for your Ant build. Download the required AspectJ libraries (`aspectjrt.jar` and `aspectjtools.jar`) from Maven Central or through the AspectJ website, and place them in a directory in your project, e.g., `libs/`.
+
+3.b. Modify your Ant `build.xml` file
+
+To incorporate AspectJ weaving, modify the `build.xml` as follows:
+
+```
+<project name="CassandraWasabiWeaving" basedir="." default="compile">
+
+    <!-- Define the paths for the AspectJ libraries and the WASABI jar -->
+    <path id="aspectj-libs">
+        <fileset dir="libs">
+            <include name="aspectjrt-1.9.19.jar"/>
+            <include name="aspectjtools-1.9.19.jar"/>
+        </fileset>
+    </path>
+    
+    <path id="wasabi-libs">
+        <fileset dir="wasabi/target">
+            <include name="wasabi-1.0.0.jar"/>
+        </fileset>
+    </path>
+
+    <!-- Add AspectJ task definitions -->
+    <taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties"
+             classpathref="aspectj-libs"/>
+
+    <!-- Compile the Cassandra source files -->
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+
+        <!-- Use the aspectj compiler (ajc) to weave aspects -->
+        <ajc destdir="build/classes" 
+             source="1.8" target="1.8" 
+             fork="true" 
+             aspectpathref="wasabi-libs">
+            <classpath>
+                <pathelement path="src/main/java"/>
+                <pathelement refid="aspectj-libs"/>
+            </classpath>
+            <sourcepath>
+                <pathelement path="src/main/java"/>
+            </sourcepath>
+            <inpath>
+                <pathelement path="src/main/java"/>
+            </inpath>
+        </ajc>
+    </target>
+
+</project>
+```
+
+  * AspectJ task definition: The <taskdef> block ensures that the AspectJ tools are available to Ant. The aspectjTaskdefs.properties file defines various tasks, including the AspectJ compiler (ajc).
+
+  * ajc task: The <ajc> task is the core of this process. It compiles the Cassandra source code while weaving in WASABI aspects at load time. The aspectpathref="wasabi-libs" indicates that the WASABI JAR should be included in the aspect path for weaving.
+
+3.c. Compile and Weave
+
+Run the Ant build script to compile the Cassandra source code and weave the WASABI aspects:
+
+```
+ant compile
+```
+
+This step ensures that the compiled Cassandra code is woven with WASABI aspects, allowing for instrumentation at load time.
+
+4. Running Cassandra with AspectJ
+
+To run Cassandra with the woven aspects, you need to ensure that the AspectJ runtime (`aspectjrt.jar`) is available at runtime. Add the following JVM argument when starting Cassandra: 
+```
+-javaagent:/path/to/libs/aspectjweaver-1.9.19.jar
+```
+This tells the JVM to use the AspectJ Weaver to instrument the code at runtime. Make sure that the path to the AspectJ Weaver JAR is correctly specified.
+
+
 ### Unpacking Results
 
+To generate results in Table 3, users can run the following command
+```
+cd ~/sosp24-ae/wasabi/wasabi-testing/utils
+python3 display_bug_results.py | less
+```
+
+The scripts prints out two tables: the original Table 3 from our paper, as well as a breakdown of the bugs found by type and benchmark -- essentially the converse of Table 3.
