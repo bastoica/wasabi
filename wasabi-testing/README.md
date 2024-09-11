@@ -403,21 +403,12 @@ We recommend users all phases in one command, either iterating through the bench
 ```bash
 python3 run.py --phase all --benchmark hadoop
 ```
-or running a subset, at a time
 
-```bash
-for app in hadoop hbase hive; do python3 run.py --phase all --benchmark $app; done
-```
-
-However we strongly recommend to run one benchmark at a time.
-
-Note that Hive requires downgrading to Java 8 and recompile WASABI, as explained below
-
-As an example, let's consider a user running the `bug triggering` phase for Hadoop. This requires running
+User can also run individual phases of WASABI, like shown below,
 ```bash
 python3 run.py --phase bug-triggering --benchmark hadoop
 ```
-which would output
+which yields
 ```bash
 *************************
 * Phase: Bug triggering *
