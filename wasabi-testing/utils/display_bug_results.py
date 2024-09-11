@@ -12,7 +12,7 @@ def get_benchmark_name(loc):
   Returns:
     str: The classification group (hdfs, yarn, mapreduce, hadoop, hbase, hive, cassandra, elasticsearch).
   """
-  if loc.startswith("org.apache.hadoop.hdfs"):
+  if loc.startswith("org.apache.hadoop.hdfs") and "SecondaryNameNode.doWork" not in loc:
     return "hdfs"
   elif loc.startswith("org.apache.hadoop.yarn"):
     return "yarn"
@@ -24,7 +24,7 @@ def get_benchmark_name(loc):
     return "hive"
   elif loc.startswith("org.apache.cassandra"):
     return "cassandra"
-  elif loc.startswith("org.apache.hadoop"):
+  elif loc.startswith("org.apache.hadoop") or "SecondaryNameNode.doWork" in loc: # initialy found in hadoop-common, added here to match Table 3
     return "hadoop"
   elif loc.startswith("org.elasticsearch"):
     return "elasticsearch"
@@ -52,18 +52,19 @@ def aggregate_bugs(root_dir):
         
         with open(file_path, 'r') as f:
           for line in f:
-            tokens = line.strip().split(",")
-    
-            bug_type = tokens[1]
-            bug_loc = tokens[2]
-            
-            key = bug_type + bug_loc
-            if key in unique:
-              continue
-            unique[key] = "x"
+            if "how-bug" in line or "when-missing-" in line:
+              tokens = line.strip().split(",")
+      
+              bug_type = tokens[1]
+              bug_loc = tokens[2]
+              
+              key = bug_type + bug_loc
+              if key in unique:
+                continue
+              unique[key] = "x"
 
-            benchmark = get_benchmark_name(bug_loc)           
-            bugs[bug_type][benchmark].add(bug_loc)
+              benchmark = get_benchmark_name(bug_loc)       
+              bugs[bug_type][benchmark].add(bug_loc)
  
   return bugs
 
@@ -113,6 +114,7 @@ def print_bug_tables(bugs, ground_truth):
     print(f"{b:<15}", end="")
   print(f"{'TOTAL':<15}")
   
+  unmatched_ground_truth = {}
   for bug_type in ordered_bug_types:
     display_name = row_names.get(bug_type, bug_type)
     print(f"{display_name:<20}", end="")
@@ -121,11 +123,19 @@ def print_bug_tables(bugs, ground_truth):
     for benchmark in benchmarks:
       ground_truth_locations = ground_truth.get(bug_type, {}).get(benchmark, set())
       bug_locations = bugs.get(bug_type, {}).get(benchmark, set())
+      unmatched_ground_truth.setdefault(bug_type, set())
 
-      matching_locations = ground_truth_locations.intersection(bug_locations)
+      matching_locations = set()
+      for bug in bug_locations:
+        if bug in ground_truth_locations:
+          matching_locations.add(bug)
+
       count = len(matching_locations)
       total_count += count
-      
+
+      non_matching = ground_truth_locations - matching_locations
+      unmatched_ground_truth[bug_type].update(non_matching)
+  
       print(f"{count:<15}", end="")
     
     print(f"{total_count:<15}")
@@ -148,6 +158,13 @@ def print_bug_tables(bugs, ground_truth):
       print(f"{count:<15}", end="")
     
     print(f"{total_count:<15}")
+
+  print("\nUnmatched ground truth locations (not found in bugs):")
+  for bug_type, unmatched_set in unmatched_ground_truth.items():
+    if unmatched_set:
+      print(f"Bug Type: {bug_type}")
+      for location in unmatched_set:
+        print(f" - {location}")
 
 
 def display_table_name(msg: str):

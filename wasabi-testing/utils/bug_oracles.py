@@ -211,7 +211,7 @@ class LogMessage:
       return None
 
 
-def parse_build_log(log_file: str, file_path: str) -> list:
+def parse_build_log(file_path: str) -> list:
   """Parses a single build log file, handles errors, and parses the relevant log messages.
 
   Args:
@@ -220,9 +220,17 @@ def parse_build_log(log_file: str, file_path: str) -> list:
   Returns:
     list[LogMessage]: A list of LogMessage objects parsed from the log file.
   """
-  log_messages = []
+  timeout_messages = ["TimeoutException", 
+                     "TimeoutIOException", 
+                     "SocketTimeoutException", 
+                     "TestTimedOut", 
+                     "[ERROR] There was a timeout"]
+
   with open(file_path, "r") as file:
     lines = file.readlines()
+
+  log_messages = []
+  log_timeout_messeges = []
 
   index = 0
   while index < len(lines):
@@ -235,14 +243,19 @@ def parse_build_log(log_file: str, file_path: str) -> list:
 
       log_msg = LogMessage()
       log_msg.parse_log_message(log_message, False)
-      log_msg.test_name = log_file.split('_')[1].split('.')[0] + "." + log_msg.test_name.split(".")[-1]
+      log_msg.test_name = file_path.split('build-')[1].split('.')[0] + "." + log_msg.test_name.split(".")[-1]
       log_messages.append(log_msg)
+
+      if index < len(lines) and any(exception in lines[index] for exception in timeout_messages):
+        log_timeout_messeges.append(lines[index])
+      if index < len(lines) and any(exception in log_msg.stack_trace for exception in timeout_messages):
+        log_timeout_messeges.append(lines[index])
     else:
       index += 1
 
-  return log_messages
+  return log_messages, log_timeout_messeges
 
-def parse_test_log(log_file: str, file_path: str) -> list:
+def parse_test_log(file_path: str) -> list:
   """Parses a single test report log file to extract log messages.
 
   Args:
@@ -347,14 +360,11 @@ def check_when_missing_backoff_bugs(execution_trace: defaultdict(list)) -> set:
     if not has_sleep and max_retry_attempts >= 2:
       when_missing_backoff_bugs.add(("when-missing-backoff", max_op))
 
-    if max_retry_attempts == 1:
-      print(f"single-retry,{max_op.retry_caller},{max_op.test_name}")
-
   return when_missing_backoff_bugs
 
 def check_when_missing_cap_bugs(execution_trace: defaultdict(list)) -> set:
-  """Searches for WHEN missing cap retry bugs by parsing test repors and checking if WASABI can seamngly 
-   inject an indefinite number of exceptions (capped by a large threshold)
+  """Searches for WHEN missing cap retry bugs by parsing test repors and checking if WASABI can 
+   inject a large number of exceptions that indicate infinite retry attempts.
 
   Args:
     log_messages (list[LogMessage]): A list of LogMessage objects parsed from a single log file.
@@ -372,6 +382,40 @@ def check_when_missing_cap_bugs(execution_trace: defaultdict(list)) -> set:
 
   return when_missing_cap
 
+def check_when_missing_cap_timeouts(execution_trace: defaultdict(list), test_timeouts: dict()) -> set:
+  """Searches for WHEN missing cap retry bugs by parsing test repors and checking if WASABI injects
+  a large 
+
+  Args:
+    log_messages (list[LogMessage]): A list of LogMessage objects parsed from a single log file.
+
+  Returns:
+    set: A set of tuples with WHEN missing cap buggy retry locations ahd a 'when-missing-cap' tag
+  """
+  MISSING_CAP_BOUND = 5
+  timeout_retry_locations = ["org.apache.hadoop.hbase.backup.HFileArchiver.resolveAndArchiveFile",
+                             "org.apache.hadoop.hbase.io.asyncfs.FanOutOneBlockAsyncDFSOutputHelper.completeFile",
+                             "org.apache.hadoop.hbase.master.replication.SyncReplicationReplayWALProcedure.executeFromState",
+                             "org.apache.hadoop.hbase.regionserver.RemoteProcedureResultReporter.run",
+                             "org.apache.hadoop.hbase.regionserver.wal.DualAsyncFSWAL.createWriterInstance",
+                             "org.apache.hadoop.hbase.replication.regionserver.ReplicationSource.initialize",
+                             "org.apache.hadoop.hbase.shaded.protobuf.generated.RPCProtos$ExceptionResponse$Builder.mergeFrom",
+                             "org.apache.hadoop.hbase.util.FSUtils.setClusterId",
+                             "org.apache.hadoop.hdfs.server.namenode.ReencryptionUpdater.takeAndProcessTasks"]
+  
+  when_missing_cap_timeout = set()
+
+  for test_name, operations in execution_trace.items():
+    for op in operations:
+      if op.type == "injection" and op.retry_attempt >= MISSING_CAP_BOUND:
+        test_class = test_name
+        if len(test_name.split(".")) > 1:
+          test_class = test_name.split(".")[0]
+        if test_class in test_timeouts and op.retry_caller in timeout_retry_locations:
+          when_missing_cap_timeout.add(("when-missing-cap", op))
+
+  return when_missing_cap_timeout
+
 def main():
   parser = argparse.ArgumentParser(description="Parse and process log files for retry bug analysis.")
   parser.add_argument("logs_root_dir", type=str, help="The root directory where build/test logs are saved")
@@ -379,30 +423,38 @@ def main():
   args = parser.parse_args()
   root_path = args.logs_root_dir
 
+  test_timeouts = dict()
   test_failures = dict()
   all_bugs = set()
   coverage = set()
 
   for root, _, files in os.walk(os.path.join(root_path, "build-reports/")):
     for fname in files:
-      if fname.startswith('build-') and fname.endswith('.log'):
-        build_log = parse_build_log(fname, os.path.join(root, fname))
-        for msg in build_log:
+      if "build-" in fname and fname.endswith('.log'):
+        build_log_messages, build_log_timeout_messages = parse_build_log(os.path.join(root, fname))
+        
+        for msg in build_log_messages:
           test_failures[msg.test_name] = msg
+
+        test_class = fname.split(".")[-2]
+        test_timeouts[test_class] = build_log_timeout_messages
 
   for root, _, files in os.walk(os.path.join(root_path, "test-reports/")):
     for fname in files:
       if fname.endswith('-output.txt'):
-        test_log = parse_test_log(fname, os.path.join(root, fname))
+        test_log = parse_test_log(os.path.join(root, fname))
         execution_trace = defaultdict(list)
+        
         for msg in test_log:
           if msg.type in ["injection", "sleep", "failure"]:
             execution_trace[msg.test_name].append(msg)
           if msg.type == "pointcut":
             coverage.update([f"test-injected,{msg.test_name}"])
+        
         all_bugs.update(check_when_missing_backoff_bugs(execution_trace))
         all_bugs.update(check_when_missing_cap_bugs(execution_trace))
         all_bugs.update(check_how_bugs(test_failures, execution_trace))
+        all_bugs.update(check_when_missing_cap_timeouts(execution_trace, test_timeouts))
 
   print("// ----------------------------- //")
   print(f"   Retry bugs for {args.benchmark}")
@@ -420,7 +472,7 @@ def main():
   cov_file = os.path.join(root_path, f"{args.benchmark}-cov.csv")
   with open(cov_file, "w") as f:
     for cov_msg in coverage:
-      f.write(cov_msg)
+      f.write(f"{cov_msg}\n")
 
 if __name__ == "__main__":
   main()

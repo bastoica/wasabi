@@ -15,6 +15,8 @@ import java.lang.InterruptedException;
 import java.sql.SQLException;
 import java.sql.SQLTransientException;
 
+import org.apache.hadoop.ipc.RetriableException;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
@@ -432,8 +434,6 @@ public aspect InterceptHadoop {
     call(* org.apache.hadoop.yarn.server.utils.BuilderUtils.newContainerTokenIdentifier(..) throws *Exception*)) ||
     (withincode(* org.apache.hadoop.yarn.server.nodemanager.recovery.NMLeveldbStateStoreService.loadContainerState(..)) &&
     call(* org.apache.hadoop.yarn.server.nodemanager.containermanager.container.ResourceMappings.*AssignedResources.fromBytes(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hdfs.server.namenode.ReencryptionUpdater.takeAndProcessTasks(..)) &&
-    call(* org.apache.hadoop.hdfs.server.namenode.ReencryptionUpdater.processTask(..) throws *Exception*)) ||
     (withincode(* org.apache.hadoop.ipc.RPC.waitForProtocolProxy(..)) &&
     call(* org.apache.hadoop.security.UserGroupInformation.getCurrentUser(..) throws *Exception*)) ||
     (withincode(* org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode.doWork(..)) &&
@@ -912,6 +912,68 @@ public aspect InterceptHadoop {
   
       long threadId = Thread.currentThread().getId();
       throw new EOFException(
+        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
+          threadId,
+          this.testMethodName,
+          ipt.retryException,
+          ipt.injectionSite,
+          ipt.retrySourceLocation,
+          ipt.injectionCount)
+      );
+    }
+  }
+
+  /* Inject RetriableException */
+
+  pointcut injectRetriableException():
+    ((withincode(* org.apache.hadoop.hdfs.server.namenode.ReencryptionUpdater.takeAndProcessTasks(..)) &&
+    call(* org.apache.hadoop.hdfs.server.namenode.ReencryptionUpdater.processTask(..) throws *Exception*)) ||
+    (withincode(* org.apache.hadoop.hdfs.shortcircuit.ShortCircuitCache.*SlotReleaser.run(..)) &&
+    call(* org.apache.hadoop.hdfs.protocolPB.PBHelperClient.vintPrefixed(..) throws *Exception*))) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
+
+  after() throws RetriableException : injectRetriableException() {
+    StackSnapshot stackSnapshot = new StackSnapshot();
+    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
+    String injectionSite = thisJoinPoint.toString();
+    String retryException = "RetriableException";
+    String injectionSourceLocation = String.format("%s:%d",
+                                thisJoinPoint.getSourceLocation().getFileName(),
+                                thisJoinPoint.getSourceLocation().getLine());
+
+    if (this.wasabiCtx == null) {
+      LOG.printMessage(
+        WasabiLogger.LOG_LEVEL_WARN, 
+        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+          this.testMethodName, 
+          injectionSite, 
+          injectionSourceLocation, 
+          retryCallerFunction)
+      );
+
+      return;
+    }
+
+    LOG.printMessage(
+      WasabiLogger.LOG_LEVEL_WARN, 
+      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
+        this.testMethodName, 
+        injectionSite, 
+        injectionSourceLocation, 
+        retryCallerFunction)
+    );
+
+    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
+                                                          injectionSite, 
+                                                          injectionSourceLocation,
+                                                          retryException,
+                                                          retryCallerFunction, 
+                                                          stackSnapshot);
+    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
+      this.activeInjectionLocations.add(retryCallerFunction);
+  
+      long threadId = Thread.currentThread().getId();
+      throw new RetriableException(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
           threadId,
           this.testMethodName,

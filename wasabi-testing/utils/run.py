@@ -8,7 +8,7 @@ import sys
 
 """ Evaluation phases
 """
-def clone_repositories(root_dir: str, benchmark_list: list[str]):
+def clone_repositories(root_dir: str, benchmark: str):
   """
   Clone the necessary repositories and checkout specific versions for the specified benchmarks.
 
@@ -26,89 +26,86 @@ def clone_repositories(root_dir: str, benchmark_list: list[str]):
   benchmarks_dir = os.path.join(root_dir, "benchmarks")
   os.makedirs(benchmarks_dir, exist_ok=True)
 
-  for name in benchmark_list:
-    if name in repos:
-      url, version = repos[name]
-      repo_dir = os.path.join(benchmarks_dir, name)
+  if benchmark in repos:
+    url, version = repos[benchmark]
+    repo_dir = os.path.join(benchmarks_dir, benchmark)
 
-      if not os.path.exists(repo_dir):
-        print(f"[WASABI-HELPER]: [INFO]: Cloning {name} repository from {url}...")
-        result = subprocess.run(["git", "clone", url, repo_dir], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if result is None or result.returncode != 0:
-          print(f"[WASABI-HELPER]: [ERROR]: Error cloning {name}:\n\t{result.stdout}\n\t{result.stderr}")
-          continue
-        print(f"[WASABI-HELPER]: [INFO]: Successfully cloned {name}.")
+    if os.path.exists(repo_dir):
+      result = run_command(["rm", "-rf", repo_dir], os.getcwd())
+    print(f"[WASABI-HELPER]: [INFO]: Cloning {benchmark} repository from {url}...")
+    result = run_command(["git", "clone", url, repo_dir], os.getcwd())
+    if result is None or result.returncode != 0:
+      print(f"[WASABI-HELPER]: [ERROR]: Error cloning {benchmark}:\n\t{result.stdout}\n\t{result.stderr}")
+      sys.exit(1)
+    print(f"[WASABI-HELPER]: [INFO]: Successfully cloned {benchmark}.")
 
-      print(f"Checking out version {version} for {name}...")
-      result = subprocess.run(["git", "checkout", version], cwd=repo_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-      if result is None or result.returncode != 0:
-        print(f"[WASABI-HELPER]: [ERROR]: Error checking out version {version} for {name}:\n\t{result.stdout}\n\t{result.stderr}")
-        continue
-      print(f"[WASABI-HELPER]: [INFO]: Successfully checked out version {version} for {name}.")
-    else:
-      print(f"[WASABI-HELPER]: [WARNING]: Benchmark {name} is not recognized and will be skipped.")
+    print(f"Checking out version {version} for {benchmark}...")
+    result = run_command(["git", "checkout", version], repo_dir)
+    if result is None or result.returncode != 0:
+      print(f"[WASABI-HELPER]: [ERROR]: Error checking out version {version} for {benchmark}:\n\t{result.stdout}\n\t{result.stderr}")
+      sys.exit(1)
+    print(f"[WASABI-HELPER]: [INFO]: Successfully checked out version {version} for {benchmark}.")
+  else:
+    print(f"[WASABI-HELPER]: [WARNING]: Benchmark {benchmark} is not recognized and will be skipped.")
 
-def replace_config_files(root_dir: str, benchmark_list: list[str]):
+def replace_config_files(root_dir: str, benchmark: str):
   """
-  Replaces the original build config file with a customized version 
+  Replaces the original build (Maven pom.xml) file with a customized version 
   for each application in the benchmark list.
 
   Arguments:
     root_dir (str): The root directory of the repository.
-    benchmark_list (list): A list of target applications for which to replace the pom.xml.
+    benchmark (list): The target applications for which to replace the config/build files.
   """
-  for target in benchmark_list:
-    # Define the paths
-    benchmark_dir = os.path.join(root_dir, "benchmarks", target)
-    original_pom_path = os.path.join(benchmark_dir, "pom.xml")
-    backup_pom_path = os.path.join(benchmark_dir, "pom-original.xml")
-    custom_pom_path = os.path.join(root_dir, "wasabi", "wasabi-testing", "config", target, f"pom-{target}.xml")
-    new_pom_path = os.path.join(benchmark_dir, "pom.xml")
+  benchmark_dir = os.path.join(root_dir, "benchmarks", benchmark)
+  original_pom_path = os.path.join(benchmark_dir, "pom.xml")
+  backup_pom_path = os.path.join(benchmark_dir, "pom-original.xml")
+  if "hive/standalone-metastore" in benchmark: 
+    custom_pom_path = os.path.join(root_dir, "wasabi", "wasabi-testing", "config", "hive", "pom-hive-standalone-metastore.xml")
+  else:
+    custom_pom_path = os.path.join(root_dir, "wasabi", "wasabi-testing", "config", benchmark, f"pom-{benchmark}.xml")
+  new_pom_path = os.path.join(benchmark_dir, "pom.xml")
 
-    # Check if pom-original.xml exists before renaming
-    if os.path.exists(backup_pom_path):
-      print(f"[WASABI-HELPER]: [INFO]: Backup pom-original.xml already exists for {target}. Skipping renaming.")
+  if os.path.exists(backup_pom_path):
+    print(f"[WASABI-HELPER]: [INFO]: Backup pom-original.xml already exists for {benchmark}. Skipping renaming.")
+  else:
+    if os.path.exists(original_pom_path):
+      shutil.move(original_pom_path, backup_pom_path)
+      print(f"[WASABI-HELPER]: [INFO]: Renamed {original_pom_path} to {backup_pom_path}.")
     else:
-      if os.path.exists(original_pom_path):
-        shutil.move(original_pom_path, backup_pom_path)
-        print(f"[WASABI-HELPER]: [INFO]: Renamed {original_pom_path} to {backup_pom_path}.")
-      else:
-        print(f"[WASABI-HELPER]: [INFO]: Original pom.xml not found for {target}. Skipping renaming.")
+      print(f"[WASABI-HELPER]: [INFO]: Original pom.xml not found for {benchmark}. Skipping renaming.")
 
-    # Copy the customized pom.xml to the benchmarks directory as pom.xml
-    if os.path.exists(custom_pom_path):
-      shutil.copy(custom_pom_path, new_pom_path)
-      print(f"[WASABI-HELPER]: [INFO]: Copied {custom_pom_path} to {new_pom_path}.")
-    else:
-      print(f"[WASABI-HELPER]: [ERROR]: Customized pom.xml not found for {target}. Skipping copy.")
+  if os.path.exists(custom_pom_path):
+    shutil.copy(custom_pom_path, new_pom_path)
+    print(f"[WASABI-HELPER]: [INFO]: Copied {custom_pom_path} to {new_pom_path}.")
+  else:
+    print(f"[WASABI-HELPER]: [ERROR]: Customized {custom_pom_path} not found for {benchmark}. Skipping copy.")
 
-def rewrite_source_code(root_dir: str, benchmark_list: list[str], mode: str):
+def rewrite_source_code(root_dir: str, benchmark: str, mode: str):
   """
   Rewrites retry related bounds -- either retry thresholds or test timeouts.
 
   Arguments:
     root_dir (str): The root directory of the repository.
-    benchmark_list (list): A list of target applications for which to replace the pom.xml.
+    benchmark (list): The target applications for which to replace the pom.xml.
     mode (str): The type of source rewriting -- retry bounds or timeout values.
   """
-  for target in benchmark_list:
-    # Define the paths
-    benchmark_dir = os.path.join(root_dir, "benchmarks", target)
-    if mode == "bounds-rewriting": 
-      config_file = os.path.join(root_dir, "wasabi", "wasabi-testing", "config", target, f"{target}_retry_bounds.data")
-    elif mode == "timeout-rewriting":
-      config_file = os.path.join(root_dir, "wasabi", "wasabi-testing", "config", target, f"{target}_timeout_bounds.data")
-    else:
-      print(f"[WASABI-HELPER]: [ERROR]: Bad arguments provided to source_rewriter.py.")
-      return
+  benchmark_dir = os.path.join(root_dir, "benchmarks", benchmark)
+  if mode == "bounds-rewriting": 
+    config_file = os.path.join(root_dir, "wasabi", "wasabi-testing", "config", benchmark, f"{benchmark}_retry_bounds.data")
+  elif mode == "timeout-rewriting":
+    config_file = os.path.join(root_dir, "wasabi", "wasabi-testing", "config", benchmark, f"{benchmark}_timeout_bounds.data")
+  else:
+    print(f"[WASABI-HELPER]: [ERROR]: Bad arguments provided to source_rewriter.py.")
+    return
 
-    cmd = ["python3", "source_rewriter.py", "--mode", mode, config_file, benchmark_dir]
-    result = run_command(cmd, os.getcwd())
-    
-    if result is None or result.returncode != 0:
-      print(f"[WASABI-HELPER]: [ERROR]: Rewriting retry-related bounds failed:\n\t{result.stdout}\n\t{result.stderr}")
-    else:
-      print(f"[WASABI-HELPER]: [INFO]: Successfully overwritten retry-related bounds. Status: {result.returncode}")
+  cmd = ["python3", "source_rewriter.py", "--mode", mode, config_file, benchmark_dir]
+  result = run_command(cmd, os.getcwd())
+  
+  if result is None or result.returncode != 0:
+    print(f"[WASABI-HELPER]: [ERROR]: Rewriting retry-related bounds failed:\n\t{result.stdout}\n\t{result.stderr}")
+  else:
+    print(f"[WASABI-HELPER]: [INFO]: Successfully overwritten retry-related bounds. Status: {result.returncode}")
     
 
 def run_fault_injection(target: str):
@@ -217,7 +214,7 @@ def display_phase(phase: str, benchmark: str):
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument("--phase", choices=["setup", "prep", "bug-triggering", "bug-oracles", "all"], required=True, help="The pipeline phase to run")
-  parser.add_argument("--benchmark", choices=["hadoop", "hbase", "hive", "cassandra", "elasticsearch", "all-maven"], required=True, help="The benchmark to run")
+  parser.add_argument("--benchmark", choices=["hadoop", "hbase", "hive", "cassandra", "elasticsearch"], required=True, help="The benchmark to run")
   args = parser.parse_args()
 
   wasabi_root_dir = os.getenv("WASABI_ROOT_DIR")
@@ -226,30 +223,25 @@ def main():
     sys.exit(1)
   repo_root_dir = os.path.join(wasabi_root_dir, "..")
 
-  if args.benchmark == "all-maven":
-    benchmarks = ["hadoop", "hbase", "hive"]
-  else:
-    benchmarks = [args.benchmark]
-
   if args.phase == "setup" or args.phase == "all":
     display_phase("setup", args.benchmark)
-    clone_repositories(repo_root_dir, benchmarks)
+    clone_repositories(repo_root_dir, args.benchmark)
 
   if args.phase == "prep" or args.phase == "all":
     display_phase("code preparation", args.benchmark)
-    replace_config_files(repo_root_dir, benchmarks)
-    rewrite_source_code(repo_root_dir, benchmarks, "bounds-rewriting")
-    rewrite_source_code(repo_root_dir, benchmarks, "timeout-rewriting")
+    replace_config_files(repo_root_dir, args.benchmark)
+    if args.benchmark == "hive":
+      replace_config_files(repo_root_dir, os.path.join(args.benchmark, "standalone-metastore"))
+    rewrite_source_code(repo_root_dir, args.benchmark, "bounds-rewriting")
+    rewrite_source_code(repo_root_dir, args.benchmark, "timeout-rewriting")
 
   if args.phase == "bug-triggering" or args.phase == "all":
     display_phase("bug triggering", args.benchmark)
-    for benchmark in benchmarks:
-      run_fault_injection(benchmark)
+    run_fault_injection(args.benchmark)
 
   if args.phase == "bug-oracles" or args.phase == "all":
     display_phase("Bug oracles", args.benchmark)
-    for benchmark in benchmarks:
-      run_bug_oracles(repo_root_dir, benchmark)
+    run_bug_oracles(repo_root_dir, args.benchmark)
 
 if __name__ == "__main__":
   main()

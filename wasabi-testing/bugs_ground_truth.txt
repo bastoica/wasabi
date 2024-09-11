@@ -8,7 +8,7 @@ hdfs,when-missing-cap,org.apache.hadoop.hdfs.client.impl.LeaseRenewer.run
 hdfs,when-missing-backoff,org.apache.hadoop.hdfs.server.datanode.DataXceiverServer.run
 hdfs,when-missing-backoff,org.apache.hadoop.hdfs.server.sps.ExternalSPSBlockMoveTaskHandler$BlockMovingTask.moveBlock
 hdfs,when-missing-backoff,org.apache.hadoop.hdfs.DataStreamer.transfer
-hdfs,how-bug,DFSStripedInputStream.createBlockReader
+hdfs,how-bug,org.apache.hadoop.hdfs.DFSStripedInputStream.createBlockReader
 hdfs,how-bug,org.apache.hadoop.hdfs.DataStreamer.createBlockOutputStream
 mapreduce,when-missing-backoff,org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter.commitJob
 mapreduce,when-missing-backoff,org.apache.hadoop.mapred.Task.run

@@ -14,7 +14,6 @@ import java.net.UnknownHostException;
 import java.lang.InterruptedException;
 import java.sql.SQLException;
 import java.sql.SQLTransientException;
-import javax.jms.JMSException;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
@@ -888,66 +887,6 @@ public aspect InterceptHive {
   
       long threadId = Thread.currentThread().getId();
       throw new ServiceException(
-        String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
-          threadId,
-          this.testMethodName,
-          ipt.retryException,
-          ipt.injectionSite,
-          ipt.retrySourceLocation,
-          ipt.injectionCount)
-      );
-    }
-  }
-
-  /* Inject JMSException */
-
-  pointcut injectJMSException():
-    ((withincode(* org.apache.hive.hcatalog.listener.NotificationListener.send(..)) &&
-    call(* createProducer(..) throws *Exception*))) &&
-    !within(edu.uchicago.cs.systems.wasabi.*);
-
-  after() throws JMSException : injectJMSException() {
-    StackSnapshot stackSnapshot = new StackSnapshot();
-    String retryCallerFunction = stackSnapshot.getSize() > 0 ? stackSnapshot.getFrame(0) : "???";
-    String injectionSite = thisJoinPoint.toString();
-    String retryException = "JMSException";
-    String injectionSourceLocation = String.format("%s:%d",
-                                thisJoinPoint.getSourceLocation().getFileName(),
-                                thisJoinPoint.getSourceLocation().getLine());
-
-    if (this.wasabiCtx == null) {
-      LOG.printMessage(
-        WasabiLogger.LOG_LEVEL_WARN, 
-        String.format("[Pointcut] [Non-Test-Method] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-          this.testMethodName, 
-          injectionSite, 
-          injectionSourceLocation, 
-          retryCallerFunction)
-      );
-
-      return;
-    }
-
-    LOG.printMessage(
-      WasabiLogger.LOG_LEVEL_WARN, 
-      String.format("[Pointcut] Test ---%s--- | Injection site ---%s--- | Injection location ---%s--- | Retry caller ---%s---\n",
-        this.testMethodName, 
-        injectionSite, 
-        injectionSourceLocation, 
-        retryCallerFunction)
-    );
-
-    InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
-                                                          injectionSite, 
-                                                          injectionSourceLocation,
-                                                          retryException,
-                                                          retryCallerFunction, 
-                                                          stackSnapshot);
-    if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {
-      this.activeInjectionLocations.add(retryCallerFunction);
-  
-      long threadId = Thread.currentThread().getId();
-      throw new JMSException(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
           threadId,
           this.testMethodName,

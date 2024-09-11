@@ -88,7 +88,7 @@ def build_target(target: str, target_root_dir: str, wasabi_arg: str = None):
   if target == "wasabi": 
     cmd = ["mvn", "clean", "install", "-fn", "-B", "-U", "-DskipTests", f"-Dinstrumentation.target={wasabi_arg}"]
   elif target == "hive":
-    cmd = ["mvn", "clean", "package", "-fn", "-Drat.numUnapprovedLicenses=20000", "-Pdist", "-B", "-U", "-DskipTests"]
+    cmd = ["mvn", "clean", "package", "-fn", "-Drat.numUnapprovedLicenses=20000", "-B", "-U", "-DskipTests"]
   elif target == "cassandra":
     cmd = ["ant"]
   elif target == "elasticsearch":
@@ -136,7 +136,7 @@ def run_test_suite(target: str, target_root_dir: str, args: str):
     log_file = get_log_file_name(target_root_dir, config_file)
     
     if target == "hive":
-      cmd = ["mvn", "surefire:test", "-B", "-Drat.numUnapprovedLicenses=20000", f"-DconfigFile={config_file}", f"-Dtest={test_name}", "-fn", "-Pdist"]
+      cmd = ["mvn", "surefire:test", "-B", "-Drat.numUnapprovedLicenses=20000", f"-DconfigFile={config_file}", f"-Dtest={test_name}", "-fn"]
     elif target == "cassandra":
       cmd = ["ant", f"-Dtest={test_name}", "test"]
     elif target == "elasticsearch":
@@ -236,7 +236,7 @@ def main():
 
   conf_files = get_conf_files(config_dir)
   test_names = [get_test_file_name(config_file) for config_file in conf_files]
-  args = [(conf_file, test_name) for conf_file, test_name in zip(conf_files, test_names)]
+  configs = [(conf_file, test_name) for conf_file, test_name in zip(conf_files, test_names)]
 
   # Cleanup old packages
   if args.benchmark == "cassandra":
@@ -255,7 +255,7 @@ def main():
   start_time = time.perf_counter()
 
   # Run the test suite of the target application
-  run_test_suite(args.benchmark, target_root_dir, args)
+  run_test_suite(args.benchmark, target_root_dir, configs)
   
   end_time = time.perf_counter()
   print(f"\n\n// -------------------------------------------------------------------------- //")
