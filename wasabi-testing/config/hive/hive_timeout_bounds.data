@@ -349,6 +349,7 @@ TestPluggableHiveSessionImpl.testSessionImplWithUGI
 TestPrivilegesV1.testPrivInGrant
 TestPrivilegesV1.testPrivInGrantNotAccepted
 TestPrivilegesV2.testPrivInGrant
+TestHCatMultiOutputFormat.testOutputFormat
 TestQBCompact.testBogusLevel
 TestQBCompact.testMajor
 TestQBCompact.testMinor
