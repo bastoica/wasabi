@@ -36,7 +36,7 @@ hive,when-missing-cap,org.apache.hadoop.hive.ql.lockmgr.zookeeper.ZooKeeperHiveL
 hive,when-missing-cap,org.apache.hadoop.hive.ql.exec.tez.monitoring.TezJobMonitor.monitorExecution
 hive,when-missing-backoff,org.apache.hadoop.hive.ql.hooks.HiveProtoLoggingHook$EventLogger.writeEvent
 hive,when-missing-backoff,org.apache.hadoop.hive.ql.lockmgr.DbLockManager.lock
-hive,how-bug,org.apache.hadoop.hive.metastore.RetryingMetaStoreClient.invoke
+hive,how-bug,org.apache.hadoop.hive.druid.DruidStorageHandlerUtils.publishSegmentWithShardSpec
 cassandra,when-missing-cap,org.apache.cassandra.db.compaction.Scrubber.scrub
 cassandra,when-missing-backoff,org.apache.cassandra.service.StorageService.repairPaxosForTopologyChange
 elasticsearch,when-missing-backoff,org.elasticsearch.cluster.coordination.ClusterBootstrapService.doBootstrap
