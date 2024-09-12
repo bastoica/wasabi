@@ -608,9 +608,7 @@
           </excludes>
         </configuration>
       </plugin>
-    </plugins>
 
-      
       <!-- Wasabi Fault Injection Library -->
       <plugin>
         <groupId>dev.aspectj</groupId>
@@ -649,6 +647,7 @@
         </dependencies>
       </plugin>
 
+    </plugins>
   </build>
   <profiles>
     <profile>

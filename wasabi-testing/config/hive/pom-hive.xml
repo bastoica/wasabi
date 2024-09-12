@@ -1390,6 +1390,19 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    
+    <!-- Wasabi Fault Injection Library -->
+ 	  <dependency>
+    	<groupId>org.aspectj</groupId>
+    	<artifactId>aspectjrt</artifactId>
+    	<version>${aspectj.version}</version>
+  	</dependency>
+  	<dependency>
+    	<groupId>edu.uchicago.cs.systems</groupId>
+    	<artifactId>wasabi</artifactId>
+    	<version>${wasabi.version}</version>
+  	</dependency>
+
     <!-- dependencies are always listed in sorted order by groupId, artifactId -->
     <!-- global dependencies -->
     <dependency>

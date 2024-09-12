@@ -167,58 +167,58 @@ def run_test_suite(target: str, target_root_dir: str, args: str):
 
 
 def cleanup(build_system: str):
-    """
-    Clean up of local package directory.
-    """
-    
-    if build_system == "maven" or build_system == "gradle":
-      package_dir = os.path.expanduser("~/.m2")
-    elif build_system == "ant":
-      package_dir = os.path.expanduser("~/.ivy2") 
-    
-    cmd = ["rm", "-rf", package_dir]
+  """
+  Clean up of local package directory.
+  """
+  
+  if build_system == "maven" or build_system == "gradle":
+   package_dir = os.path.expanduser("~/.m2")
+  elif build_system == "ant":
+   package_dir = os.path.expanduser("~/.ivy2") 
+  
+  cmd = ["rm", "-rf", package_dir]
 
-    print("// -------------------------------------------------------------------------- //")
-    print(f"Command: {' '.join(cmd)}", flush=True)
+  print("// -------------------------------------------------------------------------- //")
+  print(f"Command: {' '.join(cmd)}", flush=True)
 
-    result = run_command_with_timeout(cmd, dir_path=os.path.expanduser("~"))
+  result = run_command_with_timeout(cmd, dir_path=os.path.expanduser("~"))
 
-    if result is None:
-        print(f"Command timed out while trying to remove {package_dir}.", flush=True)
-    else:
-        print(f"Status: {result.returncode}", flush=True)
-    print("// -------------------------------------------------------------------------- //\n")
+  if result is None:
+    print(f"Command timed out while trying to remove {package_dir}.", flush=True)
+  else:
+    print(f"Status: {result.returncode}", flush=True)
+  print("// -------------------------------------------------------------------------- //\n")
 
 
 def save_log_files(target_app: str, wasabi_root_dir: str):
-    """
-    Save test and build log files to a separate directory.
+  """
+  Save test and build log files to a separate directory.
 
-    Parameters:
-        wasabi_root_dir (str): The path of the Wasabi root directory.
-        target_app (str): The target application name for which logs will be saved.
-    """
-    wasabi_results_dir = os.path.join(wasabi_root_dir, "..", "results", target_app)
-    target_root_dir = os.path.join(wasabi_root_dir, "..", "benchmarks", target_app)
+  Parameters:
+    wasabi_root_dir (str): The path of the Wasabi root directory.
+    target_app (str): The target application name for which logs will be saved.
+  """
+  wasabi_results_dir = os.path.join(wasabi_root_dir, "..", "results", target_app)
+  target_root_dir = os.path.join(wasabi_root_dir, "..", "benchmarks", target_app)
 
-    date = datetime.datetime.now().strftime("%Y%m%d%H%M")
-    
-    # Save test reports
-    test_reports_dir = os.path.join(wasabi_results_dir, date, "test-reports")
-    os.makedirs(test_reports_dir, exist_ok=True)
-    for dirpath, _, files in os.walk(target_root_dir):
-        for file in files:
-            if file.endswith("-output.txt"):
-                output_file = os.path.join(dirpath, file)
-                shutil.copy(output_file, os.path.join(test_reports_dir, f"{date}.{file}"))
+  date = datetime.datetime.now().strftime("%Y%m%d%H%M")
+  
+  # Save test reports
+  test_reports_dir = os.path.join(wasabi_results_dir, date, "test-reports")
+  os.makedirs(test_reports_dir, exist_ok=True)
+  for dirpath, _, files in os.walk(target_root_dir):
+    for file in files:
+      if file.endswith("-output.txt"):
+        output_file = os.path.join(dirpath, file)
+        shutil.copy(output_file, os.path.join(test_reports_dir, f"{date}.{file}"))
 
-    # Save build reports
-    build_reports_dir = os.path.join(wasabi_results_dir, date, "build-reports")
-    os.makedirs(build_reports_dir, exist_ok=True)
-    for file in os.listdir(target_root_dir):
-        if file.startswith("build-") and file.endswith(".log"):
-            output_file = os.path.join(target_root_dir, file)
-            shutil.copy(output_file, os.path.join(build_reports_dir, f"{date}.{file}"))
+  # Save build reports
+  build_reports_dir = os.path.join(wasabi_results_dir, date, "build-reports")
+  os.makedirs(build_reports_dir, exist_ok=True)
+  for file in os.listdir(target_root_dir):
+    if file.startswith("build-") and file.endswith(".log"):
+      output_file = os.path.join(target_root_dir, file)
+      shutil.copy(output_file, os.path.join(build_reports_dir, f"{date}.{file}"))
 
 
 def main():
