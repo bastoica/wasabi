@@ -88,7 +88,7 @@ def build_target(target: str, target_root_dir: str, wasabi_arg: str = None):
   if target == "wasabi": 
     cmd = ["mvn", "clean", "install", "-fn", "-B", "-U", "-DskipTests", f"-Dinstrumentation.target={wasabi_arg}"]
   elif target == "hive":
-    cmd = ["mvn", "clean", "install", "-fn", "-Drat.numUnapprovedLicenses=20000", "-B", "-U", "-DskipTests"]
+    cmd = ["mvn", "clean", "install", "-Pdist", "-fn", "-Drat.numUnapprovedLicenses=20000", "-B", "-U", "-DskipTests"]
   elif target == "cassandra":
     cmd = ["ant"]
   elif target == "elasticsearch":

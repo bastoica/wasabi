@@ -608,6 +608,8 @@
           </excludes>
         </configuration>
       </plugin>
+    </plugins>
+
       
       <!-- Wasabi Fault Injection Library -->
       <plugin>
@@ -647,7 +649,6 @@
         </dependencies>
       </plugin>
 
-    </plugins>
   </build>
   <profiles>
     <profile>

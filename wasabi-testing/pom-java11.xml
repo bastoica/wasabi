@@ -255,6 +255,18 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           </resource>
         </resources>
       </build>
+      <dependencies>
+        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-api</artifactId>
+          <version>5.8.2</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.hadoop</groupId>
+          <artifactId>hadoop-common</artifactId>
+          <version>${hadoop.version}</version>
+        </dependency>
+      </dependencies>
     </profile>
 
     <profile>
@@ -314,6 +326,11 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
       </build>
       <dependencies>
         <dependency>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.2</version>
+          </dependency>
           <groupId>org.apache.hbase</groupId>
           <artifactId>hbase-client</artifactId>
           <version>${hbase.version}</version>

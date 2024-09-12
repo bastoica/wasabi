@@ -61,11 +61,6 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
       <version>4.13.2</version>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.8.2</version>
-    </dependency>
-    <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.16.0</version>
@@ -184,15 +179,15 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
         </configuration>
         <dependencies>
           <dependency>
-          <groupId>org.aspectj</groupId>
-          <artifactId>aspectjtools</artifactId>
-          <version>${aspectj.version}</version>
-          <exclusions>
-            <exclusion>
-            <groupId>javax.xml.stream</groupId>
-            <artifactId>stax-api</artifactId>
-            </exclusion>
-          </exclusions> 
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>${aspectj.version}</version>
+            <exclusions>
+              <exclusion>
+              <groupId>javax.xml.stream</groupId>
+              <artifactId>stax-api</artifactId>
+              </exclusion>
+            </exclusions> 
           </dependency>
         </dependencies>
       </plugin>
@@ -255,6 +250,18 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           </resource>
         </resources>
       </build>
+      <dependencies>
+        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-api</artifactId>
+          <version>5.8.2</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.hadoop</groupId>
+          <artifactId>hadoop-common</artifactId>
+          <version>${hadoop.version}</version>
+        </dependency>
+      </dependencies>
     </profile>
 
     <profile>
@@ -317,6 +324,11 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           <groupId>org.apache.hbase</groupId>
           <artifactId>hbase-client</artifactId>
           <version>${hbase.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-api</artifactId>
+          <version>5.8.2</version>
         </dependency>
       </dependencies>
     </profile>
