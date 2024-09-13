@@ -5,7 +5,7 @@ The testing component of WASABI triggers retry bugs by using a combination of st
 ## 2. Getting Started  (0.5h, 5min human effort)
 
 > [!NOTE]
-> WASABI was originally developed, compiled, built, and evaluated on a Ubuntu 22.04 distribution running `bash` as its default shell. While agnostic to the operating system or shell variant, the steps described in this README might need to be adapted accordingly under different distributions/versions. 
+> WASABI was originally developed, compiled, built, and evaluated on a Ubuntu 22.04 distribution running `bash` as its default shell. While agnostic to the underlying system, the steps in this README might need to be adapted accordingly under different distributions, versions, packages, etc. 
 
 To get started, users should create a new directory structure, clone this repository, and switch to the `sosp24-ae` brach by running,
 ```
