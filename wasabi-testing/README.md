@@ -403,7 +403,7 @@ Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testin
 Running tests for hadoop...
 ...
 Job count: 42 / 42
-Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test3 surefire:test
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test42 surefire:test
 ```
 
 > [!NOTE]
