@@ -52,7 +52,7 @@ export WASABI_ROOT_DIR=$(echo $HOME)/sosp24-ae/wasabi
 
 ### 2.1. System Requirements
 
-WASABI and its benchmarks are compiled using Java 8 on an Ubuntu 22.04 distribution that runs `bash` as its default shell. The default build system is Maven (3.6.3), except for ElasticSearch that requires Gradle (>=4.4.1), and Cassandra which needs Ant (>=1.10). 
+WASABI and its benchmarks are compiled using Java 8 on an Ubuntu 22.04 distribution that runs `bash` as its default shell. The default build system is Maven (3.6.3), except for ElasticSearch that requires Gradle (>=4.4.1), and Cassandra which needs Ant (>=1.10). Finally, the scripts supporting WASABI require Python (>=3.10).
 
 ### 2.2. Installing Prerequisites
 
