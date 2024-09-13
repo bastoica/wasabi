@@ -1,6 +1,8 @@
+## WASABI-TESTING
+
 The testing component of WASABI triggers retry bugs by using a combination of static analysis, large language models (LLMs), fault injection, and testing. 
 
-## Getting Started
+## 1. Getting Started
 
 > [!NOTE]
 > WASABI was originally developed, compiled, built, and evaluated on/for Ubuntu 22.04 distribution running `bash` as its default shell. While agnostic to the operating system or shell variant, the steps described in this README might need to be adapted accordingly under different distributions/versions. 
@@ -48,12 +50,11 @@ Next, users should set up the `WASABI_ROOT_DIR` system variable which is used by
 export WASABI_ROOT_DIR=$(echo $HOME)/sosp24-ae/wasabi
 ```
 
-### System Requirements
+### 2.1. System Requirements
 
-Both WASABI and the benchmarks used to evaluate it are primarily built using Java 8. The default build system is Maven (3.6.3), except for ElasticSearch that requires Gradle (>=4.4.1), and Cassandra which needs Ant (>=1.10). 
+WASABI and its benchmarks are compiled using Java 8 on an Ubuntu 22.04 distribution that runs `bash` as its default shell. The default build system is Maven (3.6.3), except for ElasticSearch that requires Gradle (>=4.4.1), and Cassandra which needs Ant (>=1.10). 
 
-
-### Installing Prerequisites
+### 2.2. Installing Prerequisites
 
 Users can either install them manually using `apt-get` or run the `prereqs.sh` provided by our artifact:
 ```
@@ -115,7 +116,7 @@ which should yield
 /usr/lib/jvm/java-8-openjdk-amd64/jre
 ```
 
-## Minimal Example or Kick-the-Tires: Reproducing HDFS-17590 (1.5h, 15min human effort)
+## 3. Minimal Example or Kick-the-Tires: Reproducing HDFS-17590 (1.5h, 15min human effort)
 
 With the prerequisits installed, users can now run a series of `bash` commands that would lead to reproducing [HDFS-17590](https://issues.apache.org/jira/browse/HDFS-17590)&mdash;a previously unknown retry bug uncovered by WASABI. Note that HDFS is a module of Hadoop, so while the bug manifests in HDFS we will first need to clone and build Hadoop from source.
 
@@ -355,7 +356,9 @@ java.lang.NullPointerException
         at java.base/java.io.DataInputStream.read(DataInputStream.java:102)
 ```    
 
-### Full Evaluation (<12h, ~1h human effort)
+## 4. Full Evaluation (<12h, ~1h human effort)
+
+### 4.1. Running WASABI on a Full Test Suite
 
 For reproducing the retry bugs described in our paper [1], we provide `run.py`, a Python-based script designed to manage the setup and evaluation phases of WASABI. Each benchmark takes about `2h` to run.
 
@@ -382,7 +385,7 @@ python3 run.py --phase all --benchmark hadoop
 ```
 yet users can also run those using Maven (Hadoop-common, HDFS, MapReduce, Yarn, HBase, and Hive) using the following one-liner:
 ```
-
+for target in hadoop hbase hive; do python3 run.py --phase all --benchmark $target 2>&1 | tee -a wasabi-full-eval.log; done
 ```
 
 Optionally, user can choose to invoke individual phases of WASABI, by running
@@ -391,9 +394,9 @@ python3 run.py --phase bug-triggering --benchmark hadoop
 ```
 which yields an output similar to
 ```bash
-*************************
-* Phase: Bug triggering *
-*************************
+**************************
+* hadoop: bug triggering *
+**************************
 Running tests for hadoop...
 Job count: 1 / 42
 Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test1 surefire:test
@@ -414,7 +417,7 @@ Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testin
 > ```
 > Due to requiring more manual effort, we recommend running the other six benchmarks (Hadoop-common, HDFS, MapReduce, Yarn, HBase, and Hive), before tackling Cassandra and ElasticSearch. These cover 39 out of 42 bugs reported in our evaluation [[1]](README.md#references).
 
-#### Weaving WASABI at load time
+### 4.2. Weaving WASABI at load time
 
 ElasticSearch uses Gradle as a build system. Thus, to instrument the code users need to weave WASABI at load time as opposed to compile time. 
 
@@ -562,7 +565,7 @@ To incorporate AspectJ weaving, modify the `build.xml` as follows:
 Third, compile and weave with AspectJ bu running `ant compile` to build Cassandra from source and weave the WASABI aspects. This step ensures that the compiled Cassandra code is woven with WASABI aspects, allowing for instrumentation at load time.
 </details>
 
-### Unpacking Results
+### 4.3. Unpacking Results
 
 To generate results in Table 3 [[1]](README.md#references), users can run the following command
 ```
@@ -572,5 +575,5 @@ python3 display_bug_results.py | less
 
 The scripts prints out two tables: the original Table 3 from our paper, as well as a breakdown of the bugs found by type and benchmark&mdash;essentially the complement of Table 3 [[1]](README.md#references).
 
-### References
+## 5. References
 [1] "If At First You Don't Succeed, Try, Try, Again...? Insights and LLM-informed Tooling for Detecting Retry Bugs in Software Systems". Bogdan Alexandru Stoica*, Utsav Sethi*, Yiming Su, Cyrus Zhou, Shan Lu, Jonathan Mace, Madan Musuvathi, Suman Nath (*equal contribution). The 30th Symposium on Operating Systems Principles (SOSP). Austin, TX, USA. November, 2024.
