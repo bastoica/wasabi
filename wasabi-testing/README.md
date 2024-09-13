@@ -2,7 +2,7 @@
 
 The testing component of WASABI triggers retry bugs by using a combination of static analysis, large language models (LLMs), fault injection, and testing. 
 
-## 2. Getting Started
+## 2. Getting Started  (0.5h, 5min human effort)
 
 > [!NOTE]
 > WASABI was originally developed, compiled, built, and evaluated on/for Ubuntu 22.04 distribution running `bash` as its default shell. While agnostic to the operating system or shell variant, the steps described in this README might need to be adapted accordingly under different distributions/versions. 
