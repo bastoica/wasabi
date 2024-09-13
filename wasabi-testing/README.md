@@ -356,11 +356,11 @@ java.lang.NullPointerException
         at java.base/java.io.DataInputStream.read(DataInputStream.java:102)
 ```    
 
-## 4. Full Evaluation (<12h, ~1h human effort)
+## 4. Comprehensive Evaluation (<12h, ~1h human effort)
 
-### 4.1. Running WASABI on a Full Test Suite
+### 4.1. Running Individual Benchmarks
 
-For reproducing the retry bugs described in our paper [1], we provide `run.py`, a Python-based script designed to manage the setup and evaluation phases of WASABI. Each benchmark takes about `2h` to run.
+To run indidual benchmarks and trigger the corresponding retry bugs described in our paper [1], we provide `run.py`&mdash;a Python script designed to manage the different phases of WASABI. Overall, each benchmark takes approximately two hours to complete.
 
 `run.py` operates in several distinct phases, that closely follow those described in Figure 1 [1]:
 
