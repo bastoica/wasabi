@@ -116,7 +116,7 @@ which should yield
 /usr/lib/jvm/java-8-openjdk-amd64/jre
 ```
 
-## 3. Minimal Example or Kick-the-Tires: Reproducing HDFS-17590 (1.5h, 15min human effort)
+## 3. A Minimal Example: Reproducing HDFS-17590 (1.5h, 15min human effort)
 
 With the prerequisits installed, users can now run a series of `bash` commands that would lead to reproducing [HDFS-17590](https://issues.apache.org/jira/browse/HDFS-17590)&mdash;a previously unknown retry bug uncovered by WASABI. Note that HDFS is a module of Hadoop, so while the bug manifests in HDFS we will first need to clone and build Hadoop from source.
 
