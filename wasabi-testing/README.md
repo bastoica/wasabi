@@ -412,7 +412,7 @@ Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testin
 > python3 run.py --phase bug-triggering --benchmark cassandra
 > python3 run.py --phase bug-oracles --benchmark cassandra
 > ```
-> Due to requiring more manual effort, we recommend running the other six benchmarks (Hadoop-common, HDFS, MapReduce, Yarn, HBase, and Hive), before tackling Cassandra and ElasticSearch.. These six benchmarks total 39 out of 42 bugs reported in our evaluation [[1]](README.md#references).
+> Due to requiring more manual effort, we recommend running the other six benchmarks (Hadoop-common, HDFS, MapReduce, Yarn, HBase, and Hive), before tackling Cassandra and ElasticSearch. These cover 39 out of 42 bugs reported in our evaluation [[1]](README.md#references).
 
 #### Weaving WASABI at load time
 
