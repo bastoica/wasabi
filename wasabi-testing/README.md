@@ -385,7 +385,7 @@ cd ~/sosp24-ae/wasabi/wasabi-testing/utils
 python3 run.py --phase all --benchmark hadoop
 ```
 yet users can also run those using Maven (Hadoop-common, HDFS, MapReduce, Yarn, HBase, and Hive) using the following one-liner:
-```
+```bash
 cd ~/sosp24-ae/wasabi/wasabi-testing/utils
 for target in hadoop hbase hive; do python3 run.py --phase all --benchmark $target 2>&1 | tee -a wasabi-full-eval.log; done
 ```
