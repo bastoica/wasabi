@@ -229,8 +229,8 @@ public aspect InterceptHive {
     call(* java.net.Socket.close(..) throws *Exception*)) ||
     (withincode(* org.apache.hadoop.hive.metastore.utils.MetaStoreServerUtils.loopUntilHMSReady(..)) &&
     call(* java.net.Socket.connect(..) throws *Exception*)) ||
-    (withincode(* org.apache.hadoop.hive.metastore.utils.RetryUtilities.*ExponentiallyDecayingBatchWork.run(..)) &&
-    call(* org.apache.hadoop.hive.metastore.utils.RetryUtilities.*ExponentialBackOffRetry.*.execute(..) throws *Exception*)) ||
+    (withincode(* org.apache.hadoop.hive.metastore.utils.RetryUtilities.run(..)) &&
+    call(* org.*.execute(..) throws *Exception*)) ||
     (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
     call(* org.apache.hadoop.hive.metastore.conf.MetastoreConf.getPassword(..) throws *Exception*)) ||
     (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
@@ -240,7 +240,13 @@ public aspect InterceptHive {
     (withincode(* org.apache.hadoop.hive.metastore.HiveMetaStoreClientPreCatalog.open(..)) &&
     call(* org.apache.hadoop.hive.metastore.utils.SecurityUtils.getUGI(..) throws *Exception*)) ||
     (withincode(* org.apache.hadoop.hive.ql.exec.tez.YarnQueueHelper.checkQueueAccessInternal(..)) &&
-    call(* checkQueueAccessFromSingleRm(..) throws *Exception*))) &&
+    call(* checkQueueAccessFromSingleRm(..) throws *Exception*)) ||
+    (withincode(* *checkJobTracker(..)) &&
+    call(* *openStream(..) throws *Exception*)) ||
+    (withincode(* *close*(..)) &&
+    call(* *read(..) throws *Exception*)) ||
+    (withincode(* *checkJobTracker(..)) &&
+    call(* *read(..) throws *Exception*))) && 
     !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws IOException : injectIOException() {
