@@ -381,15 +381,18 @@ To run indidual benchmarks and trigger the corresponding retry bugs described in
 
 We recommend users all phases in one command, either iterating through the benchmarks individually
 ```bash
+cd ~/sosp24-ae/wasabi/wasabi-testing/utils
 python3 run.py --phase all --benchmark hadoop
 ```
 yet users can also run those using Maven (Hadoop-common, HDFS, MapReduce, Yarn, HBase, and Hive) using the following one-liner:
 ```
+cd ~/sosp24-ae/wasabi/wasabi-testing/utils
 for target in hadoop hbase hive; do python3 run.py --phase all --benchmark $target 2>&1 | tee -a wasabi-full-eval.log; done
 ```
 
 Optionally, user can choose to invoke individual phases of WASABI, by running
 ```bash
+cd ~/sosp24-ae/wasabi/wasabi-testing/utils
 python3 run.py --phase bug-triggering --benchmark hadoop
 ```
 which yields an output similar to
@@ -398,15 +401,15 @@ which yields an output similar to
 * hadoop: bug triggering *
 **************************
 Running tests for hadoop...
-Job count: 1 / 42
+Job count: 1 / 99
 Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test1 surefire:test
 Running tests for hadoop...
-Job count: 2 / 42
+Job count: 2 / 99
 Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test2 surefire:test
 Running tests for hadoop...
 ...
-Job count: 42 / 42
-Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test42 surefire:test
+Job count: 10 / 99
+Executing command: mvn -B -DconfigFile=/home/user/sosp24-ae/wasabi/wasabi-testing/config/hadoop/test_plan.conf -Dtest=Test99 surefire:test
 ```
 
 > [!NOTE]
