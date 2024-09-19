@@ -23,14 +23,18 @@ def generate_aspectj_code(exception_map):
   for exception, method_pairs in exception_map.items():
     patterns = []
     
-    for enclosing, retried in method_pairs:
-      patterns.append(f"    (withincode(* {enclosing}(..)) &&\n    call(* {retried}(..) throws *Exception*)) ||\n")
-    
+    patterns = [
+      f"(withincode(* {enclosing}(..)) && call(* {retried}(..) throws *Exception*))"
+      for enclosing, retried in method_pairs
+    ]
+    pointcut_body = " ||\n        ".join(patterns)
+
     pointcut_template = f"""
   /* Inject {exception} */
 
   pointcut inject{exception}():
-    ({''.join(patterns)}) &&\n    !within(edu.uchicago.cs.systems.wasabi.*);
+    ({pointcut_body}) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
 
   after() throws {exception} : inject{exception}() {{
     StackSnapshot stackSnapshot = new StackSnapshot();
@@ -38,8 +42,8 @@ def generate_aspectj_code(exception_map):
     String injectionSite = thisJoinPoint.toString();
     String retryException = "{exception}";
     String injectionSourceLocation = String.format("%s:%d",
-                                thisJoinPoint.getSourceLocation().getFileName(),
-                                thisJoinPoint.getSourceLocation().getLine());
+                  thisJoinPoint.getSourceLocation().getFileName(),
+                  thisJoinPoint.getSourceLocation().getLine());
 
     if (this.wasabiCtx == null) {{
       LOG.printMessage(
@@ -64,14 +68,14 @@ def generate_aspectj_code(exception_map):
     );
 
     InjectionPoint ipt = this.wasabiCtx.getInjectionPoint(this.testMethodName,
-                                                          injectionSite, 
-                                                          injectionSourceLocation,
-                                                          retryException,
-                                                          retryCallerFunction, 
-                                                          stackSnapshot);
+                               injectionSite, 
+                               injectionSourceLocation,
+                               retryException,
+                               retryCallerFunction, 
+                               stackSnapshot);
     if (ipt != null && this.wasabiCtx.shouldInject(ipt)) {{
       this.activeInjectionLocations.add(retryCallerFunction);
-  
+    
       long threadId = Thread.currentThread().getId();
       throw new {exception}(
         String.format("[wasabi] [thread=%d] [Injection] Test ---%s--- | ---%s--- thrown after calling ---%s--- | Retry location ---%s--- | Retry attempt ---%d---",
@@ -95,17 +99,7 @@ def generate_aspectj_code(exception_map):
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.EOFException;
-import java.io.FileNotFoundException;
-import java.net.BindException;
-import java.net.ConnectException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-import java.lang.InterruptedException;
-import java.sql.SQLException;
-import java.sql.SQLTransientException;
+/* Add imports specific to the exceptions thrown by the Aspect program */
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
@@ -132,14 +126,6 @@ public aspect Interceptor {{
 
   pointcut testMethod():
     (@annotation(org.junit.Test) || 
-     // @annotation(org.junit.Before) ||
-     // @annotation(org.junit.After) || 
-     // @annotation(org.junit.BeforeClass) ||
-     // @annotation(org.junit.AfterClass) || 
-     // @annotation(org.junit.jupiter.api.BeforeEach) ||
-     // @annotation(org.junit.jupiter.api.AfterEach) || 
-     // @annotation(org.junit.jupiter.api.BeforeAll) ||
-     // @annotation(org.junit.jupiter.api.AfterAll) || 
      @annotation(org.junit.jupiter.api.Test)) &&
      !within(org.apache.hadoop.*.TestDFSClientFailover.*) &&
      !within(org.apache.hadoop.hdfs.*.TestOfflineImageViewer.*) &&
@@ -210,25 +196,32 @@ public aspect Interceptor {{
    */
 
    pointcut recordThreadSleep():
-   (call(* Thread.sleep(..)) &&
-    !within(edu.uchicago.cs.systems.wasabi.*) &&
-    !within(is(FinalType)) &&
-    !within(is(EnumType)) &&
-    !within(is(AnnotationType)));
+    (call(* java.lang.Object.wait(..)) ||
+    call(* java.lang.Thread.sleep(..)) ||
+    call(* java.util.concurrent.locks.LockSupport.parkNanos(..)) ||
+    call(* java.util.concurrent.locks.LockSupport.parkUntil(..)) ||
+    call(* java.util.concurrent.ScheduledExecutorService.schedule(..)) ||
+    call(* java.util.concurrent.TimeUnit.*scheduledExecutionTime(..)) ||
+    call(* java.util.concurrent.TimeUnit.*sleep(..)) ||
+    call(* java.util.concurrent.TimeUnit.*timedWait(..)) ||
+    call(* java.util.Timer.schedule*(..)) ||
+    call(* java.util.TimerTask.wait(..)) ||
+    call(* org.apache.hadoop.hbase.*.Procedure.suspend(..))) &&
+    !within(edu.uchicago.cs.systems.wasabi.*);
 
   before() : recordThreadSleep() {{
     try {{
       if (this.wasabiCtx == null) {{ // This happens for non-test methods (e.g. config) inside test code
         return; // Ignore retry in "before" and "after" annotated methods
       }}
-  
-      StackSnapshot stackSnapshot = new StackSnapshot();    
+    
+      StackSnapshot stackSnapshot = new StackSnapshot();  
       for (String retryCallerFunction : this.activeInjectionLocations) {{
         if (stackSnapshot.hasFrame(retryCallerFunction.split("\\\\(", 2)[0])) {{
           String sleepLocation = String.format("%s(%s:%d)",
-                                  retryCallerFunction.split("\\\\(", 2)[0],
-                                  thisJoinPoint.getSourceLocation().getFileName(),
-                                  thisJoinPoint.getSourceLocation().getLine());
+                      retryCallerFunction.split("\\\\(", 2)[0],
+                      thisJoinPoint.getSourceLocation().getFileName(),
+                      thisJoinPoint.getSourceLocation().getLine());
 
           this.wasabiCtx.addToExecTrace(sleepLocation, OpEntry.THREAD_SLEEP_OP, stackSnapshot);
           LOG.printMessage(
@@ -242,9 +235,9 @@ public aspect Interceptor {{
       }}
     }} catch (Exception e) {{
       this.LOG.printMessage(
-          WasabiLogger.LOG_LEVEL_ERROR, 
-          String.format("Exception occurred in recordThreadSleep(): %s", e.getMessage())
-        );
+        WasabiLogger.LOG_LEVEL_ERROR, 
+        String.format("Exception occurred in recordThreadSleep(): %s", e.getMessage())
+      );
       e.printStackTrace();
     }}
   }}
@@ -256,8 +249,8 @@ public aspect Interceptor {{
 
 def main():
   parser = argparse.ArgumentParser(description="Generate AspectJ code following a particular specification.")
-  parser.add_argument("--spec_file", help="Path to the input specification file")
-  parser.add_argument("--aspect_file", help="Path to the output AspectJ file")
+  parser.add_argument("--spec-file", help="Path to the input specification file")
+  parser.add_argument("--aspect-file", help="Path to the output AspectJ file")
   
   args = parser.parse_args()
   
