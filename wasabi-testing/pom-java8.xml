@@ -467,18 +467,6 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           </resource>
         </resources>
       </build>
-            <dependencies>
-        <dependency>
-          <groupId>org.apache.cassandra</groupId>
-          <artifactId>cassandra-all</artifactId>
-          <version>${cassandra.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit-jupiter-api</artifactId>
-          <version>5.8.2</version>
-        </dependency>
-      </dependencies>
     </profile>
 
     <profile>
@@ -536,13 +524,6 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
           </resource>
         </resources>
       </build>
-      <dependencies>
-        <dependency>
-          <groupId>org.junit.jupiter</groupId>
-          <artifactId>junit-jupiter-api</artifactId>
-          <version>5.8.2</version>
-        </dependency>
-      </dependencies>
     </profile>
   </profiles>
 
