@@ -13,10 +13,11 @@
 
 # VSCode artifacts
 .vscode/*
+.DS_Store
 
 # Misc
 benchmarks/
 results/
 *.log
-.*.swp
+*.swp
 *.pdf
