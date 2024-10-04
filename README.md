@@ -11,4 +11,4 @@ To get started, users can refer to:
 Users can also navigate to the `sosp24-ae` branch which contains guidelines and automation to replicate the key results from our paper [[1]](README.md#references).
 
 ### References
-[1] "If At First You Don't Succeed, Try, Try, Again...? Insights and LLM-informed Tooling for Detecting Retry Bugs in Software Systems". Bogdan Alexandru Stoica*, Utsav Sethi*, Yiming Su, Cyrus Zhou, Shan Lu, Jonathan Mace, Madan Musuvathi, Suman Nath (*equal contribution). The 30th Symposium on Operating Systems Principles (SOSP). Austin, TX, USA. November, 2024.
+[1] "[If At First You Don't Succeed, Try, Try, Again...? Insights and LLM-informed Tooling for Detecting Retry Bugs in Software Systems](https://bastoica.github.io/files/papers/2024_sosp_wasabi.pdf)". Bogdan Alexandru Stoica*, Utsav Sethi*, Yiming Su, Cyrus Zhou, Shan Lu, Jonathan Mace, Madan Musuvathi, Suman Nath (*equal contribution). The 30th Symposium on Operating Systems Principles (SOSP). Austin, TX, USA. November, 2024.
