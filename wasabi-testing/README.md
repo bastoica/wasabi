@@ -47,12 +47,13 @@ sudo ./prereqs.sh
 
 > [!NOTE]
 > WASABI requires the following dependencies:
+> * Ubuntu >=22.04 LTE
 > * Python >=3.10
 > * Java 8 and 11
 > * Maven >=3.6
 > * Gradle >=4.4.1
 > * Ant >=1.10
-> * Ubuntu >=22.04 LTE
+> 
 > WASABI was developed, built, and tested on a bare metal machine with an Intel i7-8700 CPU, 32 GB of RAM, and 512 GB of disk space, running Ubuntu 22.04 LTE.
 > While we implement WASABI to be agnostic to environment settings (i.e., OS distribution, versions of packages and dependencies), using WASABI in a different environment. Please see "[Known issues](README.md#6-known-issues)"..
 
@@ -396,11 +397,11 @@ java.lang.NullPointerException
 
 ## 6. Known issues
 
-#### 6.1 AspectJ Maven plugin circular dependency and versioning issues
+### 6.1 AspectJ Maven plugin circular dependency and versioning issues
 
 WASABI imports plugins that might also be imported by the target application. Users need to manually resolve potential circular dependencies or plugin version incompatibilities. Users could also reference [this](https://github.com/dev-aspectj/aspectj-maven-plugin/issues/143) issue in the `aspectj-maven-plugin` repository for suggestions on how to tackle such issues.
 
-#### 6.2 Build failures after weaving
+### 6.2 Build failures after weaving
 
 The AspectJ compiler and supporting plugins might not be able to weave (instrument) all modules of a target successfully. While users are encouraged to address this, we recommend disregarding modules that are not critical to the core functionality of the application (e.g., benchmarking modules) or that do not implement or test retry-related code.
 
@@ -536,7 +537,7 @@ For example, when reproducing HDFS-17590, users might observe a "build failure" 
 ```
 </details>
 
-6.3 Bare metal versus containerized deployments
+### 6.3 Bare metal versus containerized deployments
 
 WWASABI was tested on a bare metal machine. Fundamentally, there are no limitations to running WASABI in a containerized environment. However, there are known issues related to the Hadoop and HBase benchmarks used to evaluate WASABI in our [paper](https://bastoica.github.io/files/papers/2024_sosp_wasabi.pdf).
 
