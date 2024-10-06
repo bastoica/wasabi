@@ -8,7 +8,7 @@ To get started, users should create a new directory structure, clone this reposi
 
 1. Create a new workspace directory and clone the WASABI repository:
 ```bash
-mkdir -p ~/wasabi-workspace
+mkdir -p ~/wasabi-workspace/bugfinding
 cd ~/wasabi-workspace/bugfinding
 git clone https://github.com/bastoica/wasabi
 ```
@@ -55,7 +55,7 @@ sudo ./prereqs.sh
 > * Ant >=1.10
 > 
 > WASABI was developed, built, and tested on a bare metal machine with an Intel i7-8700 CPU, 32 GB of RAM, and 512 GB of disk space, running Ubuntu 22.04 LTE.
-> While we implement WASABI to be agnostic to environment settings (i.e., OS distribution, versions of packages and dependencies), using WASABI in a different environment. Please see "[Known issues](README.md#6-known-issues)"..
+> While we implement WASABI to be agnostic to environment settings (i.e., OS distribution, versions of packages and dependencies), using WASABI in a different environment. Please see "[Known issues](README.md#6-known-issues)".
 
 ## 3. Building and installing WASABI
 
