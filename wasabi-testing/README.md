@@ -164,7 +164,7 @@ Some applications use build systems other than Maven, like Gradle or Ant. In the
 #### Load-time weaving with Gradle
 
 First, add the AspectJ plugin and dependencies to your build.gradle file:
-```json
+```xml
 plugins {
   id 'io.freefair.aspectj.post-compile-weaving' version '8.1.0'
   id 'java'
@@ -177,7 +177,7 @@ dependencies {
 ```
 
 Next, configure AspectJ for load-time weaving:
-```json
+```xml
 compileJava {
   options.compilerArgs += ['-Xlint:none']
   doLast {
@@ -385,11 +385,11 @@ java.lang.NullPointerException
 
 ## 6. Known issues
 
-#### AspectJ Maven plugin circular dependency and versioning issues
+#### 6.1 AspectJ Maven plugin circular dependency and versioning issues
 
 WASABI imports plugins that might also be imported by the target application. Users need to manually resolve potential circular dependencies or plugin version incompatibilities. Users could also reference [this](https://github.com/dev-aspectj/aspectj-maven-plugin/issues/143) issue in the `aspectj-maven-plugin` repository for suggestions on how to tackle such issues.
 
-#### Build failures after weaving
+#### 6.2 Build failures after weaving
 
 The AspectJ compiler and supporting plugins might not be able to weave (instrument) all modules of a target successfully. While users are encouraged to address this, we recommend disregarding modules that are not critical to the core functionality of the application (e.g., benchmarking modules) or that do not implement or test retry-related code.
 
