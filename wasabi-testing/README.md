@@ -56,7 +56,7 @@ sudo ./prereqs.sh
 > * AspectJ runtime plugin** (`aspectjr`) 1.9.8.M1 for Java 8 and 1.9.19 for Java 11, respectively
 > * AspectJ Maven plugin** (`aspectj-maven-plugin`) 1.13 for Java 8 and 1.13.1 for Java 11, respectively
 >
->**both added to WASABI's `pom.xml` as dependency
+>**both added to WASABI's `pom.xml` as plugin dependencies
 > 
 > WASABI was developed, built, and tested on a bare metal machine with an Intel i7-8700 CPU, 32 GB of RAM, and 512 GB of disk space, running Ubuntu 22.04 LTE.
 > While we implement WASABI to be agnostic to environment settings (i.e., OS distribution, versions of packages and dependencies), using WASABI in a different environment. Please see "[Known issues](README.md#6-known-issues)".
