@@ -7,11 +7,34 @@ The testing component of WASABI triggers retry bugs by using a combination of st
 To get started, users should create a new directory structure, clone this repository, work on the `main` branch of the repository, configure and install dependencies, by following these steps:
 
 1. Create a new workspace directory and clone the WASABI repository:
-```
+```bash
 mkdir -p ~/wasabi-workspace
-cd ~/wasabi-workspace
+cd ~/wasabi-workspace/bugfinding
 git clone https://github.com/bastoica/wasabi
 ```
+
+The working directory structure should look similar to the one below:
+```plaintext
+~/wasabi-workspace
+  ├── bugfinding/
+  └── wasabi/
+      ├── wasabi-static/
+      │   ├── README.md
+      │   ├── codeql-if-detection
+      │   ├── gpt-when-detection
+      |   ├── retry_issue_set_artifact.xlsx
+      |   └── wasabi_gpt_detection_results--table4.xlsx
+      └── wasabi-testing
+          ├── README.md
+          ├── config/
+          ├── pom-java11.xml
+          ├── pom-java8.xml
+          ├── pom.xml
+          ├── src/
+          └── utils/
+```
+The `wasabi` directory contains the codebase of WASABI, while the `bugfinding` directory is where users can add applications that they want to use WASABI to find retry bugs.
+
 2. Set up the `WASABI_ROOT_DIR` environment variable:
 ```
 export WASABI_ROOT_DIR=$(echo $HOME)/wasabi-workspace/wasabi
@@ -25,14 +48,14 @@ sudo ./prereqs.sh
 ## 3. Building and installing WASABI
 
 To build and install WASABI, first switch to the appropriate Java distribution. In this tutorial we work with Java 8 as it is the latest distribution required for HDFS.
-```
+```bash
 sudo update-alternatives --config java 
 ...(select java 8)
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 ```
 
 Next, run Maven's `clean`, `compile`, and `install` Maven from the `wasabi-testing` directory, to build WASABI.
-```
+```bash
 cd ~/wasabi-workspace/wasabi/wasabi-testing
 mvn clean compile && mvn install -B 2>&1 | tee wasabi-build.log
 ```
@@ -51,7 +74,7 @@ If users need to use Java 11, they can either modify the `pom.xml` accordingly. 
 
 > [!NOTE]
 > When building WASABI multiple times, especially under a different Java distribution, it is recommended to first remove Maven's cache directory prior to compiling WASABI.
-```
+```bash
 rm -rf ~/.m2/repository
 ```
 
@@ -63,7 +86,7 @@ WASABI can be woven into or instrument a target applications either at compile- 
 
 To enable compile-time weaving for a target application, users need to modify the original `pom.xml` of the target to include Wasabi as a dependence and invoke the `aspectj` plugin:
 
-```
+```xml
 <dependencies>
   <!-- Existing dependencies -->
 
@@ -122,13 +145,13 @@ To enable compile-time weaving for a target application, users need to modify th
 ```
 
 Next, build the target application with WASABI woven in:
-```
+```bash
 cd /path/to/target_application
 mvn clean compile -T 8 -fn -DskipTests && mvn install -fn -DskipTests -B 2>&1 | tee wasabi-build.log
 ```
 
 Successful weaving should produce log messages like this one:
-```
+```bash
 [INFO] Join point 'method-execution(...)' in Type 'org.apache.hadoop.metrics2.util.SampleStat' ...
 ```
 
@@ -141,7 +164,7 @@ Some applications use build systems other than Maven, like Gradle or Ant. In the
 #### Load-time weaving with Gradle
 
 First, add the AspectJ plugin and dependencies to your build.gradle file:
-```
+```json
 plugins {
   id 'io.freefair.aspectj.post-compile-weaving' version '8.1.0'
   id 'java'
@@ -154,7 +177,7 @@ dependencies {
 ```
 
 Next, configure AspectJ for load-time weaving:
-```
+```json
 compileJava {
   options.compilerArgs += ['-Xlint:none']
   doLast {
@@ -277,12 +300,12 @@ To illustrate how WASABI work, we walk users through an example that reproduces 
 
 3. Clone Hadoop (note: HDFS is part of Hadoop),
 ```bash
-cd ~/sosp24-ae/benchmarks
+cd ~/sosp24-ae/bugfinding
 git clone https://github.com/apache/hadoop
 ```
 and check out version/commit `60867de`:
 ```bash
-cd ~/sosp24-ae/benchmarks/hadoop
+cd ~/sosp24-ae/bugfinding/hadoop
 git checkout 60867de
 ```
 Users can check whether `60867de` was successfully checked out by running
@@ -361,3 +384,143 @@ java.lang.NullPointerException
 ```    
 
 ## 6. Known issues
+
+#### AspectJ Maven plugin circular dependency and versioning issues
+
+WASABI imports plugins that might also be imported by the target application. Users need to manually resolve potential circular dependencies or plugin version incompatibilities. Users could also reference [this](https://github.com/dev-aspectj/aspectj-maven-plugin/issues/143) issue in the `aspectj-maven-plugin` repository for suggestions on how to tackle such issues.
+
+#### Build failures after weaving
+
+The AspectJ compiler and supporting plugins might not be able to weave (instrument) all modules of a target successfully. While users are encouraged to address this, we recommend disregarding modules that are not critical to the core functionality of the application (e.g., benchmarking modules) or that do not implement or test retry-related code.
+
+For example, when reproducing HDFS-17590, users might observe a "build failure" message at the end of the build and testing processes. This is expected, as a few benchmark-related components of Hadoop require extra configuration for the AJC to compile them successfully. However, WASABI does not need these components to build correctly in order to find retry bugs. For reference, this is the original build log that WASABI encountered when building Hadoop. Note that the core components of Hadoop (common and client), HDFS, Yarn, and MapReduce all built successfully.
+
+<details>
+<summary>Hadoop build log (expand for details):</summary>
+
+```bash
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Apache Hadoop Main 3.4.0-SNAPSHOT:
+[INFO] 
+[INFO] Apache Hadoop Main ................................. SUCCESS [  4.399 s]
+[INFO] Apache Hadoop Build Tools .......................... SUCCESS [  2.222 s]
+[INFO] Apache Hadoop Project POM .......................... SUCCESS [  1.716 s]
+[INFO] Apache Hadoop Annotations .......................... SUCCESS [  3.483 s]
+[INFO] Apache Hadoop Project Dist POM ..................... SUCCESS [  0.098 s]
+[INFO] Apache Hadoop Assemblies ........................... SUCCESS [  0.094 s]
+[INFO] Apache Hadoop Maven Plugins ........................ SUCCESS [  8.806 s]
+[INFO] Apache Hadoop MiniKDC .............................. SUCCESS [ 16.738 s]
+[INFO] Apache Hadoop Auth ................................. SUCCESS [01:15 min]
+[INFO] Apache Hadoop Auth Examples ........................ SUCCESS [  1.117 s]
+[INFO] Apache Hadoop Common ............................... SUCCESS [01:34 min]
+[INFO] Apache Hadoop NFS .................................. SUCCESS [ 15.503 s]
+[INFO] Apache Hadoop KMS .................................. SUCCESS [  3.521 s]
+[INFO] Apache Hadoop Registry ............................. SUCCESS [  3.468 s]
+[INFO] Apache Hadoop Common Project ....................... SUCCESS [  0.060 s]
+[INFO] Apache Hadoop HDFS Client .......................... SUCCESS [ 52.968 s]
+[INFO] Apache Hadoop HDFS ................................. SUCCESS [ 57.425 s]
+[INFO] Apache Hadoop HDFS Native Client ................... SUCCESS [  0.451 s]
+[INFO] Apache Hadoop HttpFS ............................... SUCCESS [  4.092 s]
+[INFO] Apache Hadoop HDFS-NFS ............................. SUCCESS [  1.579 s]
+[INFO] Apache Hadoop YARN ................................. SUCCESS [  0.052 s]
+[INFO] Apache Hadoop YARN API ............................. SUCCESS [ 15.454 s]
+[INFO] Apache Hadoop YARN Common .......................... SUCCESS [ 27.587 s]
+[INFO] Apache Hadoop YARN Server .......................... SUCCESS [  0.045 s]
+[INFO] Apache Hadoop YARN Server Common ................... SUCCESS [ 16.038 s]
+[INFO] Apache Hadoop YARN ApplicationHistoryService ....... SUCCESS [  5.012 s]
+[INFO] Apache Hadoop YARN Timeline Service ................ SUCCESS [  3.239 s]
+[INFO] Apache Hadoop YARN Web Proxy ....................... SUCCESS [  2.122 s]
+[INFO] Apache Hadoop YARN ResourceManager ................. SUCCESS [ 29.966 s]
+[INFO] Apache Hadoop YARN NodeManager ..................... SUCCESS [ 25.820 s]
+[INFO] Apache Hadoop YARN Server Tests .................... SUCCESS [  1.488 s]
+[INFO] Apache Hadoop YARN Client .......................... SUCCESS [  4.974 s]
+[INFO] Apache Hadoop MapReduce Client ..................... SUCCESS [  0.593 s]
+[INFO] Apache Hadoop MapReduce Core ....................... SUCCESS [ 11.157 s]
+[INFO] Apache Hadoop MapReduce Common ..................... SUCCESS [  3.654 s]
+[INFO] Apache Hadoop MapReduce Shuffle .................... SUCCESS [  3.475 s]
+[INFO] Apache Hadoop MapReduce App ........................ SUCCESS [  5.335 s]
+[INFO] Apache Hadoop MapReduce HistoryServer .............. SUCCESS [  3.995 s]
+[INFO] Apache Hadoop MapReduce JobClient .................. SUCCESS [  6.776 s]
+[INFO] Apache Hadoop Distributed Copy ..................... SUCCESS [  2.958 s]
+[INFO] Apache Hadoop Mini-Cluster ......................... SUCCESS [  0.903 s]
+[INFO] Apache Hadoop Federation Balance ................... SUCCESS [  1.683 s]
+[INFO] Apache Hadoop HDFS-RBF ............................. SUCCESS [ 10.150 s]
+[INFO] Apache Hadoop HDFS Project ......................... SUCCESS [  0.042 s]
+[INFO] Apache Hadoop YARN SharedCacheManager .............. SUCCESS [  1.171 s]
+[INFO] Apache Hadoop YARN Timeline Plugin Storage ......... SUCCESS [  1.375 s]
+[INFO] Apache Hadoop YARN TimelineService HBase Backend ... SUCCESS [  0.044 s]
+[INFO] Apache Hadoop YARN TimelineService HBase Common .... SUCCESS [  9.957 s]
+[INFO] Apache Hadoop YARN TimelineService HBase Client .... SUCCESS [ 21.167 s]
+[INFO] Apache Hadoop YARN TimelineService HBase Servers ... SUCCESS [  0.044 s]
+[INFO] Apache Hadoop YARN TimelineService HBase Server 1.7  SUCCESS [  2.516 s]
+[INFO] Apache Hadoop YARN TimelineService HBase tests ..... SUCCESS [ 20.933 s]
+[INFO] Apache Hadoop YARN Router .......................... SUCCESS [  4.274 s]
+[INFO] Apache Hadoop YARN TimelineService DocumentStore ... SUCCESS [ 16.551 s]
+[INFO] Apache Hadoop YARN GlobalPolicyGenerator ........... SUCCESS [  2.509 s]
+[INFO] Apache Hadoop YARN Applications .................... SUCCESS [  0.042 s]
+[INFO] Apache Hadoop YARN DistributedShell ................ SUCCESS [  1.558 s]
+[INFO] Apache Hadoop YARN Unmanaged Am Launcher ........... SUCCESS [  0.833 s]
+[INFO] Apache Hadoop YARN Services ........................ SUCCESS [  0.038 s]
+[INFO] Apache Hadoop YARN Services Core ................... SUCCESS [  5.323 s]
+[INFO] Apache Hadoop YARN Services API .................... SUCCESS [  1.736 s]
+[INFO] Apache Hadoop YARN Application Catalog ............. SUCCESS [  0.040 s]
+[INFO] Apache Hadoop YARN Application Catalog Webapp ...... SUCCESS [01:30 min]
+[INFO] Apache Hadoop YARN Application Catalog Docker Image  SUCCESS [  0.073 s]
+[INFO] Apache Hadoop YARN Application MaWo ................ SUCCESS [  0.054 s]
+[INFO] Apache Hadoop YARN Application MaWo Core ........... SUCCESS [  1.153 s]
+[INFO] Apache Hadoop YARN Site ............................ SUCCESS [  0.054 s]
+[INFO] Apache Hadoop YARN Registry ........................ SUCCESS [  0.563 s]
+[INFO] Apache Hadoop YARN UI .............................. SUCCESS [  0.357 s]
+[INFO] Apache Hadoop YARN CSI ............................. SUCCESS [ 21.231 s]
+[INFO] Apache Hadoop YARN Project ......................... SUCCESS [  0.695 s]
+[INFO] Apache Hadoop MapReduce HistoryServer Plugins ...... SUCCESS [  0.859 s]
+[INFO] Apache Hadoop MapReduce NativeTask ................. SUCCESS [  2.120 s]
+[INFO] Apache Hadoop MapReduce Uploader ................... SUCCESS [  1.467 s]
+[INFO] Apache Hadoop MapReduce Examples ................... SUCCESS [  2.022 s]
+[INFO] Apache Hadoop MapReduce ............................ SUCCESS [  0.783 s]
+[INFO] Apache Hadoop MapReduce Streaming .................. SUCCESS [  3.502 s]
+[INFO] Apache Hadoop Client Aggregator .................... SUCCESS [  0.872 s]
+[INFO] Apache Hadoop Dynamometer Workload Simulator ....... SUCCESS [  1.504 s]
+[INFO] Apache Hadoop Dynamometer Cluster Simulator ........ SUCCESS [  1.659 s]
+[INFO] Apache Hadoop Dynamometer Block Listing Generator .. SUCCESS [  1.456 s]
+[INFO] Apache Hadoop Dynamometer Dist ..................... SUCCESS [  1.242 s]
+[INFO] Apache Hadoop Dynamometer .......................... SUCCESS [  0.040 s]
+[INFO] Apache Hadoop Archives ............................. SUCCESS [  0.948 s]
+[INFO] Apache Hadoop Archive Logs ......................... SUCCESS [  0.978 s]
+[INFO] Apache Hadoop Rumen ................................ SUCCESS [  2.024 s]
+[INFO] Apache Hadoop Gridmix .............................. SUCCESS [  1.962 s]
+[INFO] Apache Hadoop Data Join ............................ SUCCESS [  0.963 s]
+[INFO] Apache Hadoop Extras ............................... SUCCESS [  1.132 s]
+[INFO] Apache Hadoop Pipes ................................ SUCCESS [  0.039 s]
+[INFO] Apache Hadoop Amazon Web Services support .......... SUCCESS [ 16.110 s]
+[INFO] Apache Hadoop Kafka Library support ................ SUCCESS [  2.281 s]
+[INFO] Apache Hadoop Azure support ........................ SUCCESS [  8.403 s]
+[INFO] Apache Hadoop Aliyun OSS support ................... SUCCESS [  6.307 s]
+[INFO] Apache Hadoop Scheduler Load Simulator ............. SUCCESS [  2.002 s]
+[INFO] Apache Hadoop Resource Estimator Service ........... SUCCESS [  2.300 s]
+[INFO] Apache Hadoop Azure Data Lake support .............. SUCCESS [  2.248 s]
+[INFO] Apache Hadoop Image Generation Tool ................ SUCCESS [  1.332 s]
+[INFO] Apache Hadoop Tools Dist ........................... SUCCESS [  0.596 s]
+[INFO] Apache Hadoop OpenStack support .................... SUCCESS [  0.049 s]
+[INFO] Apache Hadoop Common Benchmark ..................... FAILURE [  2.949 s]
+[INFO] Apache Hadoop Tools ................................ SUCCESS [  0.039 s]
+[INFO] Apache Hadoop Client API ........................... SUCCESS [04:31 min]
+[INFO] Apache Hadoop Client Runtime ....................... SUCCESS [04:55 min]
+[INFO] Apache Hadoop Client Packaging Invariants .......... FAILURE [  0.197 s]
+[INFO] Apache Hadoop Client Test Minicluster .............. SUCCESS [08:43 min]
+[INFO] Apache Hadoop Client Packaging Invariants for Test . FAILURE [  0.115 s]
+[INFO] Apache Hadoop Client Packaging Integration Tests ... SUCCESS [  1.206 s]
+[INFO] Apache Hadoop Distribution ......................... SUCCESS [  0.304 s]
+[INFO] Apache Hadoop Client Modules ....................... SUCCESS [  0.042 s]
+[INFO] Apache Hadoop Tencent COS Support .................. SUCCESS [  1.993 s]
+[INFO] Apache Hadoop OBS support .......................... FAILURE [  6.322 s]
+[INFO] Apache Hadoop Cloud Storage ........................ SUCCESS [  1.423 s]
+[INFO] Apache Hadoop Cloud Storage Project ................ SUCCESS [  0.039 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  31:50 min
+[INFO] Finished at: 2024-08-14T06:26:40Z
+[INFO] ------------------------------------------------------------------------
+```
+</details>
