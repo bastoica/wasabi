@@ -45,6 +45,17 @@ cd ~/wasabi-workspace/wasabi/wasabi-testing/utils
 sudo ./prereqs.sh
 ```
 
+> [!NOTE]
+> WASABI requires the following dependencies:
+> * Python >=3.10
+> * Java 8 and 11
+> * Maven >=3.6
+> * Gradle >=4.4.1
+> * Ant >=1.10
+> * Ubuntu >=22.04 LTE
+> WASABI was developed, built, and tested on a bare metal machine with an Intel i7-8700 CPU, 32 GB of RAM, and 512 GB of disk space, running Ubuntu 22.04 LTE.
+> While we implement WASABI to be agnostic to environment settings (i.e., OS distribution, versions of packages and dependencies), using WASABI in a different environment. Please see "[Known issues](README.md#6-known-issues)"..
+
 ## 3. Building and installing WASABI
 
 To build and install WASABI, first switch to the appropriate Java distribution. In this tutorial we work with Java 8 as it is the latest distribution required for HDFS.
@@ -288,7 +299,7 @@ mvn test  -fn -B  -DconfigFile="$(echo $HOME)/wasabi/wasabi-testing/config/examp
 To illustrate how WASABI work, we walk users through an example that reproduces [HDFS-17590](https://issues.apache.org/jira/browse/HDFS-17590)&mdash;a previously unknown retry bug uncovered by WASABI.
 
 > [!NOTE]
-> Users might observe a "build failure" message when building and testing Hadoop. This is expected as a few testing-related components of Hadoop need more configuration to build properly with the ACJ compiler. WASABI does not need those components to find retry bugs. See the [Known issues]() section below for more details.
+> Users might observe a "build failure" message when building and testing Hadoop. This is expected as a few testing-related components of Hadoop need more configuration to build properly with the ACJ compiler. WASABI does not need those components to find retry bugs. See the "[Known issues](README.md#6-known-issues)" section below for more details.
 
 
 1. Ensure the prerequisites are successfully installed (see "Getting Started" above)
@@ -396,7 +407,7 @@ The AspectJ compiler and supporting plugins might not be able to weave (instrume
 For example, when reproducing HDFS-17590, users might observe a "build failure" message at the end of the build and testing processes. This is expected, as a few benchmark-related components of Hadoop require extra configuration for the AJC to compile them successfully. However, WASABI does not need these components to build correctly in order to find retry bugs. For reference, this is the original build log that WASABI encountered when building Hadoop. Note that the core components of Hadoop (common and client), HDFS, Yarn, and MapReduce all built successfully.
 
 <details>
-<summary>Hadoop build log (expand for details):</summary>
+<summary>Hadoop `60867de` build log (expand for details):</summary>
 
 ```bash
 [INFO] ------------------------------------------------------------------------
@@ -524,3 +535,13 @@ For example, when reproducing HDFS-17590, users might observe a "build failure" 
 [INFO] ------------------------------------------------------------------------
 ```
 </details>
+
+6.3 Bare metal versus containerized deployments
+
+WWASABI was tested on a bare metal machine. Fundamentally, there are no limitations to running WASABI in a containerized environment. However, there are known issues related to the Hadoop and HBase benchmarks used to evaluate WASABI in our [paper](https://bastoica.github.io/files/papers/2024_sosp_wasabi.pdf).
+
+In short, some Hadoop and HBase tests require access to a non-virtualized, physical network. Without this, users might encounter errors such as
+```
+ERROR regionserver.HRegionServer: Master passed us a different hostname to use; was=grimlock, but now=169.254.3.1
+```
+These errors occur due to a hostname-to-IP mismatch in the network setup of your system, not because of an issue with WASABI. The likely cause is a misconfigured `/etc/hosts` file, multiple network interfaces on your machine, or running our tool in a containerized environment (e.g., docker).
