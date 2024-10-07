@@ -2,107 +2,97 @@
 
 This README describes the purpose of and sample usage scenarios for each utility script used by Wasabi.
 
-## § `driver.py`
+### § `run.py`
 
-The `driver.py` script automates compiling, building, installing, and testing a target Java project using the Maven build framework. The script works by first executing a `mvn ... install` command to compile the project and then runs tests based on configurations provided by `.conf` files. Its output, including logs, are then aggregated and saved in specific directories.
+The `run.py` script automates WASABI's multiphase pipeline for benchmarking a set of target applications, currently Hadoop, HBase, Hive, Cassandra, and Elasticsearch. It facilitates cloning repositories, preparing code by replacing configuration files and rewriting source code, running fault injection tests, and executing bug oracles to analyze test and build reports.
 
-The script requires the root path to the target Java application and the directory path containing the configuration file(s):
-```bash
-python3 driver.py [TARGET_ROOT_DIR] [CONFIG_DIR]
+Usage:
 ```
-where
-* `TARGET_ROOT_DIR` is the root directory for the target build.
-* `CONFIG_DIR` is the directory containing the .conf configuration files for testing.
-
-The script expects `.conf` and `.data` files to be present in the specified configuration directory. The files follow these naming patterns:
-* `.conf` files: `[TARGET_APPLICATION_NAME]_retry_locations_[TEST_NAME].conf`
-* `.data` files: `[TARGET_APPLICATION_NAME]_retry_locations_[TEST_NAME].data`
-
-### Configuration files
-
-A `.conf` file provides information to Wasabi about where to inject faults and what injection policy to use. These files have the following structure:
-```text
-retry_data_file: /absolute/path/to/data/file/[TARGET_APPLICATION]_retry_locations_[TEST_NAME].data
-injection_policy: [INJECTION_POLICY]
-max_injection_count: [INJECTION_ATTEMPTS_BOUND]
+python3 run.py --phase <phase> --benchmark <benchmark>
 ```
 
-The `injection_policy` parameter takes one of the following values:
-    *`no-injection`: This option ensures that Wasabi does not perform any injection. When this option is selected, it's recommended to set max_injection_count to -1.
-    * `forever`: With this option, Wasabi will continue to inject faults indefinitely. Similarly, it's advised to set max_injection_count to -1.
-    * `max-count`: When this option is selected, you can specify a positive integer for max_injection_count, indicating the upper limit of injections Wasabi should perform.
-Also, note that the `retry_data_file` parameters needs to be an absolute path.
+Arguments:
+* `--phase`: Specifies the phase of the pipeline,
+  * `setup`: Clone the repository and checkout a specific version for the benchmark.
+  * `prep`: Prepare the code by replacing configuration files and rewriting source code.
+  * `bug-triggering`: Run fault injection tests on the benchmark.
+  * `bug-oracles`: Run bug oracles to analyze test and build reports.
+  * `all`: Execute all WASABI's phases, in sequence.
 
-A `.data` file describes the retry locations and their respective exceptions to be injected by Wasabi. It has the following format:
+### § `run_benchmarks.py`
 
-```csv
-Retry location!!!Enclosing method!!!Retried method!!!Injection site!!!Exception
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790!!!org.apache.hadoop.ipc.Client$Connection.setupIOstreams!!!org.apache.hadoop.ipc.Client$Connection.writeConnectionContext!!!Client.java:831!!!java.net.SocketException
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/namenode/ha/EditLogTailer.java#L609!!!org.apache.hadoop.hdfs.server.namenode.ha.EditLogTailer$MultipleNameNodeProxy.getActiveNodeProxy!!!org.apache.hadoop.ipc.RPC.getProtocolVersion!!!N/A!!!java.io.IOException
-https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/RPC.java#L419!!!org.apache.hadoop.ipc.RPC.waitForProtocolProxy!!!org.apache.hadoop.ipc.RPC.getProtocolProxy!!!RPC.java:421!!!java.net.ConnectException
-...
+The `run_benchmarks.py` script automates WASABI's phase of running fault injection and identifying retry bugs for a target application. It performs several tasks: cleaning up local package directories to prevent build conflicts, building WASABI and the target application, running the test suite with fault injection, and saving the output logs for analysis.
+
+Usage:
+```
+python3 run_benchmarks.py --benchmark <benchmark>
 ```
 
-where
+Arguments:
+* `--benchmark`: Specifies the benchmark application to build and test. Current choices include `hadoop`, `hbase`, `hive`, `cassandra`, and `elasticsearch`.
 
-* `Retry location` indicates the program locations of a retry (e.g. `https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790`)
-* `Enclosing method` indicates the method from where the retry location is called (e.g. `org.apache.hadoop.ipc.Client$Connection.setupIOstreams`)
-* `Retried method` indicates the method inside the retry logic ought to be retried (e.g. `org.apache.hadoop.ipc.Client$IpcStreams.setSaslClient`)
-* `Injection site` indicates the source location (source file and line of code) where a retried method is called. Also, this represents the program location where Wasabi injects exceptions.
-* `Exception` indicates the exception that Wasabi should throw at that location (e.g. `java.io.SocketException`)
+### § `bug_oracles.py`
 
-### Configuring Wasabi to inject exceptions at a single location per test
+The `bug_oracles.py` analyzes log files generated during the testing of a target application. It processes both build and test logs to identify and categorize "HOW" and "WHEN" type retry bugs.
 
-Wasabi can be configured to inject an exception at a single injection site for a particular test. First, users need to create custom `.conf` and `.data` files, as follows:
-* First, create a `.data` file that includes only that particular injection site. For example, this is a `.data` file instructing Wasabi to inject exceptions only at `Client.java#L790` (e.g. `retry_locations_client790.data`):
-   ```csv
-   Retry location!!!Enclosing method!!!Retried method!!!Injection site!!!Exception
-   https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790!!!org.apache.hadoop.ipc.Client$Connection.setupIOstreams!!!org.apache.hadoop.ipc.Client$Connection.writeConnectionContext!!!Client.java:831!!!java.net.SocketException
-   ```
-* Second, create a corresponding ``retry_locations_client790.conf`:
-   ```text
-   retry_data_file: /absolute/path/to/data/file/retry_locations_client790.data
-   injection_policy: [INJECTION_POLICY]
-   max_injection_count: [INJECTION_ATTEMPTS_BOUND]
-   ```
-   We recommend using the "max-count" injection policy with a positive threshold adapted to the type of bugs the user attempts to trigger. For example, a    large threshold (e.g. >1,000) works best for "missing cap", whereas "missing backoff" bugs only required a moderate threshold (e.g. 10).
-
-
-### How to isolate and trigger bugs
-
-1. Check out the [bugs spreadsheet](https://uchicagoedu-my.sharepoint.com/:x:/r/personal/bastoica_uchicago_edu/_layouts/15/doc2.aspx?sourcedoc=%7B971C4855-6A92-46BF-8AD4-B4ED83B687AB%7D&file=retry_issues_in_open_source.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&ct=1698869682580&wdOrigin=OFFICECOM-WEB.MAIN.REC&cid=42043469-4c3f-40aa-9560-e4e1752a06f9&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=53f5c041-b8cd-4546-b8d0-1bb00f6b3a1f) where retry bugs are marked as `Confirmed`
-2. To identify the injection site, match the string from the `Source location` column with an entry in the ["retry locations" spreadsheets](https://docs.google.com/spreadsheets/d/1rPuMngQkwQrddAP5Pf5auz5hOQUDXWPQuFZt6mDvFkk/edit?pli=1#gid=1433151665) (note that each application has its own spreadsheet).
-3. A row in the retry location spreadsheet corresponds to a row in the `.data` configuration file. Note that the only chage is the separator, instead of space (` `), tab (`\t`) or comma (`,`) the `.data` file uses `!!!`
-4. Identify a test that execises that particular injection site. Check out the `Test Coverage` column in the bugs spreadhseet.
-5. Run a single test using `Maven` from the root directory of the target application:
-   ```
-   mvn test -fn -DconfigFile=[/aboslute/path/to/.conf] -Dtest=[TEST_NAME] 2>&1 | tee build.log
-   ```
-   Note that this assumes Wasabi was compiled, build, and install (check out Wasabi's [build instructions](https://github.com/bastoica/wasabi#maven-build-system)). Also, if Wasabi's code changes, run `mvn clean` before running `mvn test...` to re-compile and re-instrument the target application. 
-6. Finally, check out the build log (i.e., `build.log`) and test report. To find the test report, run the following command from the root directory of the target application:
-   ```
-   find . -name "*-output.txt"
-   ```
-   The build log records the outcome of the test: "success", "failure", or "time out". In case of a failure or time out outcome, it also records the failing callstack. To inspect `build.log`, remove all non-ASCII characters:
-   ```
-   perl -p -i -e "s/\x1B\[[0-9;]*[a-zA-Z]//g" build.log
-   ```
-   The test report (i.e., `*-output.txt` file) logs the behavior of the application under that particular test along with fault injection related messages printed by Wasabi.
-
-## § `bug_oracles.py`
-
-This `bug_oracles.py` script parses Maven build logs and extract information about test failures. It can capture information about retry locations exercised and specific types of test failures:
-
-* tests failing directly or indirectly triggered by fault injection
-* tests triggering assertions
-* tests timing out
-* tests failing after a few retry attempts
-
-Consequently, the script both parsers log files and prunes out failures not connected to retry bugs.
-
-The script runs as follows:
-
-```bash
-python3 bug_oracles.py ...
+Usage:
+```
+python3 bug_oracles.py <logs_root_dir> --benchmark <benchmark>
 ```
 
+Arguments:
+* `<logs_root_dir>`: The root directory where the build and test logs are saved.
+* `--benchmark`: Specifies the benchmark application for which to analyze logs. Current choices include `hadoop`, `hbase`, `hive`, `cassandra`, and `elasticsearch`.
+
+### § `source_rewriter.py`
+
+The `source_rewriter.py` script automates WASABI's phase of modifying of test files to adjust retry bounds and timeout values in large-scale applications. Operating in two modes, bounds-rewriting and timeout-rewriting, the script either increases the retry limits or extends the timeout durations in test methods, based on a given specification.
+
+* `--mode`: Specifies the operation mode of the script. Choices are:
+   * `bounds-rewriting`: Modifies retry bounds in Java code to a higher value.
+   * `timeout-rewriting`: Adjusts timeout annotations and wait calls in Java test methods to a higher value.
+* `<config_file>`: Path to the configuration file listing the changes to be made. The format depends on the mode:
+  * For bounds-rewriting, it should contain variable names, assigned values, assignment methods, and test class names.
+  * For timeout-rewriting, it should list the test classes and test methods that require timeout adjustments.
+* `<target_root_dir>`: The root directory of the target application where the script searches for test files to modify.
+
+### § `display_bug_results.py`
+
+The `display_bug_results.py` analyzes bug reports generated by the test suite of a target application during fault injection, aggregates them based on bug types and the application name, compares them to the ground truth dataset from our [paper](https://bastoica.github.io/files/papers/2024_sosp_wasabi.pdf), and prints summary tables similar to Table 3 (see "4. Evaluation", page 9).
+
+### § `generate_aspect.py`
+
+The `generate_aspect.py` script automates the creation of AspectJ code for injecting exceptions into specific methods of a target application. It reads a specification file that details which exceptions to inject and where to inject them. The specification file is tailored for the given target application and contains the methods implementing retry along with their source code locations, the retry-triggering exceptions being handled, and the methods being retried along with their source code locations. Using this information, the script generates an AspectJ aspect that can be woven into the target application to simulate retry-triggering exceptions at specific program points that should trigger retries when such exceptions occur.
+
+Usage:
+```
+python3 generate_aspect.py --spec-file <spec_file> --aspect-file <aspect_file>
+```
+
+Arguments:
+* `--spec-file`: Path to the input specification file containing exception injection details. This file should be in CSV format (though it use custom delimiters, `!!!`) and includes entries that specify the methods implementing retry, their source code locations along with the retry-triggering exceptions being handled, and the methods being retried along with their source code locations. Each line has the following format:
+```
+[Retry Enclosing Method Location]!!![Enclosing Method]!!![Retried Method]!!![Retried Method Location]!!![Exception Class]
+```
+Check out the main [README](https://github.com/bastoica/wasabi/blob/master/wasabi-testing/README.md) file for more details.
+* `--aspect-file`: Path to the output file to save the generated AspectJ aspect.
+
+### § `test_plan_generator.py`
+
+The `test_plan_generator.py` script automates the generation of test plans by matching retry locations with test cases in a target application. The script implements a heuristic that tries to ensure that each test is uniquely matched to a retry location, so no test is exercising two distinct retriable methods. The intuition is that once an exception is injected for a retried method at location `A`, another retried method executing at a later location `B` might not execute since the test could crash or hang.
+
+Usage:
+```
+python3 test-plan-generation.py --retry_locations_input <retry_locations_input_file> \
+                               --test_retry_pairs_input <test_retry_pairs_input_file> \
+                               --path_to_configs <config_files_path>
+```
+
+Arguments:
+* `--retry_locations_input`: Path to the input file containing details about retry locations.
+* `--test_retry_pairs_input`: Path to the input file mapping tests to retry locations. Each line should contain a test name and an injection location (retried method), separated by a comma.
+* `--path_to_configs`: Path where the generated configuration files should be saved.
+
+### § `wasabi_coverage.py`
+
+The `wasabi_coverage.py` script analyzes log files generated by a target application woven (instrumented) with WASABI, to determine code coverage statistics. Specifically, the script scans through test output logs to identify which methods have been instrumented and which have actually had exceptions injected during testing.
