@@ -19,7 +19,7 @@ git checkout sosp24-ae
 The working directory structure should look similar to the one below:
 ```plaintext
 ~/sosp24-ae
-   ├── benchmarks/
+  ├── benchmarks/
   └── wasabi/
       ├── wasabi-static/
       │   ├── README.md
