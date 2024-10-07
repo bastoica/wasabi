@@ -20,20 +20,21 @@ The working directory structure should look similar to the one below:
 ```plaintext
 ~/sosp24-ae
    ├── benchmarks/
-   ├── wasabi-static/
-   │   ├── README.md
-   │   ├── codeql-if-detection
-   │   ├── gpt-when-detection
-   |   ├── retry_issue_set_artifact.xlsx
-   |   └── wasabi_gpt_detection_results--table4.xlsx
-   └── wasabi-testing
-       ├── README.md
-       ├── config/
-       ├── pom-java11.xml
-       ├── pom-java8.xml
-       ├── pom.xml
-       ├── src/
-       └── utils/
+  └── wasabi/
+      ├── wasabi-static/
+      │   ├── README.md
+      │   ├── codeql-if-detection
+      │   ├── gpt-when-detection
+      |   ├── retry_issue_set_artifact.xlsx
+      |   └── wasabi_gpt_detection_results--table4.xlsx
+      └── wasabi-testing
+          ├── README.md
+          ├── config/
+          ├── pom-java11.xml
+          ├── pom-java8.xml
+          ├── pom.xml
+          ├── src/
+          └── utils/
 ```
 
 Users can check their directory structure by installing the `tree` package
