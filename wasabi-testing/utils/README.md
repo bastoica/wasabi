@@ -84,8 +84,8 @@ The `test_plan_generator.py` script automates the generation of test plans by ma
 Usage:
 ```
 python3 test-plan-generation.py --retry_locations_input <retry_locations_input_file> \
-                               --test_retry_pairs_input <test_retry_pairs_input_file> \
-                               --path_to_configs <config_files_path>
+                                --test_retry_pairs_input <test_retry_pairs_input_file> \
+                                --path_to_configs <config_files_path>
 ```
 
 Arguments:
