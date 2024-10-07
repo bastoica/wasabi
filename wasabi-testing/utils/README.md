@@ -1,6 +1,6 @@
-# Wasabi Helper Scripts
+# Helper Scripts
 
-This README describes the purpose of and sample usage scenarios for each utility script used by Wasabi.
+This README outlines the functionality and provides sample usage examples for each essential helper script. These scripts are designed to help reproduce the key results from our evaluation of WASABI. We encourate users to check out our [paper](https://bastoica.github.io/files/papers/2024_sosp_wasabi.pdf) for details.
 
 ### § `run.py`
 
