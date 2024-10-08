@@ -284,12 +284,10 @@ Once WASABI is successfuly build, woven into a target application, and configure
 To do so, users have two options:
 
 1. Option #1 (recommended): run individual tests and instruct WASABI to inject faults at only one location during the test run. The reason is that, by desing, WASABI tries to force the test to either crash or hang. If this happens at the first injection location, subsequent injection locations will not get a chance to execute due to the test terminating (or hanging) early.
-
 ```bash
 cd [target_application_path]
 mvn clean install -U -fn -B -DskipTests 2>&1 | tee wasabi-build.log
 mvn surefire:test -fn -B -DconfigFile="$(echo $HOME)/wasabi/wasabi-testing/config/example_hdfs.conf" -Dtest=[TEST_NAME] 2>&1 | tee wasabi-test.log
-
 ```
 
 2. Option #2: run the entire test suite and inject faults at multiple locations in the same testing runs. Users can opt to inject faults at multiple locations in the same testing run if they are confident that injecting at an earlier location does not affect the execution of a later location. In this case, users can create a multi-location `.data` file (e.g., like [this one](https://github.com/bastoica/wasabi/blob/sosp24-ae/wasabi-testing/config/hadoop/hadoop_retry_locations.data) for Hadoop).
@@ -311,9 +309,6 @@ To illustrate how WASABI work, we walk users through an example that reproduces 
 1. Ensure the prerequisites are successfully installed (see "Getting Started" above)
    
 2. Build and install WASABI (see "Building and installing WASABI" above)
-
-
-```
 
 3. Clone Hadoop (note: HDFS is part of Hadoop),
 ```bash
