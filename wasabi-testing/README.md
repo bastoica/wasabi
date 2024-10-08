@@ -8,15 +8,15 @@ To get started, users should create a new directory structure, clone this reposi
 
 1. Create a new workspace directory and clone the WASABI repository:
 ```bash
-mkdir -p ~/wasabi-workspace/bugfinding
-cd ~/wasabi-workspace/bugfinding
+mkdir -p ~/wasabi-workspace/benchmarks
+cd ~/wasabi-workspace/
 git clone https://github.com/bastoica/wasabi
 ```
 
 The working directory structure should look similar to the one below:
 ```plaintext
 ~/wasabi-workspace
-  ├── bugfinding/
+  ├── benchmarks/
   └── wasabi/
       ├── wasabi-static/
       │   ├── README.md
@@ -59,7 +59,7 @@ sudo ./prereqs.sh
 >**both added to WASABI's `pom.xml` as plugin dependencies
 > 
 > WASABI was developed, built, and tested on a bare metal machine with an Intel i7-8700 CPU, 32 GB of RAM, and 512 GB of disk space, running Ubuntu 22.04 LTE.
-> While we implement WASABI to be agnostic to environment settings (i.e., OS distribution, versions of packages and dependencies), using WASABI in a different environment. Please see "[Known issues](README.md#6-known-issues)".
+> While we implement WASABI to be agnostic to environment settings (i.e., OS distribution, versions of packages and dependencies), using WASABI in a different environment. Please see "[Known issues](README.md#7-known-issues)".
 
 ## 3. Building and installing WASABI
 
@@ -70,10 +70,10 @@ sudo update-alternatives --config java
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 ```
 
-Next, run Maven's `clean`, `compile`, and `install` Maven from the `wasabi-testing` directory, to build WASABI.
+Next, run Maven's `clean`, `compile`, and `install` Maven from the `wasabi-testing` directory, to build WASABI. Note that the current codebase includes AspectJ for each of the applications used to evaluate WASABI (see Section 4 from our [paper](https://bastoica.github.io/files/papers/2024_sosp_wasabi.pdf)). In this walkthrough we build WASABI for finding bugs in HDFS (Hadoop) and use triggering HDFS-17590 as an example, [below](README.md#6-running-example-reproducing-hdfs-17590). 
 ```bash
 cd ~/wasabi-workspace/wasabi/wasabi-testing
-mvn clean compile && mvn install -B 2>&1 | tee wasabi-build.log
+mvn clean install -U -fn -B -Dinstrumentation.target=hadoop -DskipTests 2>&1 | tee wasabi-install.log
 ```
 
 If successful users should see a message similar to 
@@ -299,12 +299,12 @@ mvn clean install -U -fn -B -DskipTests 2>&1 | tee wasabi-build.log
 mvn test  -fn -B  -DconfigFile="$(echo $HOME)/wasabi/wasabi-testing/config/example_hdfs.conf" 2>&1 | tee wasabi-test.log
 ```
 
-## An example: reproducing HDFS-17590 
+## 6. Running example: reproducing HDFS-17590 
 
 To illustrate how WASABI work, we walk users through an example that reproduces [HDFS-17590](https://issues.apache.org/jira/browse/HDFS-17590)&mdash;a previously unknown retry bug uncovered by WASABI.
 
 > [!NOTE]
-> Users might observe a "build failure" message when building and testing Hadoop. This is expected as a few testing-related components of Hadoop need more configuration to build properly with the ACJ compiler. WASABI does not need those components to find retry bugs. See the "[Known issues](README.md#6-known-issues)" section below for more details.
+> Users might observe a "build failure" message when building and testing Hadoop. This is expected as a few testing-related components of Hadoop need more configuration to build properly with the ACJ compiler. WASABI does not need those components to find retry bugs. See the "[Known issues](README.md#7-known-issues)" section below for more details.
 
 
 1. Ensure the prerequisites are successfully installed (see "Getting Started" above)
@@ -316,12 +316,12 @@ To illustrate how WASABI work, we walk users through an example that reproduces 
 
 3. Clone Hadoop (note: HDFS is part of Hadoop),
 ```bash
-cd ~/sosp24-ae/bugfinding
+cd ~/sosp24-ae/benchmarks
 git clone https://github.com/apache/hadoop
 ```
 and check out version/commit `60867de`:
 ```bash
-cd ~/sosp24-ae/bugfinding/hadoop
+cd ~/sosp24-ae/benchmarks/hadoop
 git checkout 60867de
 ```
 Users can check whether `60867de` was successfully checked out by running
@@ -399,13 +399,13 @@ java.lang.NullPointerException
         at java.base/java.io.DataInputStream.read(DataInputStream.java:102)
 ```    
 
-## 6. Known issues
+## 7. Known issues
 
-### 6.1 AspectJ Maven plugin circular dependency and versioning issues
+### 7.1 AspectJ Maven plugin circular dependency and versioning issues
 
 WASABI imports plugins that might also be imported by the target application. Users need to manually resolve potential circular dependencies or plugin version incompatibilities. Users could also reference [this](https://github.com/dev-aspectj/aspectj-maven-plugin/issues/143) issue in the `aspectj-maven-plugin` repository for suggestions on how to tackle such issues.
 
-### 6.2 Build failures after weaving
+### 7.2 Build failures after weaving
 
 The AspectJ compiler and supporting plugins might not be able to weave (instrument) all modules of a target successfully. While users are encouraged to address this, we recommend disregarding modules that are not critical to the core functionality of the application (e.g., benchmarking modules) or that do not implement or test retry-related code.
 
@@ -541,7 +541,7 @@ For example, when reproducing HDFS-17590, users might observe a "build failure" 
 ```
 </details>
 
-### 6.3 Bare metal versus containerized deployments
+### 7.3 Bare metal versus containerized deployments
 
 WWASABI was tested on a bare metal machine. Fundamentally, there are no limitations to running WASABI in a containerized environment. However, there are known issues related to the Hadoop and HBase benchmarks used to evaluate WASABI in our [paper](https://bastoica.github.io/files/papers/2024_sosp_wasabi.pdf).
 
