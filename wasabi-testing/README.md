@@ -206,7 +206,7 @@ compileJava {
 ```
 
 Finally, compile and build the project:
-```
+```bash
 gradle clean build -i 2>&1 | tee wasabi-build.log
 ```
 
@@ -216,7 +216,7 @@ First, make sure AspectJ libraries (`aspectjrt.jar`, `aspectjtools.jar`) are ava
 
 Next, modify `build.xml` by adding the AspectJ tasks and specify WASABI in the aspect path:
 
-```
+```xml
 <taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties"
          classpathref="aspectj-libs"/>
 
@@ -238,7 +238,7 @@ Next, modify `build.xml` by adding the AspectJ tasks and specify WASABI in the a
 ```
 
 Finally, compile and build the project:
-```
+```bash
 ant compile 2>&1 | tee wasabi-build.log
 ```
 
@@ -247,12 +247,13 @@ ant compile 2>&1 | tee wasabi-build.log
 To specify fault injection policies and the precise injection locations, users need to create two types of files&mdash;a location data file (`.data`) and a policy configuration file (`.conf`).
 
 A `.data` file describes the retry locations and their respective exceptions to be injected by Wasabi. It has the following format:
-```
+```xml
 Retry location!!!Enclosing method!!!Retried method!!!Injection site!!!Exception
 https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790!!!org.apache.hadoop.ipc.Client$Connection.setupIOstreams!!!org.apache.hadoop.ipc.Client$Connection.writeConnectionContext!!!Client.java:831!!!java.net.SocketException
 https://github.com/apache/hadoop/tree//ee7d178//hadoop-hdfs-project/hadoop-hdfs/src/main/java/org/apache/hadoop/hdfs/server/namenode/ha/EditLogTailer.java#L609!!!org.apache.hadoop.hdfs.server.namenode.ha.EditLogTailer$MultipleNameNodeProxy.getActiveNodeProxy!!!org.apache.hadoop.ipc.RPC.getProtocolVersion!!!N/A!!!java.io.IOException
 https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/RPC.java#L419!!!org.apache.hadoop.ipc.RPC.waitForProtocolProxy!!!org.apache.hadoop.ipc.RPC.getProtocolProxy!!!RPC.java:421!!!java.net.ConnectException
 ...
+```
 where
 * `Retry location` indicates the program locations of a retry (e.g. https://github.com/apache/hadoop/tree//ee7d178//hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/ipc/Client.java#L790)
 * `Enclosing method` indicates the method from where the retry location is called (e.g. `org.apache.hadoop.ipc.Client$Connection.setupIOstreams`)
@@ -263,7 +264,7 @@ where
 
 A `.conf` file instructs WASABI to use a specific injection policy and load injection locations from a particular `.data` file and has the following structure:
 
-```
+```xml
 retry_data_file: /absolute/path/to/data/file/example_retry_locations.data
 injection_policy: max-count
 max_injection_count: 10
